@@ -30,6 +30,35 @@
     </div>
   </header>
 
+  <div class="pull-down-menu" id="pullDownMenu">
+    <div class="pull-down-content">
+      <a href="#about" class="pull-down-link">
+        <span class="pull-down-icon">ℹ️</span>
+        <span>Про салон</span>
+      </a>
+      <a href="#team" class="pull-down-link">
+        <span class="pull-down-icon">👥</span>
+        <span>Команда</span>
+      </a>
+      <a href="#services" class="pull-down-link">
+        <span class="pull-down-icon">✂️</span>
+        <span>Послуги</span>
+      </a>
+      <a href="#gallery" class="pull-down-link">
+        <span class="pull-down-icon">🖼️</span>
+        <span>Галерея</span>
+      </a>
+      <a href="#contact" class="pull-down-link">
+        <span class="pull-down-icon">📞</span>
+        <span>Контакти</span>
+      </a>
+      <a href="booking.html" class="pull-down-link">
+        <span class="pull-down-icon">📅</span>
+        <span>Записатися</span>
+      </a>
+    </div>
+  </div>
+
   <main>
     <section class="hero" id="home">
       <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/hero-poster.jpg">
@@ -1503,6 +1532,89 @@
       });
 
       updateAuthState();
+
+      // Скрытие/показ шапки при скролле
+      const topbar = document.querySelector('.topbar');
+      if (topbar) {
+        let lastScrollTop = 0;
+        let isTopbarHidden = false;
+
+        function toggleTopbarVisibility() {
+          let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          
+          if (currentScroll > lastScrollTop && currentScroll > 60) {
+            // Скролл вниз
+            if (!isTopbarHidden) {
+              topbar.style.transform = 'translateY(-120%)';
+              topbar.style.opacity = '0';
+              topbar.style.pointerEvents = 'none';
+              isTopbarHidden = true;
+            }
+          } else {
+            // Скролл вверх или в начало
+            if (isTopbarHidden) {
+              topbar.style.transform = 'translateY(0)';
+              topbar.style.opacity = '1';
+              topbar.style.pointerEvents = 'auto';
+              isTopbarHidden = false;
+            }
+          }
+          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        }
+
+        topbar.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        window.addEventListener('scroll', toggleTopbarVisibility, { passive: true });
+      }
+
+      // Pull-down меню при свайпе вниз
+      const pullDownMenu = document.getElementById('pullDownMenu');
+      if (pullDownMenu) {
+        let touchStartY = 0;
+        let touchEndY = 0;
+        let isDraggingDown = false;
+
+        function closePullDownMenu() {
+          pullDownMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+
+        document.addEventListener('touchstart', function(e) {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          touchStartY = e.touches[0].clientY;
+          isDraggingDown = scrollTop === 0;
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(e) {
+          touchEndY = e.changedTouches[0].clientY;
+          const deltaY = touchEndY - touchStartY;
+          
+          // Если свайп вниз больше чем 80px и мы в начале страницы
+          if (isDraggingDown && deltaY > 80) {
+            pullDownMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        }, { passive: true });
+
+        // Закрытие меню при клике на ссылку
+        const pullDownLinks = pullDownMenu.querySelectorAll('.pull-down-link');
+        pullDownLinks.forEach(link => {
+          link.addEventListener('click', closePullDownMenu);
+        });
+
+        // Закрытие меню при клике за пределами контента
+        pullDownMenu.addEventListener('click', function(e) {
+          if (e.target === pullDownMenu) {
+            closePullDownMenu();
+          }
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && pullDownMenu.classList.contains('active')) {
+            closePullDownMenu();
+          }
+        });
+      }
   </script>
 </body>
 </html>
