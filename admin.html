@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Админка — HUMREY</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: radial-gradient(circle at top left, rgba(251,207,98,0.18), transparent 18%), radial-gradient(circle at bottom right, rgba(96,165,250,0.14), transparent 22%), linear-gradient(180deg, #f8fafc 0%, #eef2ff 45%, #f3f7fb 100%);
+      color: #111827;
+      min-height: 100vh;
+    }
+    .admin-page {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 4rem 24px 3rem;
+      display: grid;
+      gap: 24px;
+    }
+    .admin-header {
+      display: grid;
+      gap: 10px;
+    }
+    .admin-header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+    }
+    .admin-header p {
+      margin: 0;
+      color: #475569;
+      max-width: 760px;
+      line-height: 1.7;
+    }
+    .admin-card {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(148,163,184,0.22);
+      border-radius: 30px;
+      box-shadow: 0 24px 60px rgba(148,163,184,0.12);
+      padding: 32px;
+      display: grid;
+      gap: 22px;
+    }
+    .login-form {
+      display: grid;
+      gap: 18px;
+      max-width: 520px;
+    }
+    .login-form label {
+      display: grid;
+      gap: 8px;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .login-form input {
+      width: 100%;
+      min-height: 50px;
+      padding: 0.95rem 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: #ffffff;
+      color: #111827;
+      font-size: 1rem;
+      outline: none;
+    }
+    .login-form button {
+      width: fit-content;
+      padding: 14px 24px;
+      border-radius: 18px;
+      border: none;
+      background: linear-gradient(180deg, #f97316 0%, #f59e0b 100%);
+      color: #111827;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .login-form button:hover {
+      transform: translateY(-1px);
+    }
+    .admin-panel {
+      display: none;
+      gap: 18px;
+    }
+    .admin-panel.active {
+      display: grid;
+    }
+    .admin-panel h2 {
+      margin: 0;
+      font-size: 1.85rem;
+      color: #111827;
+    }
+    .admin-summary {
+      display: grid;
+      gap: 16px;
+    }
+    .admin-summary p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .admin-card-list {
+      display: grid;
+      gap: 16px;
+    }
+    .admin-card-list article {
+      padding: 20px;
+      border-radius: 24px;
+      background: #f8fafc;
+      border: 1px solid rgba(148,163,184,0.2);
+    }
+    .admin-card-list strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #111827;
+      font-size: 1rem;
+    }
+    .admin-card-list span {
+      display: block;
+      color: #475569;
+      line-height: 1.6;
+    }
+    .admin-hint {
+      display: grid;
+      gap: 10px;
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(252,186,3,0.25);
+      color: #92400e;
+    }
+    .admin-hint strong {
+      color: #b45309;
+    }
+    @media (max-width: 760px) {
+      .admin-page {
+        padding: 3rem 16px 2rem;
+      }
+      .admin-card {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="admin-page">
+    <section class="admin-header">
+      <h1>Админка HUMREY</h1>
+      <p>Вход только для администратора. Введите указанный логин и почту, чтобы получить доступ к администраторской панели.</p>
+    </section>
+
+    <section class="admin-card">
+      <form class="login-form" id="adminLoginForm">
+        <label>
+          Логин администратора
+          <input type="text" name="login" id="adminLogin" placeholder="OwnerSite123" autocomplete="username" required />
+        </label>
+        <label>
+          Email администратора
+          <input type="email" name="email" id="adminEmail" placeholder="zatulij@gmail.com" autocomplete="email" required />
+        </label>
+        <button type="submit">Войти</button>
+      </form>
+
+      <div class="admin-hint">
+        <strong>Администраторы</strong>
+        <p>Логин: <code>OwnerSite123</code></p>
+        <p>Почта: <code>zatulij@gmail.com</code></p>
+      </div>
+    </section>
+
+    <section class="admin-card admin-panel" id="adminPanel">
+      <h2>Панель администратора</h2>
+      <div class="admin-summary">
+        <p>Добро пожаловать, администратор! Здесь отображается информация о текущем администраторе и основные данные панели.</p>
+      </div>
+      <div class="admin-card-list">
+        <article>
+          <strong>Администратор</strong>
+          <span>Логин: OwnerSite123</span>
+          <span>Почта: zatulij@gmail.com</span>
+        </article>
+        <article>
+          <strong>Статус</strong>
+          <span>Доступ к административной панели получен.</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_LOGIN = 'OwnerSite123';
+    const ADMIN_EMAIL = 'zatulij@gmail.com';
+    const loginForm = document.getElementById('adminLoginForm');
+    const adminPanel = document.getElementById('adminPanel');
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const loginValue = document.getElementById('adminLogin').value.trim();
+      const emailValue = document.getElementById('adminEmail').value.trim().toLowerCase();
+
+      if (loginValue === ADMIN_LOGIN && emailValue === ADMIN_EMAIL) {
+        adminPanel.classList.add('active');
+        loginForm.style.display = 'none';
+      } else {
+        alert('Неверный логин или почта. Используйте указанные данные администратора.');
+      }
+    });
+  </script>
+</body>
+</html>

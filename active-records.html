@@ -1,0 +1,2554 @@
+﻿﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Новая страница записи</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; min-height: 100vh; color: #efe8e2; background-color: #0f1218; background-image: radial-gradient(circle at 12% 12%, rgba(255,255,255,0.18), transparent 14%), radial-gradient(circle at 86% 18%, rgba(215,178,126,0.16), transparent 18%), linear-gradient(135deg, #0b1018 0%, #141b27 30%, #0c1117 100%); background-attachment: fixed; background-size: cover; overflow-x: hidden; }
+    .page { position: relative; --page-side-padding: 32px; min-height: 100vh; width: 100%; padding: 24px var(--page-side-padding); display: grid; gap: 4px; justify-items: stretch; }
+    .date-switcher { width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 24px; padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); background: rgba(18, 24, 34, 0.94); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; box-shadow: 0 28px 72px rgba(0,0,0,0.22); overflow: hidden; }
+    .nav-group { flex: 1; min-width: 0; display: flex; align-items: center; gap: 16px; }
+    .nav-btn { flex: none; width: 54px; height: 54px; border: none; border-radius: 18px; background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; font-size: 1.35rem; display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .nav-btn:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+    .nav-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.24); box-shadow: 0 0 20px rgba(255,255,255,0.14); }
+    .home-link { display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0 16px; height: 44px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.08); color: #fff; text-decoration: none; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease; }
+    .home-link:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
+    .current-date { font-weight: 700; font-size: 1.3rem; color: #fff; }
+    .stats-group { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; color: #cfc7bd; font-size: 0.95rem; }
+    .stats-group span { color: #fff; font-weight: 600; }
+    .stats-group .selected-master-label { color: #d8c9af; font-weight: 600; }
+    .analytics-panel { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 16px; width: 100%; margin-top: 0; margin-bottom: 0; }
+    .analytics-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 18px 20px; border-radius: 24px; background: rgba(15,23,42,0.9); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 22px 48px rgba(0,0,0,0.24); }
+    .analytics-card > div { min-width: 0; }
+    .analytics-card h3 { margin: 0; font-size: 1rem; color: #f8fafc; letter-spacing: 0.04em; word-break: break-word; overflow-wrap: anywhere; }
+    .analytics-card p { margin: 0; color: #cbd5e1; line-height: 1.5; font-size: 0.95rem; word-break: break-word; overflow-wrap: anywhere; }
+    .analytics-card .analytics-link { flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; min-width: 0; }
+    .analytics-card .analytics-link .button { min-width: 140px; white-space: nowrap; }
+    .shift-card { background: linear-gradient(180deg, rgba(22, 28, 45, 0.98), rgba(12, 16, 26, 0.95)); border-color: rgba(96, 165, 250, 0.18); }
+    .shift-card .shift-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .shift-card .shift-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #edf2ff; font-size: 0.92rem; }
+    .shift-card .shift-badge strong { font-weight: 700; color: #fff; }
+    .shift-card .button { min-width: 140px; }
+    .shift-modal-window { max-width: 720px; }
+    .shift-modal-note { color: #d2d6dc; margin: 0 0 18px; font-size: 0.98rem; line-height: 1.75; }
+    .shift-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 18px 0 0; }
+    .shift-option { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 120px; padding: 18px 14px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: #f8fafc; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+    .shift-option:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); }
+    .shift-off-picker { display: grid; gap: 14px; margin-top: 16px; padding: 16px; border-radius: 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .shift-off-note { color: #c8d2e0; font-size: 0.94rem; }
+    .shift-off-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .shift-option.selected { background: rgba(59,130,246,0.22); border-color: rgba(59,130,246,0.45); color: #fff; box-shadow: 0 18px 40px rgba(59,130,246,0.16); }
+    .shift-option.off { border-color: rgba(248,113,113,0.18); color: #fbcaca; }
+    .shift-option.off.selected { background: rgba(248,113,113,0.18); border-color: rgba(248,113,113,0.4); color: #fff; }
+    .shift-option span { font-size: 0.92rem; }
+    .shift-calendar-picker { display: grid; gap: 14px; margin-top: 18px; }
+    .shift-calendar-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 18px; border-radius: 22px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .shift-calendar-title { font-size: 0.95rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.08em; }
+    .shift-calendar-month { font-size: 1.05rem; font-weight: 700; color: #fff; }
+    .shift-calendar-nav { width: 44px; height: 44px; border: none; border-radius: 16px; background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; font-size: 1.15rem; transition: background 0.2s ease, transform 0.2s ease; }
+    .shift-calendar-nav:hover { background: rgba(255,255,255,0.14); transform: translateY(-1px); }
+    .shift-calendar-weekdays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; text-align: center; color: #c1c1c1; font-size: 0.8rem; text-transform: uppercase; }
+    .shift-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+    .shift-calendar-cell { min-height: 72px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #f8fafc; display: grid; gap: 6px; padding: 12px; cursor: pointer; transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; align-items: start; justify-items: center; text-align: center; }
+    .shift-calendar-cell:hover { transform: translateY(-1px); background: rgba(255,255,255,0.09); }
+    .shift-calendar-cell.empty { background: transparent; border-color: transparent; cursor: default; }
+    .shift-calendar-cell .cell-day { font-size: 1rem; font-weight: 700; }
+    .shift-calendar-cell .cell-note {
+      color: #c1c1c1;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      display: block;
+      text-align: center;
+      min-height: 36px;
+    }
+    .shift-calendar-cell.active { background: rgba(59,130,246,0.22); border-color: rgba(59,130,246,0.45); box-shadow: 0 18px 40px rgba(59,130,246,0.14); }
+    .shift-calendar-cell.off { background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.42); color: #fff; }
+    .shift-calendar-cell.off-olga { background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.42); color: #fff; }
+    .shift-calendar-cell.off-marina { background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.42); color: #fff; }
+    .shift-calendar-cell.olga { background: rgba(56,189,248,0.24); border-color: rgba(56,189,248,0.55); color: #fff; }
+    .shift-calendar-cell.marina { background: rgba(168,85,247,0.24); border-color: rgba(168,85,247,0.55); color: #fff; }
+    .shift-calendar-cell.scheduled .cell-note { color: #fff; }
+    .board-top-row { margin: 0; display: flex; justify-content: flex-start; }
+    .board-top-row .button { padding: 12px 20px; }
+    .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 60; background: rgba(21, 27, 36, 0.96); color: #f7f1e9; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 14px 18px; box-shadow: 0 24px 60px rgba(0,0,0,0.35); font-size: 0.95rem; opacity: 0; pointer-events: none; transition: opacity 0.24s ease, transform 0.24s ease; }
+    .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    .toast.hidden { display: none; }
+    .button { border: none; border-radius: 999px; padding: 10px 18px; background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; cursor: pointer; font-weight: 700; text-decoration: none; box-shadow: 0 10px 20px rgba(249,115,22,0.18); transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .button:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); transform: translateY(-1px); text-decoration: none; }
+    .button.locked { opacity: 0.75; }
+    .button.locked:hover { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); transform: none; }
+    .button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .subscription-blocker.hidden { display: none !important; }
+    .board.blur-records .slot,
+    .board.blur-records .records-overview-card {
+      filter: blur(8px) saturate(0.85);
+      opacity: 0.28;
+      pointer-events: none;
+      user-select: none;
+    }
+    .board.blur-records .slot-actions,
+    .board.blur-records .record-actions {
+      display: none !important;
+    }
+    .modal-overlay.blur-records .records-overview-card {
+      filter: blur(8px) saturate(0.85);
+      opacity: 0.28;
+      pointer-events: none;
+      user-select: none;
+    }
+    .theme-toggle-btn { border: none; width: 44px; height: 44px; border-radius: 16px; background: rgba(255,255,255,0.08); color: #fff; cursor: pointer; font-size: 1.1rem; transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease; }
+    .theme-toggle-btn:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
+    .light-theme .theme-toggle-btn { background: rgba(15,23,42,0.07); color: #111827; }
+    .light-theme .theme-toggle-btn:hover { background: rgba(15,23,42,0.12); }
+    body.light-theme { color: #1f2937; background-color: #f8fafc; background-image: none; }
+    .light-theme .page { background: #f8fafc; }
+    .light-theme .date-switcher { background: rgba(255,255,255,0.95); border-color: rgba(148,163,184,0.22); box-shadow: 0 24px 50px rgba(15, 23, 42, 0.08); }
+    .light-theme .nav-btn { background: rgba(15,23,42,0.07); color: #111827; }
+    .light-theme .nav-btn:hover { background: rgba(15,23,42,0.12); }
+    .light-theme .home-link { background: rgba(15,23,42,0.07); color: #111827; border-color: rgba(15,23,42,0.13); }
+    .light-theme .home-link:hover { background: rgba(15,23,42,0.12); }
+    .light-theme .stats-group { color: #475569; }
+    .light-theme .stats-group span { color: #111827; }
+    .light-theme .analytics-card,
+    .light-theme .column,
+    .light-theme .summary-card,
+    .light-theme .modal-window,
+    .light-theme .service-picker,
+    .light-theme .shift-card,
+    .light-theme .shift-option,
+    .light-theme .shift-off-picker,
+    .light-theme .shift-calendar-header,
+    .light-theme .shift-calendar-cell {
+      background: rgba(255,255,255,0.96);
+    }
+    .light-theme .analytics-card h3 { color: #111827; }
+    .light-theme .analytics-card p { color: #475569; }
+    .light-theme .shift-card { border-color: rgba(148,163,184,0.22); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08); }
+    .light-theme .shift-card .shift-badge { background: rgba(15,23,42,0.08); border-color: rgba(15,23,42,0.12); color: #111827; }
+    .light-theme .shift-card .shift-badge strong { color: #111827; }
+    .light-theme .shift-option { border-color: rgba(15,23,42,0.12); color: #111827; }
+    .light-theme .shift-option:hover { background: rgba(15,23,42,0.1); }
+    .light-theme .shift-option.selected { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.25); color: #111827; box-shadow: 0 18px 40px rgba(59,130,246,0.12); }
+    .light-theme .shift-option.off { border-color: rgba(248,113,113,0.18); color: #991b1b; }
+    .light-theme .shift-option.off.selected { background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.24); color: #111827; }
+    .light-theme .shift-off-note { color: #475569; }
+    .light-theme .shift-calendar-title { color: #6b7280; }
+    .light-theme .shift-calendar-month { color: #111827; }
+    .light-theme .shift-calendar-nav { background: rgba(15,23,42,0.07); color: #111827; }
+    .light-theme .shift-calendar-nav:hover { background: rgba(15,23,42,0.12); }
+    .light-theme .shift-calendar-weekdays { color: #6b7280; }
+    .light-theme .shift-calendar-cell { border-color: rgba(15,23,42,0.12); color: #111827; }
+    .light-theme .shift-calendar-cell:hover { background: rgba(15,23,42,0.1); }
+    .light-theme .shift-calendar-cell.scheduled .cell-note { color: #111827; }
+    .light-theme .shift-calendar-cell.active { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.35); box-shadow: 0 18px 40px rgba(59,130,246,0.1); }
+    .light-theme .shift-calendar-cell .cell-note { color: #475569; }
+    .light-theme .shift-calendar-cell.off { background: rgba(254,202,202,0.7); border-color: rgba(248,113,113,0.6); color: #991b1b; }
+    .light-theme .shift-calendar-cell.off-olga { background: rgba(254,202,202,0.7); border-color: rgba(248,113,113,0.6); color: #991b1b; }
+    .light-theme .shift-calendar-cell.off-marina { background: rgba(254,202,202,0.7); border-color: rgba(248,113,113,0.6); color: #991b1b; }
+    .light-theme .shift-calendar-cell.olga { background: rgba(187,247,255,0.8); border-color: rgba(56,189,248,0.5); color: #111827; }
+    .light-theme .shift-calendar-cell.marina { background: rgba(237,215,255,0.8); border-color: rgba(168,85,247,0.5); color: #111827; }
+    .light-theme .shift-calendar-cell.off-olga .cell-note,
+    .light-theme .shift-calendar-cell.off-marina .cell-note,
+    .light-theme .shift-calendar-cell.olga .cell-note,
+    .light-theme .shift-calendar-cell.marina .cell-note { color: inherit; }
+
+    .light-theme .shift-calendar-cell.olga { border-color: rgba(56,189,248,0.4); }
+    .light-theme .shift-calendar-cell.marina { border-color: rgba(168,85,247,0.4); }
+    .light-theme .toast { background: rgba(255,255,255,0.92); color: #111827; border-color: rgba(148,163,184,0.22); box-shadow: 0 24px 60px rgba(15,23,42,0.12); }
+    .light-theme .button { background: linear-gradient(180deg, #fcd34d 0%, #f97316 100%); color: #111827; }
+    .light-theme .button:hover { background: linear-gradient(180deg, #f59e0b 0%, #ea580c 100%); }
+    .light-theme .button.locked:hover { transform: none; }
+    .light-theme .summary-card .card-label { color: #71717a; }
+    .light-theme .summary-card .card-value { color: #111827; }
+    .light-theme .summary-card .card-note { color: #475569; }
+    .light-theme .column-header { color: #475569; }
+    .light-theme .header-row strong { color: #111827; }
+    .light-theme .date-title { color: #111827; }
+    .light-theme .date-subtitle { color: #6b7280; }
+    .light-theme .column { border-color: rgba(15,23,42,0.12); box-shadow: 0 22px 50px rgba(15,23,42,0.08); }
+    .light-theme .modal-window { border-color: rgba(15,23,42,0.12); }
+    .light-theme .modal-header h3,
+    .light-theme .staff-card strong,
+    .light-theme .slot strong,
+    .light-theme .button,
+    .light-theme .record-actions button,
+    .light-theme .pill,
+    .light-theme .record-actions .delete-btn,
+    .light-theme .record-actions .edit-btn { color: #111827; }
+    .light-theme .button,
+    .light-theme .analytics-card .analytics-link .button,
+    .light-theme .board-top-row .button,
+    .light-theme .client-add-row .button {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #111827;
+      box-shadow: 0 10px 20px rgba(249,115,22,0.18);
+    }
+    .light-theme .button:hover,
+    .light-theme .analytics-card .analytics-link .button:hover,
+    .light-theme .board-top-row .button:hover,
+    .light-theme .client-add-row .button:hover {
+      background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%);
+    }
+    .light-theme .pill.active {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #111827;
+      box-shadow: 0 10px 20px rgba(249,115,22,0.18);
+      border-color: transparent;
+    }
+    .light-theme .pill.active:hover {
+      background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%);
+    }
+    .light-theme .nav-btn {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #111827;
+      box-shadow: 0 10px 20px rgba(249,115,22,0.18);
+    }
+    .light-theme .nav-btn:hover {
+      background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%);
+    }
+    .light-theme .modal-button.save { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; box-shadow: 0 10px 20px rgba(249,115,22,0.18); }
+    .light-theme .modal-button.cancel { background: rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .form-label { color: #475569; }
+    .light-theme .form-input, .light-theme .form-select { background: #ffffff; color: #111827; border-color: rgba(15,23,42,0.12); }
+    .light-theme .form-input::placeholder { color: rgba(15,23,42,0.4); }
+    .light-theme .service-picker { background: rgba(255,255,255,0.96); }
+    /* service-chip light theme styling is defined later to keep price text readable */
+    .light-theme .date-pill { border: 1px solid rgba(15, 23, 42, 0.08); background: rgba(15, 23, 42, 0.06); color: #111827; box-shadow: none; }
+    .light-theme .date-pill:hover { background: rgba(15, 23, 42, 0.1); }
+    .light-theme .date-pill.active,
+    .light-theme .date-pill.active.pulse {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      color: #111827;
+      box-shadow: 0 24px 45px rgba(249,115,22,0.22), inset 0 0 0 1px rgba(255,255,255,0.18);
+    }
+    .light-theme .date-pill.active .month-abbr {
+      color: rgba(17,24,39,0.8);
+    }
+    .light-theme .date-pill.active .day-number {
+      color: #111827;
+    }
+    .light-theme .date-body { scrollbar-color: rgba(15,23,42,0.3) transparent; }
+    .light-theme .date-body::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.25); border: 2px solid rgba(248,250,252,0.4); }
+    .light-theme .scroll-btn { background: rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .scroll-btn:hover { background: rgba(15,23,42,0.14); }
+    .light-theme .slot { background: rgba(255,255,255,0.92); border-color: rgba(15,23,42,0.12); color: #111827; }
+    .light-theme .slot span { color: #475569; }
+    .light-theme .slot .edit-btn,
+    .light-theme .slot .delete-btn,
+    .light-theme .slot .confirm-btn { background: rgba(15,23,42,0.06); color: #111827; }
+    .light-theme .slot .edit-btn:hover { background: rgba(249,115,22,0.14); }
+    .light-theme .slot .confirm-btn:hover { background: rgba(34,197,94,0.14); }
+    .light-theme .slot .delete-btn:hover { background: rgba(239, 68, 68, 0.15); }
+    .light-theme .staff-card { background: rgba(255,255,255,0.82); border-color: rgba(15,23,42,0.12); }
+    .light-theme .staff-card:hover { background: rgba(15,23,42,0.08); }
+    .light-theme .staff-card.active { background: rgba(249,115,22,0.16); border-color: rgba(249,115,22,0.22); }
+    .light-theme .bottom-panel { color: #475569; }
+    .light-theme .pill { background: rgba(15,23,42,0.08); color: #111827; border-color: rgba(15,23,42,0.12); }
+    .light-theme .pill.active { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; border-color: transparent; box-shadow: 0 10px 20px rgba(249,115,22,0.18); }
+    .light-theme .pill.active:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); }
+    .light-theme .toast { background: rgba(255,255,255,0.95); color: #111827; border-color: rgba(15,23,42,0.12); box-shadow: 0 24px 60px rgba(15,23,42,0.12); }
+    .light-theme .modal-overlay { background: rgba(15, 23, 42, 0.08); }
+    .light-theme .modal-window { background: rgba(255,255,255,0.98); border-color: rgba(15,23,42,0.12); box-shadow: 0 30px 70px rgba(15,23,42,0.14); color: #111827; }
+    .light-theme .picker-modal-window { background: rgba(255,255,255,0.98); border-color: rgba(15,23,42,0.12); box-shadow: 0 30px 70px rgba(15,23,42,0.14); }
+    .light-theme .board-blocker { background: rgba(15,23,42,0.08); }
+    .light-theme .board-blocker-card { background: rgba(255,255,255,0.96); border-color: rgba(148,163,184,0.22); box-shadow: 0 24px 60px rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .board-blocker-card h3 { color: #111827; }
+    .light-theme .board-blocker-card p { color: #475569; }
+    .light-theme .notice-modal { background: rgba(15, 23, 42, 0.08); }
+    .light-theme .notice-card { background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(243,244,246,0.98) 100%); border-color: rgba(148,163,184,0.24); box-shadow: 0 30px 80px rgba(15,23,42,0.12); }
+    .light-theme .notice-card h3 { color: #111827; }
+    .light-theme .notice-card p { color: #475569; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.22); display: grid; place-items: center; padding: 24px; overflow-y: hidden; z-index: 50; }
+    .modal-overlay.hidden { display: none; }
+    .modal-window { width: min(620px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; background: rgba(15,23,42,0.96); border: 1px solid rgba(255,255,255,0.12); border-radius: 28px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.28); padding: 28px; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+    .modal-header h3 { margin: 0; font-size: 1.25rem; color: #f8fafc; }
+    .modal-close { border: none; background: rgba(255,255,255,0.08); color: #f8fafc; font-size: 1.4rem; line-height: 1; cursor: pointer; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease; position: relative; z-index: 2; }
+    .modal-close:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
+    .light-theme .modal-close { background: rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .modal-close:hover { background: rgba(15,23,42,0.14); }
+    .modal-row { display: grid; gap: 8px; margin-bottom: 16px; }
+    .form-label { display: block; color: #94a3b8; font-size: 0.86rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .form-input, .form-select { width: 100%; min-height: 50px; border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 14px 16px; background: rgba(15,23,42,0.9); color: #f8fafc; font: inherit; outline: none; transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease; }
+    .form-input:hover, .form-select:hover { border-color: rgba(249,115,22,0.5); }
+    .form-input:focus, .form-select:focus { border-color: rgba(249,115,22,0.75); box-shadow: 0 0 0 4px rgba(249,115,22,0.18); }
+    .form-input::placeholder { color: rgba(248,250,252,0.65); }
+    .form-input[type="date"], .form-input[type="time"] { cursor: pointer; }
+    .form-input[type="date"]::-webkit-calendar-picker-indicator,
+    .form-input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.8; cursor: pointer; }
+    .form-select { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='14' height='10' viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23FFFFFF' stroke-opacity='0.9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; background-size: 14px 10px; padding-right: 44px; }
+    .form-select option { color: #f8fafc; background: rgba(15,23,42,0.96); }
+    .form-select::-ms-expand { display: none; }
+    .picker-row { position: relative; z-index: 1; }
+    .record-master-picker { display: flex !important; gap: 12px !important; flex-wrap: wrap !important; margin-top: 10px !important; }
+    .record-master-option { all: unset !important; box-sizing: border-box !important; display: inline-flex !important; align-items: center !important; justify-content: flex-start !important; gap: 14px !important; width: calc(50% - 6px) !important; min-width: 190px !important; max-width: 250px !important; min-height: 110px !important; padding: 14px 18px !important; border-radius: 24px !important; border: 1px solid rgba(255,255,255,0.16) !important; background: rgba(15,23,42,0.8) !important; color: #f8fafc !important; cursor: pointer !important; text-align: left !important; transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important; overflow: hidden !important; }
+    .record-master-option:hover,
+    .record-master-option:focus { transform: translateY(-1px) !important; border-color: rgba(249,115,22,0.85) !important; background: rgba(255,255,255,0.14) !important; box-shadow: 0 18px 40px rgba(0,0,0,0.24) !important; }
+    .record-master-option .record-master-avatar { flex-shrink: 0 !important; width: 56px !important; height: 56px !important; border-radius: 18px !important; overflow: hidden !important; border: 1px solid rgba(255,255,255,0.18) !important; background: rgba(255,255,255,0.08) !important; display: grid !important; place-items: center !important; }
+    .record-master-option .record-master-avatar img { width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; }
+    .record-master-option .record-master-name { display: block !important; font-size: 1rem !important; font-weight: 700 !important; line-height: 1.2 !important; }
+    .record-master-option.selected { border-color: #b89b6d !important; background: rgba(183,121,76,0.95) !important; color: #fff !important; box-shadow: 0 22px 42px rgba(0,0,0,0.22) !important; }
+    body.light-theme .record-master-option { background: rgba(255,255,255,0.95); color: #111827; border-color: rgba(15,23,42,0.12); }
+    body.light-theme .record-master-option:hover,
+    body.light-theme .record-master-option:focus { background: rgba(249,115,22,0.14); }
+    body.light-theme .record-master-option.selected { background: rgba(249,115,22,0.18); color: #111827; border-color: #b89b6d; }
+    .picker-control { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 50px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.12); background: rgba(15,23,42,0.85); color: #f8fafc; padding: 14px 16px; font: inherit; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease; position: relative; z-index: 2; pointer-events: auto; }
+    .date-picker-popup.hidden { display: none !important; }
+    .date-picker-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .picker-title { font-weight: 700; color: #f8fafc; }
+    .picker-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72); display: grid; place-items: center; padding: 16px; z-index: 60; }
+    .picker-modal-overlay.hidden { display: none; }
+    .picker-modal-window { width: min(760px, 100%); max-width: 760px; height: auto; max-height: calc(100vh - 80px); overflow: hidden; background: rgba(15,23,42,0.98); border: 1px solid rgba(255,255,255,0.14); border-radius: 28px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.36); padding: 24px; }
+    .picker-modal-body { display: grid; grid-template-columns: 1fr; gap: 24px; min-height: 0; margin-bottom: 18px; overflow: hidden; }
+    .picker-panel { display: grid; gap: 18px; width: 100%; }
+    .picker-actions { justify-content: flex-end; margin-top: 0; }
+    .time-panel-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .time-manual-entry { display: grid; gap: 10px; margin-top: 10px; }
+    .time-manual-entry .form-input { min-height: 50px; }
+    .picker-note { color: #cbd5e1; font-size: 0.9rem; }
+    .time-options { max-height: calc(100vh - 280px); overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+    .picker-modal-window .time-option { min-height: 56px; }
+    @media (max-width: 960px) {
+      .picker-modal-body { min-height: calc(100vh - 200px); }
+      .time-options { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .picker-modal-body { grid-template-columns: 1fr; }
+      .time-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .picker-nav, .picker-year-btn {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: #f8fafc;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font: inherit;
+      font-weight: 600;
+      min-height: 50px;
+    }
+    .picker-nav {
+      width: 50px;
+      min-width: 50px;
+      height: 50px;
+    }
+    .picker-year-btn {
+      flex: 1;
+      min-width: 140px;
+      width: 100%;
+      max-width: 240px;
+      padding: 0 16px;
+    }
+    .picker-nav:hover, .picker-year-btn:hover {
+      background: rgba(249,115,22,0.16);
+      border-color: rgba(249,115,22,0.45);
+      transform: translateY(-1px);
+    }
+    .year-row { display: flex; align-items: center; justify-content: center; flex: 1; }
+    .year-label { color: #cbd5e1; font-weight: 600; }
+    .weekday-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; color: #94a3b8; font-size: 0.8rem; text-align: center; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+    .day-cell { display: grid; place-items: center; min-height: 52px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #f8fafc; cursor: pointer; font-weight: 600; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease; }
+    .day-cell:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .day-cell.selected { background: rgba(249,115,22,0.35); color: #ffffff; border-color: rgba(249,115,22,0.45); }
+    .day-cell.other-month { opacity: 0.35; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.08); cursor: default; }
+    .time-section { display: grid; gap: 10px; }
+    .section-title { color: #f8fafc; font-weight: 700; }
+    .time-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .time-option { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; min-height: 42px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #f8fafc; font-weight: 600; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease; }
+    .time-option:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .time-option.selected { background: rgba(249,115,22,0.35); color: #ffffff; border-color: rgba(249,115,22,0.45); }
+    .light-theme .picker-control { background: rgba(255,255,255,0.96); color: #111827; border-color: rgba(15,23,42,0.12); }
+    .light-theme .picker-control:hover { background: rgba(249,115,22,0.14); }
+    .light-theme .date-picker-popup { background: rgba(255,255,255,0.96); border-color: rgba(15,23,42,0.12); }
+    .light-theme .picker-nav, .light-theme .picker-year-btn { background: rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .weekday-row, .light-theme .picker-title, .light-theme .year-label, .light-theme .section-title { color: #111827; }
+    .light-theme .day-cell { background: rgba(15,23,42,0.06); color: #111827; }
+    .light-theme .day-cell:hover { background: rgba(249,115,22,0.14); }
+    .light-theme .time-option { background: rgba(15,23,42,0.06); color: #111827; }
+    .light-theme .time-option:hover { background: rgba(249,115,22,0.14); }
+    .light-theme .day-cell.selected, .light-theme .time-option.selected { background: rgba(249,115,22,0.24); color: #111827; }
+    .service-picker { display: grid; gap: 12px; padding: 14px 14px 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; background: rgba(15,23,42,0.75); color: #f8fafc; }
+    .service-picker__selected { color: #f8fafc; font-weight: 600; }
+    .service-scroll { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+    .service-chip { all: unset; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 14px 16px; min-height: 54px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.08); color: #f8fafc; font-size: 0.9rem; line-height: 1.2; transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+    .service-chip span { color: #cbd5e1; font-size: 0.82rem; }
+    .service-chip:hover { background: rgba(249, 115, 22, 0.18); border-color: rgba(249,115,22,0.38); transform: translateY(-1px); }
+    .service-chip.selected { background: rgba(249, 115, 22, 0.32); border-color: rgba(249,115,22,0.55); color: #f8fafc; box-shadow: inset 0 0 0 1px rgba(249,115,22,0.5), 0 14px 30px rgba(249,115,22,0.12); }
+    .service-chip.selected span { color: #f8fafc; }
+    .light-theme .service-chip { background: rgba(255,255,255,0.92); color: #111827; border-color: rgba(148,163,184,0.28); }
+    .light-theme .service-chip span { color: rgba(107,114,128,0.85); }
+    .light-theme .service-chip:hover { background: rgba(249,115,22,0.16); }
+    .light-theme .service-chip.selected { background: rgba(249,115,22,0.24); border-color: rgba(249,115,22,0.35); color: #111827; }
+    .light-theme .service-chip.selected span { color: rgba(17,24,39,0.7); }
+    .status-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .status-chip { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #f8fafc; font-size: 0.95rem; font-weight: 700; text-align: center; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .status-chip:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .status-chip.selected { background: rgba(249,115,22,0.35); color: #ffffff; border-color: rgba(249,115,22,0.45); }
+    .status-chip[aria-pressed="true"] { box-shadow: 0 14px 30px rgba(249,115,22,0.12); }
+    .light-theme .status-chip { background: rgba(255,255,255,0.92); color: #111827; border-color: rgba(15,23,42,0.12); }
+    .light-theme .status-chip:hover { background: rgba(249,115,22,0.14); }
+    .light-theme .status-chip.selected { background: rgba(249,115,22,0.24); color: #111827; border-color: rgba(249,115,22,0.35); }
+    .payment-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .payment-chip { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 18px; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.14); background: rgba(15,23,42,0.7); color: #f8fafc; font-size: 0.95rem; font-weight: 700; text-align: center; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .payment-chip:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+    .payment-chip.selected { background: rgba(249,115,22,0.35); color: #ffffff; border-color: rgba(249,115,22,0.5); box-shadow: 0 20px 40px rgba(249,115,22,0.15); }
+    .light-theme .payment-chip { background: rgba(255,255,255,0.9); color: #111827; border-color: rgba(148,163,184,0.35); }
+    .light-theme .payment-chip:hover { background: rgba(249, 115, 22, 0.12); }
+    .light-theme .payment-chip.selected { background: rgba(249,115,22,0.18); color: #111827; border-color: rgba(249,115,22,0.35); box-shadow: none; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .modal-button { border: none; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer; }
+    .modal-button.save { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; box-shadow: 0 10px 20px rgba(249,115,22,0.18); }
+    .modal-button.cancel { background: rgba(255,255,255,0.1); color: #f8fafc; }
+    .modal-button.cancel:hover { background: rgba(255,255,255,0.16); }
+    .record-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .record-actions button { border: none; border-radius: 999px; padding: 8px 12px; font-size: 0.82rem; cursor: pointer; transition: background 0.2s ease; }
+    .record-actions .edit-btn,
+    .record-actions .confirm-btn,
+    .record-actions .info-btn { background: rgba(249,115,22,0.16); color: #111827; }
+    .record-actions .edit-btn { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; }
+    .record-actions .confirm-btn { background: rgba(34,197,94,0.16); color: #111827; }
+    .record-actions .info-btn { background: rgba(96,165,250,0.16); color: #eff6ff; }
+    .record-actions .delete-btn { background: rgba(248,113,113,0.12); color: #b91c1c; }
+    .record-actions button:hover { background: rgba(15,23,42,0.08); }
+    .record-actions .edit-btn:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); }
+    .record-actions .confirm-btn:hover { background: rgba(34,197,94,0.24); }
+    .record-actions .info-btn:hover { background: rgba(96,165,250,0.24); }
+    .record-actions .delete-btn:hover { background: rgba(248,113,113,0.18); }
+    .info-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .info-row:last-child { border-bottom: none; }
+    .info-row span { color: rgba(203,213,225,0.8); font-size: 0.9rem; }
+    .info-row strong { color: #f8fafc; font-size: 0.95rem; }
+    .date-pills { display: flex; align-items: center; justify-content: center; gap: 16px; flex: 1; min-width: 0; max-width: 100%; padding: 16px 22px; overflow-x: auto; overflow-y: hidden; position: relative; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; touch-action: pan-x; }
+    .date-pills.dragging { user-select: none; }
+    .date-pills::-webkit-scrollbar { display: none; }
+    .date-pills-track { display: flex; align-items: center; justify-content: center; gap: 16px; min-width: max-content; }
+    .date-center-indicator { display: none !important; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.22); display: grid; place-items: center; padding: 24px; overflow-y: hidden; z-index: 70; }
+    .modal-window { width: min(620px, 100%); max-height: calc(100vh - 48px); overflow-y: auto; background: rgba(15,23,42,0.96); border: 1px solid rgba(255,255,255,0.12); border-radius: 28px; box-shadow: 0 40px 90px rgba(0, 0, 0, 0.28); padding: 28px; position: relative; z-index: 1; }
+    .date-pill-input { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+    .date-pill-input:checked + .date-pill,
+    .date-pill.active { background: linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.14)); color: #fff; transform: scale(1.05); box-shadow: 0 24px 45px rgba(0, 0, 0, 0.24), inset 0 0 0 1px rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.22); z-index: 2; }
+    .date-pill { border: none; cursor: pointer; background: rgba(15,23,42,0.06); color: #f8fafc; flex: none; width: 76px; height: 76px; border-radius: 22px; display: grid; grid-template-rows: auto auto; place-items: center; padding: 0; font-size: 0.85rem; transition: background 0.24s ease, transform 0.24s ease, box-shadow 0.24s ease, color 0.24s ease, opacity 0.24s ease; transform-origin: center center; backface-visibility: hidden; box-shadow: inset 0 0 0 1px rgba(15,23,42,0.08); will-change: transform, opacity; }
+    .date-pill.out-left { animation: dateExitLeft 0.42s cubic-bezier(0.23, 1, 0.32, 1) both; }
+    .date-pill.out-right { animation: dateExitRight 0.42s cubic-bezier(0.23, 1, 0.32, 1) both; }
+    .date-pill.incoming { animation: dateEnter 0.42s cubic-bezier(0.23, 1, 0.32, 1) both; }
+    .date-pill:hover { background: rgba(255,255,255,0.16); transform: translateY(-3px); }
+    .date-pill:active { transform: scale(0.96); }
+    @keyframes dateExitLeft {
+      0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+      50% { transform: translateX(-2px) rotate(-0.7deg) scale(0.98); opacity: 0.88; }
+      100% { transform: translateX(-9px) rotate(-1.8deg) scale(0.92); opacity: 0.55; }
+    }
+    @keyframes dateExitRight {
+      0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+      50% { transform: translateX(2px) rotate(0.7deg) scale(0.98); opacity: 0.88; }
+      100% { transform: translateX(9px) rotate(1.8deg) scale(0.92); opacity: 0.55; }
+    }
+    @keyframes dateEnter {
+      0% { transform: translateY(16px) scale(0.95); opacity: 0; }
+      40% { transform: translateY(-5px) scale(1.02); opacity: 0.72; }
+      100% { transform: translateY(-1px) scale(1); opacity: 1; }
+    }
+    @keyframes pillPulse {
+      0% { transform: scale(0.96); opacity: 0.78; }
+      55% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+    .date-pill.active.pulse { animation: pillPulse 0.36s ease both; }
+    .date-pill.dimmed { opacity: 0.42; background: rgba(255,255,255,0.04); transform: scale(0.94); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+    .date-pill .day-number { font-size: 1.3rem; font-weight: 800; line-height: 1; }
+    .date-pill .month-abbr { font-size: 0.75rem; color: #d7c9ab; text-transform: uppercase; letter-spacing: 0.14em; margin-top: 6px; }
+    .board-controls-bottom { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 8px; }
+    .board { position: relative; width: 100%; display: grid; grid-template-columns: 200px 160px 240px 240px 1fr; gap: 10px; align-items: start; box-shadow: 0 28px 80px rgba(0,0,0,0.24); }
+    .board-hint { grid-column: 1 / -1; background: rgba(251,146,60,0.12); border: 1px solid rgba(249,115,22,0.24); border-radius: 28px; padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; color: #fde68a; box-shadow: 0 18px 40px rgba(251,146,60,0.14); }
+    .board-hint strong { display: block; font-size: 1.15rem; color: #fff; margin-bottom: 8px; }
+    .board-hint p { margin: 0; line-height: 1.7; color: rgba(255,255,255,0.9); }
+    .board-hint .subscription-pill,
+    .board-blocker-card .subscription-pill { display: inline-flex; justify-content: center; align-items: center; width: auto; min-width: 220px; padding: 14px 22px; white-space: nowrap; cursor: pointer; }
+    .board-hint .subscription-pill,
+    .board-blocker-card .subscription-pill,
+    .subscription-blocker__content .subscription-pill { border-radius: 18px; background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); border: none; color: #111827; box-shadow: 0 14px 28px rgba(249,115,22,0.22); text-decoration: none; }
+    .board-hint .subscription-pill:hover,
+    .board-blocker-card .subscription-pill:hover,
+    .subscription-blocker__content .subscription-pill:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); }
+    .board-blocker { position: absolute; inset: 0; z-index: 40; display: grid; place-items: center; background: rgba(15,23,42,0.85); backdrop-filter: blur(6px); pointer-events: auto; }
+    .board-blocker.hidden { display: none; }
+    .board-blocker-card { max-width: 520px; padding: 28px; border-radius: 28px; background: rgba(15,23,42,0.94); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 80px rgba(0,0,0,0.28); text-align: center; color: #f8fafc; pointer-events: auto; }
+    .board-blocker-card h3 { margin: 0 0 10px; font-size: 1.4rem; }
+    .board-blocker-card p { margin: 0 18px 0 0; color: rgba(248,250,252,0.8); }
+    .notice-modal { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(0,0,0,0.42); padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+    .notice-modal.active { opacity: 1; pointer-events: auto; }
+    .notice-card { width: min(540px, 100%); padding: 28px 26px; border-radius: 24px; background: linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(31,41,55,0.98) 100%); border: 1px solid rgba(249,115,22,0.28); box-shadow: 0 40px 100px rgba(0,0,0,0.35); transform: translateY(30px); opacity: 0; animation: noticeAppear 0.28s cubic-bezier(0.2,1,0.3,1) forwards; }
+    .notice-card h3 { margin: 0 0 12px; font-size: 1.55rem; color: #fef3c7; }
+    .notice-card p { margin: 0 0 20px; color: rgba(248,250,252,0.9); line-height: 1.7; }
+    .notice-card .notice-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+    .notice-card .notice-actions .button { min-width: 150px; }
+    @keyframes noticeAppear { to { opacity: 1; transform: translateY(0); } }
+    .column { background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; box-shadow: 0 22px 50px rgba(0,0,0,0.28); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+    .column.large { min-height: 560px; }
+    .column-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #94a3b8; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.16em; }
+    .summary-card { background: rgba(15,23,42,0.86); padding: 16px; text-align: left; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 45px rgba(0,0,0,0.28); min-height: auto; aspect-ratio: 1 / 1; justify-content: space-between; }
+    .summary-card .card-label { color: #94a3b8; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 6px; }
+    .summary-card .card-value { font-size: clamp(1.9rem, 3.4vw, 2.4rem); line-height: 1.05; color: #f8fafc; font-weight: 800; margin-bottom: 6px; }
+    .summary-card .card-note { margin: 0 0 10px; color: #cbd5e1; line-height: 1.35; font-size: 0.86rem; }
+    .summary-card .pill { margin-top: auto; align-self: flex-start; }
+    .all-records-card > .pill { margin-top: 0; }
+    .column.first-column-stack { background: transparent; border: none; box-shadow: none; padding: 0; gap: 12px; }
+    .column.first-column-stack .summary-card { aspect-ratio: auto; min-height: auto; }
+    .subscription-card { overflow: hidden; background: rgba(15,23,42,0.94); border: 1px solid rgba(255,255,255,0.08); border-radius: 26px; padding: 20px 18px; display: grid; gap: 14px; align-self: start; color: #f8fafc; box-shadow: 0 20px 42px rgba(0,0,0,0.25); }
+    .subscription-card .box-title { color: #f8fafc; font-size: 0.94rem; line-height: 1.5; font-weight: 600; letter-spacing: 0.01em; }
+    .subscription-card .subscription-pill { width: 100%; justify-self: stretch; margin-top: 0; padding: 12px 16px; border-radius: 18px; background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); border: none; color: #111827; box-shadow: 0 14px 28px rgba(249,115,22,0.22); text-decoration: none; white-space: nowrap; }
+    .subscription-card .subscription-pill:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); }
+    .date-card { display: grid; gap: 12px; position: relative; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 18px; }
+    .date-title { color: #f8fafc; font-size: 1rem; font-weight: 700; }
+    .date-subtitle { color: #94a3b8; font-size: 0.85rem; }
+    .date-body { display: grid; gap: 12px; overflow-y: auto; max-height: 520px; padding-right: 6px; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: rgba(148,163,184,0.6) transparent; }
+    .date-body::-webkit-scrollbar { width: 9px; }
+    .date-body::-webkit-scrollbar-track { background: transparent; }
+    .date-body::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(148,163,184,0.35), rgba(148,163,184,0.7)); border-radius: 999px; border: 2px solid rgba(248,250,252,0.4); }
+    .scroll-btn { width: 42px; height: 42px; border: none; border-radius: 16px; background: rgba(255,255,255,0.08); color: #f8fafc; cursor: pointer; justify-self: center; align-self: end; display: grid; place-items: center; transition: transform 0.2s ease, background 0.2s ease; }
+    .scroll-btn:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
+    .slot { padding: 12px 12px; background: rgba(15,23,42,0.78); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; display: grid; gap: 8px; color: #f8fafc; }
+    .slot strong { display: block; color: #f8fafc; font-size: 0.92rem; }
+    .slot span { font-size: 0.82rem; color: #cbd5e1; }
+    .slot .slot-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .slot .edit-btn,
+    .slot .delete-btn,
+    .slot .confirm-btn { border: none; background: rgba(249,115,22,0.16); color: #ffffff; padding: 6px 12px; border-radius: 999px; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; font-size: 0.78rem; }
+    .slot .edit-btn { background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); }
+    .slot .edit-btn:hover,
+    .slot .confirm-btn:hover { background: rgba(249,115,22,0.24); transform: translateY(-1px); }
+    .slot .edit-btn:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); }
+    .slot .confirm-btn { background: rgba(34,197,94,0.16); }
+    .slot .confirm-btn:hover { background: rgba(34,197,94,0.24); }
+    .slot .delete-btn { background: rgba(248,113,113,0.12); color: #f8fafc; }
+    .slot .delete-btn:hover { background: rgba(248,113,113,0.18); transform: translateY(-1px); }
+    .slot.empty { min-height: 100px; display: grid; place-items: center; color: #6b7280; font-size: 0.9rem; }
+    .staff-card { all: unset; width: 100%; display: grid; gap: 5px; padding: 14px; border-radius: 20px; background: rgba(15,23,42,0.92); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease; }
+    .staff-card:hover { background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+    .staff-card.active { background: rgba(249,115,22,0.16); border-color: rgba(249,115,22,0.22); }
+    .staff-card strong { color: #f8fafc; font-size: 0.95rem; }
+    .staff-card span { color: #94a3b8; font-size: 0.84rem; }
+    .client-db-controls { display: grid; gap: 12px; }
+    .client-add-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .client-list { display: grid; gap: 10px; margin-top: 6px; }
+    .client-item { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 10px; padding: 14px 16px; background: rgba(15,23,42,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; color: #f8fafc; }
+    .client-item-info { display: grid; gap: 4px; }
+    .client-item-info span { color: #94a3b8; font-size: 0.88rem; }
+    .client-item strong { font-size: 0.95rem; color: #f8fafc; }
+    .client-add-btn { border: none; background: linear-gradient(180deg, #fb923c 0%, #f97316 100%); color: #111827; padding: 10px 14px; border-radius: 14px; cursor: pointer; font-weight: 700; box-shadow: 0 10px 18px rgba(249,115,22,0.18); transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+    .client-add-btn:hover { background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%); transform: translateY(-1px); }
+    .client-delete-btn { border: none; background: rgba(250, 204, 21, 0.2); color: #1f1f0a; width: 36px; height: 36px; border-radius: 14px; cursor: pointer; font-size: 1rem; box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4); transition: background 0.2s ease, box-shadow 0.2s ease; }
+    .client-delete-btn:hover { background: rgba(250, 204, 21, 0.35); box-shadow: 0 0 15px rgba(250, 204, 21, 0.45); }
+    .client-info-btn { border: none; background: rgba(96,165,250,0.18); color: #fff; padding: 10px 14px; border-radius: 14px; cursor: pointer; font-weight: 700; transition: background 0.2s ease; }
+    .client-info-btn:hover { background: rgba(96,165,250,0.28); }
+    .slot-meta { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
+    .slot-badge { margin-left: auto; padding: 0.16rem 0.55rem; border-radius: 999px; background: rgba(255,255,255,0.08); color: #f8fafc; font-size: 0.78rem; letter-spacing: 0.04em; }
+    .slot span { font-size: 0.82rem; color: #cbd5e1; }
+    .pill { border-radius: 999px; background: rgba(255,255,255,0.08); color: #f8fafc; padding: 8px 14px; font-size: 0.82rem; border: 1px solid rgba(255,255,255,0.12); transition: background 0.24s ease, transform 0.24s ease, border-color 0.24s ease, color 0.24s ease, box-shadow 0.24s ease; }
+    .pill:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
+    .pill.active { background: rgba(249,115,22,0.35); color: #ffffff; border-color: rgba(249,115,22,0.35); box-shadow: 0 12px 32px rgba(249,115,22,0.2); }
+    .records-overview-list { display: grid; gap: 10px; }
+    .records-overview-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 16px; display: grid; gap: 8px; }
+    .records-overview-card strong { color: #f8fafc; font-size: 0.95rem; }
+    .records-overview-card span { color: #cbd5e1; font-size: 0.86rem; line-height: 1.4; }
+    .overview-group h4 { margin: 0 0 12px; color: #f8fafc; font-size: 1rem; }
+    .light-theme .client-item { background: rgba(255,255,255,0.96); border-color: rgba(148,163,184,0.24); color: #111827; }
+    .light-theme .client-item-info span { color: #475569; }
+    .light-theme .client-item strong { color: #111827; }
+    .light-theme .records-overview-card { background: rgba(255,255,255,0.96); border-color: rgba(15,23,42,0.12); }
+    .light-theme .records-overview-card strong { color: #111827; }
+    .light-theme .records-overview-card span { color: #475569; }
+    .light-theme .overview-group h4 { color: #111827; }
+    .light-theme .records-overview-list { color: #111827; }
+    .bottom-panel { padding-top: 10px; border-top: 1px solid rgba(148,163,184,0.22); color: #475569; font-size: 0.88rem; line-height: 1.45; }
+    .header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .header-row strong { color: #f8fafc; font-size: 0.92rem; }
+    .header-row span { color: #94a3b8; font-size: 0.82rem; }
+    @media (max-width: 1320px) {
+      .board { grid-template-columns: 190px 150px 220px 220px 1fr; }
+    }
+    @media (max-width: 1160px) {
+      .board { grid-template-columns: 1fr 1fr 1fr; }
+      .column.large { min-height: auto; }
+    }
+    @media (max-width: 960px) {
+      .page { --page-side-padding: 18px; padding: 18px var(--page-side-padding); }
+      .date-switcher { flex-wrap: wrap; justify-content: center; gap: 12px; width: calc(100% + var(--page-side-padding) * 2); margin: 0 calc(var(--page-side-padding) * -1); }
+      .nav-group { width: 100%; }
+      .date-pills { width: 100%; min-width: 0; }
+      .analytics-card { flex-direction: column; align-items: stretch; gap: 16px; }
+      .analytics-card .analytics-link { width: 100%; display: flex; justify-content: flex-end; }
+      .analytics-card .analytics-link .button { width: auto; }
+      .board { grid-template-columns: 1fr; }
+      .column { min-width: 0; }
+      .board-hint { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .page { --page-side-padding: 14px; padding: 14px var(--page-side-padding); }
+      .date-switcher { width: calc(100% + var(--page-side-padding) * 2); margin: 0 calc(var(--page-side-padding) * -1); }
+      .date-switcher { justify-content: space-between; }
+      .date-switcher > .home-link, .date-switcher > .theme-toggle-btn { flex: none; }
+      .date-switcher .nav-group { flex: 1 1 100%; }
+      .date-pills { padding: 12px 0; gap: 10px; }
+      .board-top-row { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+      .client-add-row { grid-template-columns: 1fr; }
+      .client-db-controls { gap: 10px; }
+      .client-item { grid-template-columns: 1fr; gap: 10px; }
+      .client-item button { width: 100%; }
+      .slot .slot-actions { flex-direction: column; align-items: stretch; }
+      .record-actions { flex-direction: column; align-items: stretch; }
+      .record-actions button { width: 100%; }
+      .board-hint p { margin: 0; }
+      .date-pill { width: 66px; height: 66px; }
+      .date-pill .day-number { font-size: 1.1rem; }
+      .date-pill .month-abbr { font-size: 0.68rem; }
+      .nav-btn { width: 48px; height: 48px; }
+      .home-link { padding: 0 14px; height: 42px; }
+      .theme-toggle-btn { width: 42px; height: 42px; }
+      .board { gap: 14px; }
+      .column { padding: 16px; }
+      .subscription-card, .analytics-card, .summary-card, .client-item, .slot, .notice-card, .board-blocker-card, .modal-window, .picker-modal-window { border-radius: 22px; }
+      .summary-card { aspect-ratio: auto; }
+      .client-db-column { min-width: 0; }
+      .client-item-info { width: 100%; }
+      .subscription-card .box-title { font-size: 0.92rem; }
+      .first-column-stack > .subscription-card {
+        order: -1;
+      }
+    }
+    @media (max-width: 620px) {
+      .stats-group { flex-direction: column; align-items: stretch; gap: 10px; }
+      .analytics-card .analytics-link { justify-content: center; }
+      .analytics-card .analytics-link .button { width: 100%; }
+      .button, .client-add-btn, .client-info-btn { width: 100%; }
+      .button { padding: 12px 16px; }
+      .nav-btn { width: 44px; height: 44px; }
+      .date-pill { width: 60px; height: 60px; }
+      .date-pill .day-number { font-size: 1rem; }
+      .date-pill .month-abbr { font-size: 0.64rem; }
+      .client-delete-btn { width: 100%; height: auto; padding: 10px; }
+      .client-item { padding: 12px; }
+      .client-add-row { gap: 8px; }
+      .board-top-row { margin-bottom: 0; }
+      .board { margin-bottom: 12px; }
+      .date-body { max-height: 380px; }
+      .board-blocker-card, .notice-card { width: min(100%, 96vw); padding: 20px; }
+      .modal-window, .picker-modal-window { width: min(100%, calc(100vw - 24px)); padding: 20px; }
+      .modal-window { max-height: calc(100vh - 40px); }
+      .picker-modal-window { max-height: calc(100vh - 30px); }
+      .subscription-blocker__content { width: min(100%, 96vw); padding: 20px; }
+      .subscription-blocker__content h3 { font-size: 1.25rem; }
+      .subscription-blocker__content p { font-size: 0.95rem; line-height: 1.5; }
+    }
+    @media (max-width: 520px) {
+      .date-pill { width: 54px; height: 54px; }
+      .date-pill .day-number { font-size: 0.95rem; }
+      .date-pill .month-abbr { font-size: 0.6rem; }
+      .subscription-card .subscription-pill, .pill.subscription-pill { padding: 12px 14px; }
+      .board-top-row, .client-db-controls, .record-actions, .slot .slot-actions { gap: 10px; }
+    }
+    @media (max-width: 768px) {
+      .modal-overlay { padding: 1rem; }
+      .modal-window { width: calc(100vw - 2rem); max-height: calc(100vh - 2rem); padding: 1.4rem; border-radius: 18px; }
+      .picker-modal-window { width: calc(100vw - 2rem); padding: 1.4rem; }
+      .modal-header h3 { font-size: 1.15rem; }
+      .form-control, .form-input, .form-select { padding: 0.8rem; min-height: 44px; }
+      .button { padding: 0.8rem 1.2rem; min-height: 44px; }
+      .shift-calendar-grid { gap: 8px; }
+      .shift-calendar-cell { min-height: 60px; padding: 10px; gap: 4px; border-radius: 14px; }
+      .shift-calendar-cell .cell-day { font-size: 0.95rem; }
+      .shift-calendar-cell .cell-note { font-size: 0.66rem; min-height: 28px; }
+    }
+    @media (max-width: 480px) {
+      .modal-overlay { padding: 0.8rem; }
+      .modal-window { width: calc(100vw - 1.6rem); padding: 1.2rem; border-radius: 16px; max-height: calc(100vh - 1.6rem); }
+      .picker-modal-window { width: calc(100vw - 1.6rem); padding: 1.2rem; }
+      .modal-header h3 { font-size: 1.1rem; }
+      .form-control, .form-input, .form-select { padding: 0.7rem; font-size: 16px; }
+      .button { padding: 0.7rem 1rem; font-size: 0.85rem; }
+      .board { gap: 10px; }
+      .column { padding: 12px; }
+      .shift-calendar-header { padding: 12px 14px; }
+      .shift-calendar-grid { gap: 6px; }
+      .shift-calendar-cell { min-height: 52px; padding: 8px; gap: 3px; border-radius: 12px; }
+      .shift-calendar-cell .cell-day { font-size: 0.88rem; font-weight: 700; }
+      .shift-calendar-cell .cell-note { font-size: 0.6rem; min-height: 24px; line-height: 1.3; max-width: 100%; }
+      .shift-calendar-weekdays { gap: 6px; font-size: 0.7rem; }
+      .shift-calendar-title { font-size: 0.9rem; }
+      .shift-calendar-month { font-size: 0.98rem; font-weight: 700; }
+      .shift-calendar-nav { width: 40px; height: 40px; font-size: 1rem; }
+    }
+    @media (max-width: 375px) {
+      .shift-calendar-cell { min-height: 48px; padding: 6px; }
+      .shift-calendar-cell .cell-day { font-size: 0.82rem; }
+      .shift-calendar-cell .cell-note { font-size: 0.55rem; min-height: 20px; }
+      .shift-calendar-title { font-size: 0.85rem; }
+      .shift-calendar-month { font-size: 0.9rem; }
+      .shift-calendar-nav { width: 36px; height: 36px; font-size: 0.9rem; }
+    }
+    .subscription-blocker {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 20px;
+    }
+    .subscription-blocker.hidden { display: none !important; }
+    .subscription-blocker__content {
+      width: min(560px, 100%);
+      max-width: 100%;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 34px 80px rgba(0,0,0,0.3);
+      text-align: center;
+      color: #f8fafc;
+    }
+    .subscription-blocker__content h3 { margin: 0 0 12px; font-size: 1.4rem; }
+    .subscription-blocker__content p { margin: 0 0 20px; color: rgba(248,250,252,0.85); line-height: 1.7; }
+    .light-theme .subscription-blocker { background: rgba(15,23,42,0.08); }
+    .light-theme .subscription-blocker__content { background: rgba(255,255,255,0.96); border-color: rgba(148,163,184,0.22); box-shadow: 0 24px 60px rgba(15,23,42,0.08); color: #111827; }
+    .light-theme .subscription-blocker__content h3 { color: #111827; }
+    .light-theme .subscription-blocker__content p { color: #475569; }
+  </style>
+</head>
+<body class="light-theme">
+  <div class="page">
+    <section class="date-switcher">
+      <a class="home-link" href="index.html">На главную</a>
+      <button class="theme-toggle-btn" id="themeToggleBtn" type="button" aria-label="Переключить тему">☀️</button>
+      <div class="nav-group">
+        <button class="nav-btn" id="prevDay" type="button" aria-label="Предыдущая дата">◀</button>
+        <div class="date-pills" id="datePills">
+          <div class="date-pills-track" id="datePillsTrack"></div>
+        </div>
+        <button class="nav-btn" id="nextDay" type="button" aria-label="Следующая дата">▶</button>
+      </div>
+    </section>
+    <section class="stats-group">
+      <span>Найдено записей: <strong id="totalCount">0</strong></span>
+      <span>Записи на день: <strong id="dayCount">0</strong></span>
+      <span class="selected-master-label" id="selectedMasterLabel"></span>
+    </section>
+    <section class="analytics-panel">
+      <div class="analytics-card">
+        <div>
+          <h3>Аналитика</h3>
+          <p>Перейти на страницу с доходами и историей записей.</p>
+        </div>
+        <div class="analytics-link"><a class="button" href="analytics.html">Открыть аналитику</a></div>
+      </div>
+      <div class="analytics-card shift-card">
+        <div>
+          <h3>Смены</h3>
+          <p>Распределяйте дежурство между Олей и Мариной или отмечайте выходной по дате.</p>
+          <div class="shift-badges">
+            <span class="shift-badge" id="todayShiftBadge"><strong>Сегодня:</strong> —</span>
+            <span class="shift-badge" id="plannedShiftBadge"><strong>План:</strong> —</span>
+          </div>
+        </div>
+        <div class="analytics-link"><button class="button" id="openShiftModal" type="button">Управлять</button></div>
+      </div>
+    </section>
+    <div class="board-top-row">
+      <button class="button" id="addRecordBtn">Добавить запись</button>
+    </div>
+    <div class="toast hidden" id="toastMessage"></div>
+    <section class="board" id="board">
+      <div class="board-hint" id="boardHint">
+        <div>
+          <strong>Подписка не оформлена</strong>
+          <p>Оформите подписку, чтобы получить доступ к полному функционалу «Активных записей» — добавление клиентов, запись на услуги и управление расписанием.</p>
+        </div>
+        <a href="subscription.html" class="pill subscription-pill">Оформить подписку</a>
+      </div>
+      <div class="board-blocker hidden" id="boardBlocker">
+        <div class="board-blocker-card">
+          <h3>Доступ ограничен</h3>
+          <p>Пока нет подписки, основные функции закрыты. Нажмите «Оформить подписку», чтобы продолжить работу.</p>
+          <a href="subscription.html" class="pill subscription-pill">Оформить подписку</a>
+        </div>
+      </div>
+        <div class="column first-column-stack">
+          <div class="summary-card all-records-card">
+            <div class="card-label">Все записи</div>
+            <div class="card-value" id="allRecordsValue">0</div>
+            <div class="card-note">Общий объём записей на неделю</div>
+            <button type="button" class="pill active" id="viewAllBtn">Смотрите все</button>
+          </div>
+          <div class="summary-card subscription-card">
+            <div class="box-title" id="subscriptionCardTitle">Оформите подписку, чтобы пользоваться всеми функциями</div>
+            <a href="subscription.html" class="pill subscription-pill" id="subscribeBtn">Подписаться</a>
+          </div>
+        </div>
+        <div class="column summary-card">
+          <div class="card-label">Сегодня</div>
+          <div class="card-value" id="todayRecordsValue">0</div>
+          <div class="card-note">Записи на текущую дату</div>
+        </div>
+        <div class="column date-card large">
+          <div class="header-row">
+            <strong id="olgaLabel">Ольга</strong>
+            <span id="olgaDate">14 апреля</span>
+          </div>
+          <div class="date-body" id="olgaBody"></div>
+          <button class="scroll-btn" data-target="olgaBody" aria-label="Прокрутить вниз">↓</button>
+        </div>
+        <div class="column date-card large">
+          <div class="header-row">
+            <strong id="marinaLabel">Марина</strong>
+            <span id="marinaDate">14 апреля</span>
+          </div>
+          <div class="date-body" id="marinaBody"></div>
+          <button class="scroll-btn" data-target="marinaBody" aria-label="Прокрутить вниз">↓</button>
+        </div>
+        <div class="column client-db-column">
+          <div class="column-header">Клиентская база</div>
+          <div class="client-db-controls">
+            <input type="search" id="clientSearch" class="form-input" placeholder="Поиск клиента" />
+            <div class="client-add-row">
+              <button type="button" class="button" id="openClientModalBtn">Добавить</button>
+            </div>
+          </div>
+          <div class="client-list" id="clientList"></div>
+          <div class="bottom-panel">Ищите клиента по имени или добавляйте новых в базу для будущих записей.</div>
+        </div>
+    </section>
+    <div class="subscription-blocker hidden" id="subscriptionBlocker">
+      <div class="subscription-blocker__content">
+        <h3>Для работы сайта нужна подписка</h3>
+        <p>Оформите подписку и привяжите карту — тогда все функции страницы «Активные записи» будут разблокированы и доступны для работы.</p>
+        <a href="subscription.html" class="pill subscription-pill">Оформить подписку</a>
+      </div>
+    </div>
+  <div class="modal-overlay hidden" id="recordModal" aria-hidden="true">
+    <div class="notice-modal" id="subscribeNoticeModal" aria-hidden="true">
+      <div class="notice-card">
+        <h3>Функции закрыты</h3>
+        <p>Для использования всех возможностей нужно оформить подписку и привязать карту на странице подписки.</p>
+        <div class="notice-actions">
+          <a href="subscription.html" class="button">Перейти к подписке</a>
+          <button type="button" class="button" id="closeSubscribeNotice">Понятно</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="recordModalTitle">Добавить запись</h3>
+        <button type="button" class="modal-close" id="closeRecordModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <form id="recordForm">
+        <input type="hidden" id="recordId" />
+        <div class="modal-row">
+          <label class="form-label" for="recordClient">Имя клиента</label>
+          <input class="form-input" type="text" id="recordClient" required placeholder="Иванова Ирина" />
+        </div>
+        <div class="modal-row">
+          <label class="form-label" for="recordPhone">Телефон</label>
+          <input class="form-input" type="tel" id="recordPhone" required placeholder="+380 67 123 45 67" />
+        </div>
+        <div class="modal-row">
+          <label class="form-label">Мастер</label>
+          <div class="record-master-picker" id="recordMasterPicker">
+            <button type="button" class="record-master-option" data-master="Марина" aria-pressed="false">
+              <span class="record-master-avatar"><img src="images/MarinaMaster.png" alt="Марина"></span>
+              <span class="record-master-name">Марина</span>
+            </button>
+            <button type="button" class="record-master-option" data-master="Ольга" aria-pressed="false">
+              <span class="record-master-avatar"><img src="images/olgamaster.png" alt="Ольга"></span>
+              <span class="record-master-name">Ольга</span>
+            </button>
+          </div>
+          <input type="hidden" id="recordMaster" name="recordMaster" value="" required />
+        </div>
+        <div class="modal-row">
+          <label class="form-label" for="recordService">Услуга</label>
+          <input type="hidden" id="recordService" />
+          <div class="service-picker">
+            <div class="service-picker__selected" id="serviceSelectedLabel">Выберите услугу</div>
+            <div class="service-scroll" id="serviceGrid">
+              <button type="button" class="service-chip" data-service="Манікюр Standard" data-price="850">Манікюр Standard<span>850 грн</span></button>
+              <button type="button" class="service-chip" data-service="Манікюр SPA" data-price="1200">Манікюр SPA<span>1200 грн</span></button>
+              <button type="button" class="service-chip" data-service="SPA догляд для рук" data-price="900">SPA догляд для рук<span>900 грн</span></button>
+              <button type="button" class="service-chip" data-service="Частковий манікюр" data-price="650">Частковий манікюр<span>650 грн</span></button>
+              <button type="button" class="service-chip" data-service="Педикюр Standard" data-price="1100">Педикюр Standard<span>1100 грн</span></button>
+              <button type="button" class="service-chip" data-service="Педикюр SPA" data-price="1400">Педикюр SPA<span>1400 грн</span></button>
+              <button type="button" class="service-chip" data-service="SPA догляд для ніг" data-price="1150">SPA догляд для ніг<span>1150 грн</span></button>
+              <button type="button" class="service-chip" data-service="Частковий педикюр" data-price="700">Частковий педикюр<span>700 грн</span></button>
+              <button type="button" class="service-chip" data-service="Педикюр подологічний" data-price="1300">Педикюр подологічний<span>1300 грн</span></button>
+              <button type="button" class="service-chip parallel" data-service="Parallel (Manicure + Pedicure)" data-price="2000">Parallel (Manicure + Pedicure)<span>2000 грн</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-row">
+          <label class="form-label">Оплата</label>
+          <input type="hidden" id="recordPayment" required />
+          <div class="payment-picker" id="paymentPicker">
+            <button type="button" class="payment-chip" data-payment="Карта">Карта</button>
+            <button type="button" class="payment-chip" data-payment="Готівка">Готівка</button>
+          </div>
+        </div>
+        <div class="modal-row picker-row">
+          <label class="form-label" for="recordDateControl">Дата</label>
+          <button type="button" class="picker-control" id="recordDateControl" aria-haspopup="dialog" aria-expanded="false">
+            <span id="recordDateLabel">14 апреля 2026</span>
+            <span class="picker-icon">📅</span>
+          </button>
+          <input type="hidden" id="recordDate" required />
+        </div>
+        <div class="modal-row picker-row">
+          <label class="form-label" for="recordTimeControl">Время</label>
+          <button type="button" class="picker-control" id="recordTimeControl" aria-haspopup="dialog" aria-expanded="false">
+            <span id="recordTimeLabel">09:00</span>
+            <span class="picker-icon">⏰</span>
+          </button>
+          <input type="hidden" id="recordTime" required />
+        </div>
+        <div class="modal-row">
+          <label class="form-label" for="recordDuration">Длительность</label>
+          <input class="form-input" type="text" id="recordDuration" placeholder="1 час 10 мин" />
+        </div>
+        <div class="modal-row">
+          <label class="form-label">Статус</label>
+          <input type="hidden" id="recordStatus" name="recordStatus" value="Записано" required />
+          <div class="status-picker" id="statusPicker" role="radiogroup" aria-label="Статус">
+            <button type="button" class="status-chip selected" data-status="Записано" aria-pressed="true">Записано</button>
+            <button type="button" class="status-chip" data-status="У процесі" aria-pressed="false">У процесі</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="modal-button save">Сохранить</button>
+          <button type="button" class="modal-button cancel" id="cancelRecordModal">Назад</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-overlay hidden picker-modal-overlay" id="datePickerModal" aria-hidden="true">
+    <div class="modal-window picker-modal-window">
+      <div class="modal-header">
+        <h3>Выберите дату</h3>
+        <button type="button" class="modal-close" id="closeDatePickerModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="picker-modal-body">
+        <div class="picker-panel">
+          <div class="date-picker-header">
+            <button type="button" class="picker-nav" id="datePickerPrevMonth" aria-label="Предыдущий месяц">◀</button>
+            <div class="year-row">
+              <button type="button" class="picker-year-btn" id="datePickerMonthLabel" aria-hidden="true">Март 2026</button>
+            </div>
+            <button type="button" class="picker-nav" id="datePickerNextMonth" aria-label="Следующий месяц">▶</button>
+          </div>
+          <div class="weekday-row">
+            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+          </div>
+          <div class="calendar-grid" id="datePickerGrid"></div>
+        </div>
+      </div>
+      <div class="form-actions picker-actions">
+        <button type="button" class="modal-button cancel" id="datePickerCancelBtn">Отмена</button>
+        <button type="button" class="modal-button save" id="datePickerConfirmBtn">Выбрать</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden picker-modal-overlay" id="timePickerModal" aria-hidden="true">
+    <div class="modal-window picker-modal-window">
+      <div class="modal-header">
+        <h3>Выберите время</h3>
+        <button type="button" class="modal-close" id="closeTimePickerModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="picker-modal-body">
+        <div class="picker-panel">
+          <div class="time-panel-header">
+            <div class="section-title">Выберите время</div>
+            <div class="picker-note">Формат HH:MM, только 10:00 — 21:00</div>
+          </div>
+          <div class="time-manual-entry">
+            <label class="form-label" for="recordTimeCustom">Ввести время</label>
+            <input class="form-input" type="text" id="recordTimeCustom" placeholder="10:00" />
+          </div>
+          <div class="time-options" id="timeOptions"></div>
+        </div>
+      </div>
+      <div class="form-actions picker-actions">
+        <button type="button" class="modal-button cancel" id="timePickerCancelBtn">Отмена</button>
+        <button type="button" class="modal-button save" id="timePickerConfirmBtn">Выбрать</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="clientModal" aria-hidden="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Добавить клиента</h3>
+        <button type="button" class="modal-close" id="closeClientModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <form id="clientForm">
+        <div class="modal-row">
+          <label class="form-label" for="clientNameInput">Имя клиента</label>
+          <input class="form-input" type="text" id="clientNameInput" required placeholder="Иванова Ирина" />
+        </div>
+        <div class="modal-row">
+          <label class="form-label" for="clientPhoneInput">Телефон</label>
+          <input class="form-input" type="tel" id="clientPhoneInput" required placeholder="+380 67 123 45 67" />
+        </div>
+        <div class="modal-row">
+          <label class="form-label" for="clientNoteInput">Заметка</label>
+          <textarea class="form-input" id="clientNoteInput" rows="3" placeholder="Например: любит крепкий чай, аллергия на гель"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="modal-button save">Добавить</button>
+          <button type="button" class="modal-button cancel" id="cancelClientModal">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="recordsOverviewModal" aria-hidden="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Все записи</h3>
+        <button type="button" class="modal-close" id="closeRecordsOverviewModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="modal-row">
+        <div class="overview-group">
+          <h4>Активные записи</h4>
+          <div class="records-overview-list" id="recordsOverviewActive"></div>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="overview-group">
+          <h4>Записи, которые уже прошли</h4>
+          <div class="records-overview-list" id="recordsOverviewPast"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="clientInfoModal" aria-hidden="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Информация о клиенте</h3>
+        <button type="button" class="modal-close" id="closeClientInfoModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="modal-row" id="clientInfoContent"></div>
+      <div class="form-actions">
+        <button type="button" class="modal-button cancel" id="closeClientInfoButton">Закрыть</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="shiftModal" aria-hidden="true">
+    <div class="modal-window shift-modal-window">
+      <div class="modal-header">
+        <h3>План смен</h3>
+        <button type="button" class="modal-close" id="closeShiftModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="modal-row">
+        <p class="shift-modal-note">Выберите дату и назначьте ответственного за смену — Ольга, Марина или выходной.</p>
+      </div>
+      <div class="shift-calendar-picker">
+        <div class="shift-calendar-header">
+          <button type="button" class="shift-calendar-nav" id="shiftCalendarPrev">◀</button>
+          <div>
+            <div class="shift-calendar-title">Календарь смен</div>
+            <div class="shift-calendar-month" id="shiftCalendarMonthLabel">—</div>
+          </div>
+          <button type="button" class="shift-calendar-nav" id="shiftCalendarNext">▶</button>
+        </div>
+        <div class="shift-calendar-weekdays">
+          <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+        </div>
+        <div class="shift-calendar-grid" id="shiftCalendarGrid"></div>
+      </div>
+      <div class="shift-grid">
+        <button type="button" class="shift-option" data-shift="olga">
+          <strong>Ольга</strong>
+          <span>Поставить на смену</span>
+        </button>
+        <button type="button" class="shift-option" data-shift="marina">
+          <strong>Марина</strong>
+          <span>Поставить на смену</span>
+        </button>
+        <button type="button" class="shift-option off" data-shift="off">
+          <strong>Выходной</strong>
+          <span>Отметить день отдыха</span>
+        </button>
+      </div>
+      <div class="shift-off-picker hidden" id="shiftOffPicker">
+        <div class="shift-off-note">Выберите, кто в этот день будет отдыхать.</div>
+        <div class="shift-grid shift-off-grid">
+          <button type="button" class="shift-option shift-off-option" data-shift="off-olga">
+            <strong>Ольга</strong>
+            <span>День отдыха</span>
+          </button>
+          <button type="button" class="shift-option shift-off-option" data-shift="off-marina">
+            <strong>Марина</strong>
+            <span>День отдыха</span>
+          </button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="modal-button cancel" id="cancelShiftModal">Отмена</button>
+        <button type="button" class="modal-button save" id="saveShiftModal">Сохранить</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="recordInfoModal" aria-hidden="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Информация о клиенте</h3>
+        <button type="button" class="modal-close" id="closeRecordInfoModal" aria-label="Закрыть окно">×</button>
+      </div>
+      <div class="modal-row" id="recordInfoContent"></div>
+      <div class="form-actions">
+        <button type="button" class="modal-button cancel" id="closeRecordInfoButton">Закрыть</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const dateTrack = document.getElementById('datePillsTrack');
+    const dateContainer = document.getElementById('datePills');
+    const prevBtn = document.getElementById('prevDay');
+    const nextBtn = document.getElementById('nextDay');
+    const centerIndicator = document.getElementById('dateCenterIndicator');
+    const monthNames = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const monthNamesFull = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const weekdayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    let activeDate = new Date();
+    activeDate.setHours(0, 0, 0, 0);
+    let viewStartDate = new Date(activeDate);
+
+    function normalizeDate(date) {
+      const result = new Date(date);
+      result.setHours(0, 0, 0, 0);
+      return result;
+    }
+
+    function formatDay(date) {
+      return String(date.getDate()).padStart(2, '0');
+    }
+
+    function getRangeDates(center, daysBefore = 7, daysAfter = 7) {
+      const dates = [];
+      const current = new Date(center);
+      current.setHours(0, 0, 0, 0);
+      current.setDate(current.getDate() - daysBefore);
+      const end = new Date(center);
+      end.setHours(0, 0, 0, 0);
+      end.setDate(end.getDate() + daysAfter);
+
+      while (current <= end) {
+        dates.push(new Date(current));
+        current.setDate(current.getDate() + 1);
+      }
+      return dates;
+    }
+
+    function createPill(date) {
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'date-pill';
+      pill.dataset.date = formatLocalDate(date);
+      pill.innerHTML = `<span class="day-number">${formatDay(date)}</span><span class="month-abbr">${monthNames[date.getMonth()]}</span>`;
+      pill.addEventListener('click', () => setActiveDate(date));
+      return pill;
+    }
+
+    function appendDate(date) {
+      dateTrack.appendChild(createPill(date));
+    }
+
+    function prependDate(date) {
+      dateTrack.insertBefore(createPill(date), dateTrack.firstChild);
+    }
+
+    function renderDateRange(centerDate) {
+      dateTrack.innerHTML = '';
+      getRangeDates(centerDate).forEach(date => dateTrack.appendChild(createPill(date)));
+      updateActivePill(true);
+    }
+
+    function updateActivePill(center = false) {
+      const pills = dateTrack.querySelectorAll('.date-pill');
+      pills.forEach(pill => pill.classList.toggle('active', pill.dataset.date === formatLocalDate(activeDate)));
+      const activePill = dateTrack.querySelector('.date-pill.active');
+      if (center && activePill) {
+        dateContainer.scrollTo({ left: activePill.offsetLeft - dateContainer.clientWidth / 2 + activePill.offsetWidth / 2, behavior: 'smooth' });
+      }
+      if (activePill) {
+        activePill.classList.remove('pulse');
+        void activePill.offsetWidth;
+        activePill.classList.add('pulse');
+      }
+    }
+
+    function getCenterDatePill() {
+      const containerRect = dateContainer.getBoundingClientRect();
+      const centerX = containerRect.left + containerRect.width / 2;
+      let closest = null;
+      let minDistance = Infinity;
+      dateTrack.querySelectorAll('.date-pill').forEach(pill => {
+        const pillRect = pill.getBoundingClientRect();
+        const pillCenter = pillRect.left + pillRect.width / 2;
+        const distance = Math.abs(pillCenter - centerX);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closest = pill;
+        }
+      });
+      return closest;
+    }
+
+    function snapToCenter() {
+      const nearest = getCenterDatePill();
+      if (!nearest) return;
+      const date = new Date(nearest.dataset.date);
+      setActiveDate(date);
+    }
+
+    function setActiveDate(date) {
+      activeDate = normalizeDate(date);
+      viewStartDate = new Date(activeDate);
+      renderDateRange(activeDate);
+      renderDateColumns();
+    }
+
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+    let dragMoved = false;
+
+    dateContainer.addEventListener('pointerdown', (event) => {
+      if (!isSubscribed()) {
+        event.preventDefault();
+        showSubscribeNotice();
+        return;
+      }
+      if (event.button !== 0) return;
+      isDragging = true;
+      dragMoved = false;
+      dragStartX = event.clientX;
+      dragStartScroll = dateContainer.scrollLeft;
+      dateContainer.setPointerCapture(event.pointerId);
+      dateContainer.classList.add('dragging');
+    });
+
+    dateContainer.addEventListener('pointermove', (event) => {
+      if (!isDragging) return;
+      const deltaX = event.clientX - dragStartX;
+      if (Math.abs(deltaX) > 5) dragMoved = true;
+      dateContainer.scrollLeft = dragStartScroll - deltaX;
+    });
+
+    const stopDrag = (event) => {
+      if (!isDragging) return;
+      isDragging = false;
+      dateContainer.classList.remove('dragging');
+      dateContainer.releasePointerCapture(event.pointerId);
+      setTimeout(() => { dragMoved = false; }, 0);
+    };
+
+    dateTrack.addEventListener('click', (event) => {
+      if (dragMoved) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }, true);
+
+    dateContainer.addEventListener('wheel', event => {
+      if (!isSubscribed()) {
+        event.preventDefault();
+        showSubscribeNotice();
+        return;
+      }
+      if (event.deltaY === 0 && event.deltaX === 0) return;
+      event.preventDefault();
+      dateContainer.scrollBy({ left: event.deltaY || event.deltaX, behavior: 'smooth' });
+    }, { passive: false });
+
+    dateContainer.addEventListener('pointerup', (event) => {
+      if (dragMoved) snapToCenter();
+      stopDrag(event);
+    });
+    dateContainer.addEventListener('pointercancel', (event) => stopDrag(event));
+    dateContainer.addEventListener('pointerleave', (event) => stopDrag(event));
+
+    prevBtn.addEventListener('click', () => {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      const previous = new Date(activeDate);
+      previous.setDate(previous.getDate() - 1);
+      setActiveDate(previous);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      const next = new Date(activeDate);
+      next.setDate(next.getDate() + 1);
+      setActiveDate(next);
+    });
+
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeKey = 'activeRecordsTheme';
+    const setTheme = (theme) => {
+      document.body.classList.toggle('light-theme', theme === 'light');
+      themeToggleBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+      themeToggleBtn.title = theme === 'light' ? 'Переключить тёмную тему' : 'Переключить светлую тему';
+      localStorage.setItem(themeKey, theme);
+    };
+    const toggleTheme = () => setTheme(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    const savedTheme = localStorage.getItem(themeKey) || 'dark';
+    setTheme(savedTheme);
+
+    const addRecordBtn = document.getElementById('addRecordBtn');
+    const recordModal = document.getElementById('recordModal');
+    const recordForm = document.getElementById('recordForm');
+    const cancelRecordModal = document.getElementById('cancelRecordModal');
+    const closeRecordModalBtn = document.getElementById('closeRecordModal');
+    const recordClient = document.getElementById('recordClient');
+    const recordPhone = document.getElementById('recordPhone');
+    const recordService = document.getElementById('recordService');
+    const serviceGrid = document.getElementById('serviceGrid');
+    const recordPayment = document.getElementById('recordPayment');
+    const paymentPicker = document.getElementById('paymentPicker');
+    const recordDate = document.getElementById('recordDate');
+    const recordDateControl = document.getElementById('recordDateControl');
+    const recordDateLabel = document.getElementById('recordDateLabel');
+    const recordTime = document.getElementById('recordTime');
+    const recordTimeControl = document.getElementById('recordTimeControl');
+    const boardHint = document.getElementById('boardHint');
+    const boardBlocker = document.getElementById('boardBlocker');
+    const subscribeNoticeModal = document.getElementById('subscribeNoticeModal');
+    const closeSubscribeNotice = document.getElementById('closeSubscribeNotice');
+    const recordTimeLabel = document.getElementById('recordTimeLabel');
+    const recordTimeCustom = document.getElementById('recordTimeCustom');
+    const recordMaster = document.getElementById('recordMaster');
+    const masterOptions = document.querySelectorAll('#recordMasterPicker .record-master-option');
+    const recordStatus = document.getElementById('recordStatus');
+    const statusPicker = document.getElementById('statusPicker');
+    const datePickerModal = document.getElementById('datePickerModal');
+    const closeDatePickerModalBtn = document.getElementById('closeDatePickerModal');
+    const datePickerConfirmBtn = document.getElementById('datePickerConfirmBtn');
+    const datePickerCancelBtn = document.getElementById('datePickerCancelBtn');
+    const timePickerModal = document.getElementById('timePickerModal');
+    const closeTimePickerModalBtn = document.getElementById('closeTimePickerModal');
+    const timePickerConfirmBtn = document.getElementById('timePickerConfirmBtn');
+    const timePickerCancelBtn = document.getElementById('timePickerCancelBtn');
+    const datePickerPrevMonth = document.getElementById('datePickerPrevMonth');
+    const datePickerMonthLabel = document.getElementById('datePickerMonthLabel');
+    const datePickerNextMonth = document.getElementById('datePickerNextMonth');
+    const datePickerGrid = document.getElementById('datePickerGrid');
+    const timeOptionsContainer = document.getElementById('timeOptions');
+    const recordDuration = document.getElementById('recordDuration');
+    const recordId = document.getElementById('recordId');
+    const allRecordsValue = document.getElementById('allRecordsValue');
+    const todayRecordsValue = document.getElementById('todayRecordsValue');
+    const clientSearch = document.getElementById('clientSearch');
+    const openClientModalBtn = document.getElementById('openClientModalBtn');
+    const clientModal = document.getElementById('clientModal');
+    const clientForm = document.getElementById('clientForm');
+    const clientNameInput = document.getElementById('clientNameInput');
+    const clientPhoneInput = document.getElementById('clientPhoneInput');
+    const clientNoteInput = document.getElementById('clientNoteInput');
+    const closeClientModalBtn = document.getElementById('closeClientModal');
+    const cancelClientModal = document.getElementById('cancelClientModal');
+    const clientList = document.getElementById('clientList');
+    const viewAllBtn = document.getElementById('viewAllBtn');
+    const subscriptionCardTitle = document.getElementById('subscriptionCardTitle');
+    const subscriptionBlocker = document.getElementById('subscriptionBlocker');
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const board = document.getElementById('board');
+    const recordsOverviewModal = document.getElementById('recordsOverviewModal');
+
+    updateSubscriptionState();
+
+    function getSavedSubscription() {
+      try {
+        return JSON.parse(localStorage.getItem('humraySubscription')) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    function getSavedCard() {
+      try {
+        return JSON.parse(localStorage.getItem('humrayCard')) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    function normalizeValue(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function getCurrentUserLogin() {
+      return localStorage.getItem('humreyCurrentUser');
+    }
+
+    function getCurrentUserObj() {
+      const currentLogin = getCurrentUserLogin();
+      if (!currentLogin) return null;
+      const lookup = normalizeValue(currentLogin);
+      const users = JSON.parse(localStorage.getItem('humreyUsers') || '[]');
+      const user = users.find(user => normalizeValue(user.login) === lookup || normalizeValue(user.email) === lookup) || null;
+      if (user && !user.role) {
+        user.role = normalizeValue(user.login) === 'ownersite123' ? 'admin' : 'user';
+      }
+      if (!user && lookup === 'ownersite123') {
+        return { login: 'OwnerSite123', email: 'osnovnoyakk678@gmail.com', role: 'admin' };
+      }
+      return user;
+    }
+
+    function isOwnerAdmin() {
+      const currentUser = getCurrentUserObj();
+      return !!currentUser && (normalizeValue(currentUser.login) === 'ownersite123' || currentUser.role === 'admin');
+    }
+
+    function isSubscribed() {
+      const savedSubscription = getSavedSubscription();
+      if (!savedSubscription || !savedSubscription.expiresAt) return false;
+      const expiresAt = new Date(savedSubscription.expiresAt);
+      if (isNaN(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+        localStorage.removeItem('humraySubscription');
+        return false;
+      }
+      return savedSubscription.status === 'active' || savedSubscription.status === 'confirmed' || !savedSubscription.status;
+    }
+
+    function formatExpiryDate(expiry) {
+      const date = new Date(expiry);
+      return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function showSubscribeNotice() {
+      subscribeNoticeModal.classList.add('active');
+      subscribeNoticeModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideSubscribeNotice() {
+      subscribeNoticeModal.classList.remove('active');
+      subscribeNoticeModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function updateSubscriptionState() {
+      const active = isSubscribed();
+      boardHint.style.display = active ? 'none' : '';
+      boardBlocker.style.display = active ? 'none' : '';
+      const savedSubscription = getSavedSubscription();
+      if (active && savedSubscription) {
+        subscriptionCardTitle.textContent = `Подписка активна до ${formatExpiryDate(savedSubscription.expiresAt)}`;
+        subscribeBtn.textContent = 'Управлять подпиской';
+        subscribeBtn.href = 'subscription.html';
+        subscribeBtn.classList.add('subscription-pill');
+        subscribeBtn.classList.remove('button');
+        subscriptionBlocker.classList.add('hidden');
+        addRecordBtn.classList.remove('locked');
+        openClientModalBtn.classList.remove('locked');
+        viewAllBtn.classList.remove('locked');
+        board.classList.remove('blur-records');
+        recordsOverviewModal.classList.remove('blur-records');
+      } else {
+        subscriptionCardTitle.textContent = 'Оформите подписку, чтобы пользоваться всеми функциями';
+        subscribeBtn.textContent = 'Перейти к подписке';
+        subscribeBtn.href = 'subscription.html';
+        subscribeBtn.classList.add('subscription-pill');
+        subscribeBtn.classList.remove('button');
+        subscriptionBlocker.classList.remove('hidden');
+        addRecordBtn.classList.add('locked');
+        openClientModalBtn.classList.add('locked');
+        viewAllBtn.classList.add('locked');
+        board.classList.add('blur-records');
+        recordsOverviewModal.classList.add('blur-records');
+      }
+    }
+
+    const closeRecordsOverviewModal = document.getElementById('closeRecordsOverviewModal');
+    const recordsOverviewActive = document.getElementById('recordsOverviewActive');
+    const recordsOverviewPast = document.getElementById('recordsOverviewPast');
+    const recordInfoModal = document.getElementById('recordInfoModal');
+    const closeRecordInfoModal = document.getElementById('closeRecordInfoModal');
+    const closeRecordInfoButton = document.getElementById('closeRecordInfoButton');
+    const recordInfoContent = document.getElementById('recordInfoContent');
+    const PARALLEL_SERVICE_NAME = 'Parallel (Manicure + Pedicure)';
+    const totalCountEl = document.getElementById('totalCount');
+    const dayCountEl = document.getElementById('dayCount');
+    const selectedMasterLabel = document.getElementById('selectedMasterLabel');
+    const openShiftModalBtn = document.getElementById('openShiftModal');
+    const shiftModal = document.getElementById('shiftModal');
+    const closeShiftModal = document.getElementById('closeShiftModal');
+    const cancelShiftModal = document.getElementById('cancelShiftModal');
+    const saveShiftModal = document.getElementById('saveShiftModal');
+    const shiftOptionButtons = document.querySelectorAll('.shift-option[data-shift="olga"], .shift-option[data-shift="marina"], .shift-option[data-shift="off"]');
+    const shiftOffOptionButtons = document.querySelectorAll('.shift-off-option');
+    const shiftOffPicker = document.getElementById('shiftOffPicker');
+    const todayShiftBadge = document.getElementById('todayShiftBadge');
+    const plannedShiftBadge = document.getElementById('plannedShiftBadge');
+    const shiftCalendarGrid = document.getElementById('shiftCalendarGrid');
+    const shiftCalendarMonthLabel = document.getElementById('shiftCalendarMonthLabel');
+    const shiftCalendarPrev = document.getElementById('shiftCalendarPrev');
+    const shiftCalendarNext = document.getElementById('shiftCalendarNext');
+
+    const DATE_PICKER_MIN_YEAR = 1900;
+    const DATE_PICKER_MAX_YEAR = 2100;
+    const TIME_STEP_MINUTES = 30;
+    let pickerViewDate = new Date(activeDate);
+    pickerViewDate.setDate(1);
+    let selectedShiftDate = new Date(activeDate);
+    let selectedShiftCalendarDate = new Date(activeDate);
+    selectedShiftCalendarDate.setDate(1);
+
+    function parseDateString(value) {
+      if (!value) return null;
+      if (value instanceof Date) return new Date(value.getFullYear(), value.getMonth(), value.getDate());
+      const parts = String(value).split('-').map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+
+    function formatDisplayDate(date) {
+      return `${String(date.getDate()).padStart(2, '0')} ${monthNamesFull[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function renderDatePicker() {
+      const year = pickerViewDate.getFullYear();
+      const month = pickerViewDate.getMonth();
+      datePickerMonthLabel.textContent = `${monthNamesFull[month]} ${year}`;
+      datePickerPrevMonth.disabled = year <= DATE_PICKER_MIN_YEAR && month === 0;
+      datePickerNextMonth.disabled = year >= DATE_PICKER_MAX_YEAR && month === 11;
+
+      const firstDay = new Date(year, month, 1);
+      const startDayIndex = (firstDay.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const prevMonthDays = new Date(year, month, 0).getDate();
+      datePickerGrid.innerHTML = '';
+
+      for (let index = 0; index < 42; index += 1) {
+        const dayButton = document.createElement('button');
+        dayButton.type = 'button';
+        dayButton.className = 'day-cell';
+        let day = index - startDayIndex + 1;
+        let cellDate;
+
+        if (day <= 0) {
+          day = prevMonthDays + day;
+          cellDate = new Date(year, month - 1, day);
+          dayButton.classList.add('other-month');
+        } else if (day > daysInMonth) {
+          day -= daysInMonth;
+          cellDate = new Date(year, month + 1, day);
+          dayButton.classList.add('other-month');
+        } else {
+          cellDate = new Date(year, month, day);
+        }
+
+        dayButton.textContent = String(day).padStart(2, '0');
+        const selectedDate = parseDateString(recordDate.value) || normalizeDate(activeDate);
+        if (normalizeDate(cellDate).getTime() === normalizeDate(selectedDate).getTime()) {
+          dayButton.classList.add('selected');
+        }
+
+        dayButton.addEventListener('click', () => {
+          if (cellDate.getFullYear() < DATE_PICKER_MIN_YEAR || cellDate.getFullYear() > DATE_PICKER_MAX_YEAR) return;
+          setSelectedDate(cellDate);
+        });
+        datePickerGrid.appendChild(dayButton);
+      }
+    }
+
+    function renderTimeOptions() {
+      timeOptionsContainer.innerHTML = '';
+      for (let hour = 10; hour <= 21; hour += 1) {
+        for (let minute = 0; minute < 60; minute += TIME_STEP_MINUTES) {
+          if (hour === 21 && minute > 0) break;
+          const value = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'time-option';
+          button.textContent = value;
+          if (recordTime.value === value) {
+            button.classList.add('selected');
+          }
+          button.addEventListener('click', () => {
+            setSelectedTime(value);
+            recordTimeCustom.value = value;
+          });
+          timeOptionsContainer.appendChild(button);
+        }
+      }
+    }
+
+    function setSelectedDate(date) {
+      const parsed = parseDateString(date);
+      if (!parsed) return;
+      const normalized = normalizeDate(parsed);
+      recordDate.value = formatLocalDate(normalized);
+      recordDateLabel.textContent = formatDisplayDate(normalized);
+      pickerViewDate = new Date(normalized);
+      pickerViewDate.setDate(1);
+      renderDatePicker();
+    }
+
+    function setSelectedTime(value) {
+      recordTime.value = value;
+      recordTimeLabel.textContent = value;
+      timeOptionsContainer.querySelectorAll('.time-option').forEach((button) => {
+        button.classList.toggle('selected', button.textContent === value);
+      });
+    }
+
+    function openDatePickerModal() {
+      datePickerModal.classList.remove('hidden');
+      datePickerModal.setAttribute('aria-hidden', 'false');
+      const currentDate = parseDateString(recordDate.value) || normalizeDate(activeDate);
+      pickerViewDate = new Date(currentDate);
+      pickerViewDate.setDate(1);
+      renderDatePicker();
+    }
+
+    function closeDatePickerModal() {
+      datePickerModal.classList.add('hidden');
+      datePickerModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function openTimePickerModal() {
+      timePickerModal.classList.remove('hidden');
+      timePickerModal.setAttribute('aria-hidden', 'false');
+      renderTimeOptions();
+      recordTimeCustom.value = recordTime.value || '';
+    }
+
+    function closeTimePickerModal() {
+      timePickerModal.classList.add('hidden');
+      timePickerModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function isValidManualTime(value) {
+      const normalized = String(value).trim();
+      const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(normalized);
+      if (!match) return false;
+      const hour = Number(match[1]);
+      const minute = Number(match[2]);
+      return hour >= 10 && (hour < 21 || (hour === 21 && minute === 0));
+    }
+
+    function applyManualTime() {
+      const value = recordTimeCustom.value.trim();
+      if (isValidManualTime(value)) {
+        setSelectedTime(value);
+        return true;
+      }
+      return false;
+    }
+
+    recordTimeCustom.addEventListener('blur', () => {
+      applyManualTime();
+    });
+
+    recordTimeCustom.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (applyManualTime()) {
+          closeTimePickerModal();
+        }
+      }
+    });
+
+    recordDateControl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openDatePickerModal();
+    });
+    recordTimeControl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openTimePickerModal();
+    });
+    datePickerPrevMonth.addEventListener('click', (event) => {
+      event.stopPropagation();
+      pickerViewDate.setMonth(pickerViewDate.getMonth() - 1);
+      renderDatePicker();
+    });
+    datePickerNextMonth.addEventListener('click', (event) => {
+      event.stopPropagation();
+      pickerViewDate.setMonth(pickerViewDate.getMonth() + 1);
+      renderDatePicker();
+    });
+    closeDatePickerModalBtn.addEventListener('click', closeDatePickerModal);
+    datePickerCancelBtn.addEventListener('click', closeDatePickerModal);
+    datePickerConfirmBtn.addEventListener('click', () => {
+      if (!recordDate.value) setSelectedDate(activeDate);
+      closeDatePickerModal();
+    });
+
+    closeTimePickerModalBtn.addEventListener('click', closeTimePickerModal);
+    timePickerCancelBtn.addEventListener('click', closeTimePickerModal);
+    timePickerConfirmBtn.addEventListener('click', () => {
+      const customValue = recordTimeCustom.value.trim();
+      if (customValue) {
+        if (isValidManualTime(customValue)) {
+          setSelectedTime(customValue);
+        } else {
+          alert('Введите корректное время в формате HH:MM от 10:00 до 21:00.');
+          return;
+        }
+      } else if (!recordTime.value) {
+        setSelectedTime('10:00');
+      }
+      closeTimePickerModal();
+    });
+
+    datePickerModal.addEventListener('click', (event) => {
+      if (event.target === datePickerModal) {
+        closeDatePickerModal();
+      }
+    });
+    timePickerModal.addEventListener('click', (event) => {
+      if (event.target === timePickerModal) {
+        closeTimePickerModal();
+      }
+    });
+
+    const setSelectedMaster = (name) => {
+      recordMaster.value = name;
+      masterOptions.forEach(button => {
+        const selected = button.dataset.master === name;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+    };
+
+    masterOptions.forEach(button => {
+      button.addEventListener('click', () => {
+        setSelectedMaster(button.dataset.master);
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeDatePickerModal();
+        closeTimePickerModal();
+      }
+    });
+
+    function loadRecords() {
+      const saved = localStorage.getItem('salonRecords');
+      const records = saved ? JSON.parse(saved) : [];
+      return records.map((record) => ({
+        ...record,
+        status: record.status === 'Підтверджено' ? 'Записано' : record.status,
+      }));
+    }
+
+    function saveRecords(records) {
+      localStorage.setItem('salonRecords', JSON.stringify(records));
+    }
+
+    function updateActiveRecordStatuses() {
+      const now = new Date();
+      let changed = false;
+      records.forEach((record) => {
+        if (record.completed) return;
+        if (record.status !== 'Записано') return;
+        const recordDateTime = new Date(`${record.date}T${record.time}`);
+        if (recordDateTime <= now) {
+          record.status = 'У процесі';
+          changed = true;
+        }
+      });
+      if (changed) {
+        saveRecords(records);
+      }
+    }
+
+    function loadClients() {
+      const saved = localStorage.getItem('clientBase');
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function saveClients(clients) {
+      localStorage.setItem('clientBase', JSON.stringify(clients));
+    }
+
+    const servicePrices = {
+      'Манікюр Standard': 850,
+      'Манікюр SPA': 1200,
+      'SPA догляд для рук': 900,
+      'Частковий манікюр': 650,
+      'Педикюр Standard': 1100,
+      'Педикюр SPA': 1400,
+      'SPA догляд для ніг': 1150,
+      'Частковий педикюр': 700,
+      'Педикюр подологічний': 1300,
+      'Parallel (Manicure + Pedicure)': 2000
+    };
+
+    function getSelectedServicePrice() {
+      return servicePrices[recordService.value] || 0;
+    }
+
+    function formatLocalDate(date) {
+      const target = new Date(date);
+      const year = target.getFullYear();
+      const month = String(target.getMonth() + 1).padStart(2, '0');
+      const day = String(target.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatCurrency(value) {
+      return `${value} грн`;
+    }
+
+    function createOverviewRecordCard(record, isActive = false) {
+      const displayStatus = record.displayStatus || record.status;
+      const card = document.createElement('div');
+      card.className = 'records-overview-card';
+      card.innerHTML = `
+        <strong>${record.client} · ${record.service}</strong>
+        <span>${record.date} ${record.time} · ${record.master} · ${record.payment}</span>
+        <span>${record.phone || 'Телефон не указан'}</span>
+        <span>Статус: ${displayStatus}${record.duration ? ' · ' + record.duration : ''}</span>
+        <div class="record-actions">
+          <button type="button" class="info-btn">Информация</button>
+          ${isActive ? '<button type="button" class="edit-btn">Изменить</button>' : ''}
+          ${isActive ? '<button type="button" class="confirm-btn">Подтвердить</button>' : ''}
+          <button type="button" class="delete-btn">Удалить</button>
+        </div>
+      `;
+
+      const infoBtn = card.querySelector('.info-btn');
+      infoBtn.addEventListener('click', () => openRecordInfoModal(record));
+
+      const deleteBtn = card.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', () => deleteRecord(record.id));
+
+      if (isActive) {
+        card.querySelector('.edit-btn').addEventListener('click', () => openEditRecord(record));
+        card.querySelector('.confirm-btn').addEventListener('click', () => confirmRecord(record.id));
+      }
+
+      return card;
+    }
+
+    function confirmRecord(recordId) {
+      const index = records.findIndex(rec => rec.id === recordId);
+      if (index === -1) return;
+      records[index].completed = true;
+      saveRecords(records);
+      updateSummaryCards();
+      renderDateColumns();
+      renderRecordsOverview();
+    }
+
+    function renderRecordsOverview() {
+      const now = new Date();
+      const activeRecords = [];
+      const pastRecords = [];
+      records.slice().sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`)).forEach((record) => {
+        const recordDateTime = new Date(`${record.date}T${record.time}`);
+        if (record.completed || recordDateTime < now) {
+          pastRecords.push({ ...record, displayStatus: record.completed ? record.status : 'Завершено' });
+        } else {
+          activeRecords.push(record);
+        }
+      });
+
+      recordsOverviewActive.innerHTML = '';
+      recordsOverviewPast.innerHTML = '';
+
+      if (activeRecords.length) {
+        activeRecords.forEach((record) => recordsOverviewActive.appendChild(createOverviewRecordCard(record, true)));
+      } else {
+        recordsOverviewActive.innerHTML = '<div class="slot empty">Нет активных записей.</div>';
+      }
+
+      if (pastRecords.length) {
+        pastRecords.reverse().forEach((record) => recordsOverviewPast.appendChild(createOverviewRecordCard(record)));
+      } else {
+        recordsOverviewPast.innerHTML = '<div class="slot empty">Пока нет прошедших записей.</div>';
+      }
+    }
+
+    function openRecordsOverviewModal() {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      renderRecordsOverview();
+      recordsOverviewModal.classList.remove('hidden');
+      recordsOverviewModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRecordsOverviewModalHandler() {
+      recordsOverviewModal.classList.add('hidden');
+      recordsOverviewModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function openRecordInfoModal(record) {
+      recordInfoContent.innerHTML = `
+        <div class="info-row"><span>Клиент:</span><strong>${record.client}</strong></div>
+        <div class="info-row"><span>Телефон:</span><strong>${record.phone || '—'}</strong></div>
+        <div class="info-row"><span>Услуга:</span><strong>${record.service}</strong></div>
+        <div class="info-row"><span>Мастер:</span><strong>${record.master}</strong></div>
+        <div class="info-row"><span>Дата и время:</span><strong>${record.date} ${record.time}</strong></div>
+        <div class="info-row"><span>Оплата:</span><strong>${record.payment}</strong></div>
+        <div class="info-row"><span>Статус:</span><strong>${record.status}</strong></div>
+        <div class="info-row"><span>Длительность:</span><strong>${record.duration || 'Не указано'}</strong></div>
+        <div class="info-row"><span>Цена:</span><strong>${formatCurrency(record.price)}</strong></div>
+      `;
+      recordInfoModal.classList.remove('hidden');
+      recordInfoModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRecordInfoModalHandler() {
+      recordInfoModal.classList.add('hidden');
+      recordInfoModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function deleteRecord(recordId) {
+      const index = records.findIndex(rec => rec.id === recordId);
+      if (index === -1) return;
+      records.splice(index, 1);
+      saveRecords(records);
+      renderDateColumns();
+      updateSummaryCards();
+      renderRecordsOverview();
+    }
+
+    function renderRecordSlot(record) {
+      const slot = document.createElement('div');
+      slot.className = 'slot';
+      slot.innerHTML = `
+        <strong>${record.client}</strong>
+        <span>${record.phone}</span>
+        <span>${record.date} ${record.time}</span>
+        <span>${record.service} · ${record.master}</span>
+        <span>${formatCurrency(record.price)} · ${record.status}</span>
+        <div class="slot-actions">
+          <button type="button" class="edit-btn">Изменить</button>
+          <button type="button" class="confirm-btn">Подтвердить</button>
+          <button type="button" class="delete-btn">Удалить</button>
+        </div>
+      `;
+      slot.querySelector('.edit-btn').addEventListener('click', () => openEditRecord(record));
+      slot.querySelector('.confirm-btn').addEventListener('click', () => confirmRecord(record.id));
+      slot.querySelector('.delete-btn').addEventListener('click', () => deleteRecord(record.id));
+      return slot;
+    }
+
+    function compareRecordTime(a, b) {
+      const [aHours, aMinutes] = a.time.split(':').map(Number);
+      const [bHours, bMinutes] = b.time.split(':').map(Number);
+      return aHours === bHours ? aMinutes - bMinutes : aHours - bHours;
+    }
+
+    function renderMasterBody(master, bodyId) {
+      const dateKey = formatLocalDate(activeDate);
+      const recordsForMaster = records
+        .filter(rec => rec.date === dateKey && rec.master === master && !rec.completed)
+        .slice()
+        .sort(compareRecordTime);
+      const body = document.getElementById(bodyId);
+      if (!recordsForMaster.length) {
+        body.innerHTML = `<div class="slot empty">Нет записей у ${master} на ${activeDate.getDate()} ${monthNamesFull[activeDate.getMonth()]}</div>`;
+        return;
+      }
+      body.innerHTML = '';
+      recordsForMaster.forEach(record => body.appendChild(renderRecordSlot(record)));
+    }
+
+    function updateSummaryCards() {
+      const todayKey = formatLocalDate(new Date());
+      const currentDayRecords = records.filter(rec => rec.date === formatLocalDate(activeDate) && !rec.completed);
+      const masters = Array.from(new Set(currentDayRecords.map(rec => rec.master)));
+      allRecordsValue.textContent = records.length;
+      todayRecordsValue.textContent = records.filter(rec => rec.date === todayKey && !rec.completed).length;
+      totalCountEl.textContent = records.length;
+      dayCountEl.textContent = records.filter(rec => rec.date === todayKey && !rec.completed).length;
+      selectedMasterLabel.textContent = masters.length ? `К кому: ${masters.join(', ')}` : '';
+    }
+
+    function openRecordModal(clientData = null) {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      recordModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      recordForm.reset();
+      recordId.value = '';
+      document.getElementById('recordModalTitle').textContent = 'Добавить запись';
+      setSelectedDate(activeDate);
+      setSelectedTime('09:00');
+      setSelectedPayment('Карта');
+      setSelectedStatus('Записано');
+      if (clientData) {
+        recordClient.value = clientData.name;
+        recordPhone.value = clientData.phone || '';
+      }
+      recordClient.focus();
+      setSelectedService('');
+      setSelectedMaster('');
+    }
+
+    function setSelectedService(service) {
+      recordService.value = service;
+      const label = document.getElementById('serviceSelectedLabel');
+      label.textContent = service ? `${service}` : 'Выберите услугу';
+      serviceGrid.querySelectorAll('.service-chip').forEach(button => {
+        button.classList.toggle('selected', button.dataset.service === service);
+      });
+    }
+
+    function setSelectedPayment(payment) {
+      recordPayment.value = payment;
+      paymentPicker.querySelectorAll('.payment-chip').forEach(button => {
+        button.classList.toggle('selected', button.dataset.payment === payment);
+      });
+    }
+
+    function setSelectedStatus(status) {
+      recordStatus.value = status;
+      statusPicker.querySelectorAll('.status-chip').forEach(button => {
+        const selected = button.dataset.status === status;
+        button.classList.toggle('selected', selected);
+        button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+    }
+
+    paymentPicker.addEventListener('click', (event) => {
+      const button = event.target.closest('.payment-chip');
+      if (!button) return;
+      setSelectedPayment(button.dataset.payment);
+    });
+
+    statusPicker.addEventListener('click', (event) => {
+      const button = event.target.closest('.status-chip');
+      if (!button) return;
+      setSelectedStatus(button.dataset.status);
+    });
+
+    function openEditRecord(record) {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      recordModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      recordId.value = record.id;
+      document.getElementById('recordModalTitle').textContent = 'Редактировать запись';
+      recordClient.value = record.client;
+      recordPhone.value = record.phone;
+      recordMaster.value = record.master;
+      setSelectedService(record.service);
+      setSelectedPayment(record.payment);
+      recordPayment.value = record.payment;
+      setSelectedDate(record.date);
+      setSelectedTime(record.time);
+      recordDuration.value = record.duration || '';
+      setSelectedStatus(record.status);
+      recordClient.focus();
+      setSelectedMaster(record.master);
+    }
+    function closeRecordModal() {
+      recordModal.classList.add('hidden');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      recordForm.reset();
+      recordId.value = '';
+      setSelectedService('');
+      closeDatePickerModal();
+      closeTimePickerModal();
+      document.getElementById('recordModalTitle').textContent = 'Добавить запись';
+    }
+
+    serviceGrid.addEventListener('click', (event) => {
+      const button = event.target.closest('.service-chip');
+      if (!button) return;
+      setSelectedService(button.dataset.service);
+    });
+
+    addRecordBtn.addEventListener('click', openRecordModal);
+    cancelRecordModal.addEventListener('click', closeRecordModal);
+    closeRecordModalBtn.addEventListener('click', closeRecordModal);
+    closeSubscribeNotice.addEventListener('click', hideSubscribeNotice);
+    subscribeNoticeModal.addEventListener('click', (event) => {
+      if (event.target === subscribeNoticeModal) {
+        hideSubscribeNotice();
+      }
+    });
+
+    recordForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const isEdit = Boolean(recordId.value);
+      const recordDateValue = formatLocalDate(recordDate.value);
+      const recordTimeValue = recordTime.value;
+      const recordMasterValue = recordMaster.value;
+      const recordServiceValue = recordService.value;
+      const recordPriceValue = getSelectedServicePrice();
+
+      if (!recordServiceValue) {
+        alert('Выберите услугу.');
+        return;
+      }
+      if (!recordMasterValue) {
+        alert('Выберите мастера.');
+        return;
+      }
+      if (!recordPayment.value) {
+        alert('Выберите способ оплаты.');
+        return;
+      }
+
+      const updatedRecord = {
+        id: isEdit ? Number(recordId.value) : Date.now(),
+        client: recordClient.value.trim(),
+        phone: recordPhone.value.trim(),
+        master: recordMasterValue,
+        service: recordServiceValue,
+        price: recordPriceValue,
+        payment: recordPayment.value,
+        date: recordDateValue,
+        time: recordTimeValue,
+        duration: recordDuration.value.trim(),
+        status: recordStatus.value || 'Записано',
+        completed: false
+      };
+
+      const slotTaken = records.some(rec => rec.date === updatedRecord.date && rec.time === updatedRecord.time && rec.id !== updatedRecord.id);
+      if (slotTaken) {
+        alert('На эту дату и время уже есть запись. Выберите другой слот.');
+        return;
+      }
+
+      if (isEdit) {
+        const recordIndex = records.findIndex(rec => rec.id === updatedRecord.id);
+        if (recordIndex !== -1) {
+          updatedRecord.completed = records[recordIndex].completed || false;
+          records[recordIndex] = updatedRecord;
+        }
+      } else {
+        const isParallelService = updatedRecord.service === PARALLEL_SERVICE_NAME;
+        if (isParallelService) {
+          const firstRecord = { ...updatedRecord, id: Date.now(), master: 'Ольга' };
+          const secondRecord = { ...updatedRecord, id: Date.now() + 1, master: 'Марина' };
+          records.push(firstRecord, secondRecord);
+        } else {
+          records.push(updatedRecord);
+        }
+      }
+
+      saveRecords(records);
+      updateSummaryCards();
+      renderDateColumns();
+      closeRecordModal();
+    });
+
+    let records = loadRecords();
+    let clients = loadClients();
+
+    function renderClientList(filter = '') {
+      const query = String(filter || '').trim().toLowerCase();
+      const filteredClients = clients.filter(client => {
+        if (!query) return true;
+        const nameMatch = client.name.toLowerCase().includes(query);
+        const phoneMatch = (client.phone || '').toLowerCase().includes(query);
+        const noteMatch = (client.note || '').toLowerCase().includes(query);
+        return nameMatch || phoneMatch || noteMatch;
+      });
+      clientList.innerHTML = '';
+
+      if (!filteredClients.length) {
+        clientList.innerHTML = `<div class="slot empty">В клиентской базе пока нет клиентов.</div>`;
+        return;
+      }
+
+      filteredClients.forEach((client) => {
+        const stats = getClientStats(client);
+        const visitsText = stats.count > 0 ? `${stats.count} ${stats.count === 1 ? 'визит' : 'визита'}` : 'Нет визитов';
+        const averageText = stats.count > 0 ? `${formatCurrency(stats.average)} (${visitsText})` : 'Нет среднего чека';
+
+        const item = document.createElement('div');
+        item.className = 'client-item';
+        item.innerHTML = `
+          <div class="client-item-info">
+            <strong>${client.name}</strong>
+            <span>${client.phone || ''}</span>
+            <span>${client.note ? client.note : ''}</span>
+            <span>${averageText}</span>
+          </div>`;
+        const infoButton = document.createElement('button');
+        infoButton.type = 'button';
+        infoButton.className = 'client-info-btn';
+        infoButton.textContent = 'Инфо';
+        infoButton.addEventListener('click', () => openClientInfoModal(client));
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.className = 'client-add-btn';
+        addButton.textContent = 'Записать';
+        addButton.addEventListener('click', () => openRecordModal(client));
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'client-delete-btn';
+        removeButton.textContent = '×';
+        removeButton.addEventListener('click', () => {
+          clients = clients.filter((entry) => entry.name !== client.name);
+          saveClients(clients);
+          renderClientList(clientSearch.value);
+        });
+        item.appendChild(infoButton);
+        item.appendChild(addButton);
+        item.appendChild(removeButton);
+        clientList.appendChild(item);
+      });
+    }
+
+    function openClientModal() {
+      if (!isSubscribed()) {
+        showSubscribeNotice();
+        return;
+      }
+      clientModal.classList.remove('hidden');
+      clientModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      clientNameInput.value = '';
+      clientPhoneInput.value = '';
+      clientNoteInput.value = '';
+      clientNameInput.focus();
+    }
+
+    function closeClientModal() {
+      clientModal.classList.add('hidden');
+      clientModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      clientForm.reset();
+    }
+
+    function addClientToBase(event) {
+      if (event) event.preventDefault();
+      const name = clientNameInput.value.trim();
+      const phone = clientPhoneInput.value.trim();
+      const note = clientNoteInput.value.trim();
+      if (!name) {
+        alert('Введите имя клиента.');
+        clientNameInput.focus();
+        return;
+      }
+      if (!phone) {
+        alert('Введите телефон клиента.');
+        clientPhoneInput.focus();
+        return;
+      }
+      if (clients.some(client => client.name.toLowerCase() === name.toLowerCase())) {
+        alert('Такой клиент уже есть в базе.');
+        clientNameInput.focus();
+        return;
+      }
+      clients.push({ name, phone, note });
+      saveClients(clients);
+      closeClientModal();
+      renderClientList(clientSearch.value);
+    }
+
+    function normalizeClientValue(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function getClientStats(client) {
+      const clientName = normalizeClientValue(client.name);
+      const clientPhone = normalizeClientValue(client.phone);
+      const clientRecords = records.filter((rec) => {
+        const recName = normalizeClientValue(rec.client);
+        const recPhone = normalizeClientValue(rec.phone);
+        if (clientPhone && recPhone && clientPhone === recPhone) {
+          return true;
+        }
+        return clientName && recName === clientName;
+      });
+      const count = clientRecords.length;
+      const average = count ? Math.round(clientRecords.reduce((sum, rec) => sum + Number(rec.price || 0), 0) / count) : 0;
+      return { count, average };
+    }
+
+    function openClientInfoModal(client) {
+      const stats = getClientStats(client);
+      clientInfoContent.innerHTML = `
+        <div class="info-row"><span>Клиент:</span><strong>${client.name}</strong></div>
+        <div class="info-row"><span>Телефон:</span><strong>${client.phone || '—'}</strong></div>
+        <div class="info-row"><span>Заметка:</span><strong>${client.note ? client.note : 'Нет заметки'}</strong></div>
+        <div class="info-row"><span>Визитов:</span><strong>${stats.count}</strong></div>
+        <div class="info-row"><span>Средний чек:</span><strong>${stats.count ? formatCurrency(stats.average) : 'Нет данных'}</strong></div>
+      `;
+      clientInfoModal.classList.remove('hidden');
+      clientInfoModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeClientInfoModalHandler() {
+      clientInfoModal.classList.add('hidden');
+      clientInfoModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    clientSearch.addEventListener('input', () => renderClientList(clientSearch.value));
+    openClientModalBtn.addEventListener('click', openClientModal);
+    closeClientModalBtn.addEventListener('click', closeClientModal);
+    cancelClientModal.addEventListener('click', closeClientModal);
+    clientForm.addEventListener('submit', addClientToBase);
+    viewAllBtn.addEventListener('click', openRecordsOverviewModal);
+    closeRecordsOverviewModal.addEventListener('click', closeRecordsOverviewModalHandler);
+    closeClientInfoModal.addEventListener('click', closeClientInfoModalHandler);
+    closeClientInfoButton.addEventListener('click', closeClientInfoModalHandler);
+    closeRecordInfoModal.addEventListener('click', closeRecordInfoModalHandler);
+    closeRecordInfoButton.addEventListener('click', closeRecordInfoModalHandler);
+    recordsOverviewModal.addEventListener('click', (event) => {
+      if (event.target === recordsOverviewModal) {
+        closeRecordsOverviewModalHandler();
+      }
+    });
+    clientInfoModal.addEventListener('click', (event) => {
+      if (event.target === clientInfoModal) {
+        closeClientInfoModalHandler();
+      }
+    });
+    recordInfoModal.addEventListener('click', (event) => {
+      if (event.target === recordInfoModal) {
+        closeRecordInfoModalHandler();
+      }
+    });
+
+    function renderDateColumns() {
+      const dateLabel = `${activeDate.getDate()} ${monthNamesFull[activeDate.getMonth()]}`;
+      const weekdayLabel = weekdayNames[activeDate.getDay()];
+      document.getElementById('olgaLabel').textContent = 'Ольга';
+      document.getElementById('olgaDate').textContent = `${dateLabel} · ${weekdayLabel}`;
+      document.getElementById('marinaLabel').textContent = 'Марина';
+      document.getElementById('marinaDate').textContent = `${dateLabel} · ${weekdayLabel}`;
+      renderMasterBody('Ольга', 'olgaBody');
+      renderMasterBody('Марина', 'marinaBody');
+      renderShiftSummary();
+    }
+
+    const shiftStorageKey = 'humreyShiftSchedule';
+    let selectedShiftKey = '';
+
+    function getShiftSchedule() {
+      try {
+        return JSON.parse(localStorage.getItem(shiftStorageKey) || '{}');
+      } catch {
+        return {};
+      }
+    }
+
+    function saveShiftSchedule(schedule) {
+      localStorage.setItem(shiftStorageKey, JSON.stringify(schedule));
+    }
+
+    function getShiftForDate(date) {
+      const schedule = getShiftSchedule();
+      return schedule[formatLocalDate(date)] || '';
+    }
+
+    function formatShiftLabel(shiftKey) {
+      if (shiftKey === 'olga') return 'Ольга';
+      if (shiftKey === 'marina') return 'Марина';
+      if (shiftKey === 'off-olga') return 'Выходной Ольги';
+      if (shiftKey === 'off-marina') return 'Выходной Марины';
+      if (shiftKey === 'off') return 'Выходной';
+      return '—';
+    }
+
+    function updateShiftSelection(shiftKey) {
+      if (shiftKey === 'off') {
+        selectedShiftKey = selectedShiftKey.startsWith('off') ? selectedShiftKey : 'off-olga';
+      } else {
+        selectedShiftKey = shiftKey;
+        if (shiftKey.startsWith('off')) {
+          selectedShiftKey = shiftKey;
+        }
+      }
+
+      const shouldShowOffPicker = selectedShiftKey.startsWith('off');
+      shiftOffPicker.classList.toggle('hidden', !shouldShowOffPicker);
+
+      shiftOptionButtons.forEach(button => {
+        const buttonShift = button.dataset.shift;
+        const isSelected = buttonShift === selectedShiftKey || (buttonShift === 'off' && selectedShiftKey.startsWith('off'));
+        button.classList.toggle('selected', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+
+      shiftOffOptionButtons.forEach(button => {
+        const isSelected = button.dataset.shift === selectedShiftKey;
+        button.classList.toggle('selected', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+    }
+
+    function renderShiftSummary() {
+      const shift = getShiftForDate(activeDate);
+      todayShiftBadge.innerHTML = `<strong>Сегодня:</strong> ${formatShiftLabel(shift)}`;
+      plannedShiftBadge.innerHTML = `<strong>План:</strong> ${formatShiftLabel(shift)}`;
+    }
+
+    function renderShiftCalendar(monthDate) {
+      shiftCalendarMonthLabel.textContent = `${monthNamesFull[monthDate.getMonth()]} ${monthDate.getFullYear()}`;
+      shiftCalendarGrid.innerHTML = '';
+      const firstDay = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+      const lastDay = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0);
+      const startOffset = (firstDay.getDay() + 6) % 7;
+      const schedule = getShiftSchedule();
+      for (let i = 0; i < startOffset; i += 1) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'shift-calendar-cell empty';
+        shiftCalendarGrid.appendChild(emptyCell);
+      }
+      for (let day = 1; day <= lastDay.getDate(); day += 1) {
+        const date = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
+        const dateKey = formatLocalDate(date);
+        const shiftKey = schedule[dateKey] || '';
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        const extraClass = shiftKey ? `${shiftKey} ${shiftKey.startsWith('off') ? 'off' : ''}`.trim() : '';
+        cell.className = `shift-calendar-cell ${shiftKey ? 'scheduled ' + extraClass : ''}`.trim();
+        const isActive = formatLocalDate(date) === formatLocalDate(selectedShiftDate);
+        if (isActive) cell.classList.add('active');
+        const label = shiftKey ? formatShiftLabel(shiftKey) : 'Нет смены';
+        cell.innerHTML = `<span class="cell-day">${day}</span><span class="cell-note">${label}</span>`;
+        cell.addEventListener('click', () => {
+          selectedShiftDate = normalizeDate(date);
+          selectedShiftCalendarDate = new Date(date);
+          selectedShiftCalendarDate.setDate(1);
+          updateShiftCalendarSelection();
+        });
+        shiftCalendarGrid.appendChild(cell);
+      }
+    }
+
+    function updateShiftCalendarSelection() {
+      shiftCalendarGrid.querySelectorAll('.shift-calendar-cell').forEach(cell => {
+        if (cell.classList.contains('empty')) return;
+        const day = Number(cell.querySelector('.cell-day').textContent);
+        const activeMonth = selectedShiftCalendarDate.getMonth();
+        const activeYear = selectedShiftCalendarDate.getFullYear();
+        const cellDate = new Date(activeYear, activeMonth, day);
+        const isActive = formatLocalDate(cellDate) === formatLocalDate(selectedShiftDate);
+        cell.classList.toggle('active', isActive);
+      });
+      selectedShiftKey = getShiftForDate(selectedShiftDate);
+      shiftOptionButtons.forEach(button => {
+        const isSelected = button.dataset.shift === selectedShiftKey;
+        button.classList.toggle('selected', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+      });
+    }
+
+    function openShiftModalWindow() {
+      selectedShiftDate = normalizeDate(new Date(activeDate));
+      selectedShiftCalendarDate = new Date(selectedShiftDate);
+      selectedShiftCalendarDate.setDate(1);
+      renderShiftCalendar(selectedShiftCalendarDate);
+      updateShiftCalendarSelection();
+      updateShiftSelection(selectedShiftKey || '');
+      shiftModal.classList.remove('hidden');
+      shiftModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeShiftModalWindow() {
+      shiftModal.classList.add('hidden');
+      shiftModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function saveShiftModalSelection() {
+      const schedule = getShiftSchedule();
+      if (selectedShiftKey) {
+        schedule[formatLocalDate(selectedShiftDate)] = selectedShiftKey;
+      } else {
+        delete schedule[formatLocalDate(selectedShiftDate)];
+      }
+      saveShiftSchedule(schedule);
+      renderShiftSummary();
+      renderShiftCalendar(selectedShiftCalendarDate);
+      closeShiftModalWindow();
+    }
+
+    openShiftModalBtn.addEventListener('click', openShiftModalWindow);
+    closeShiftModal.addEventListener('click', closeShiftModalWindow);
+    cancelShiftModal.addEventListener('click', closeShiftModalWindow);
+    saveShiftModal.addEventListener('click', saveShiftModalSelection);
+    shiftOptionButtons.forEach(button => {
+      button.addEventListener('click', () => updateShiftSelection(button.dataset.shift));
+    });
+    shiftOffOptionButtons.forEach(button => {
+      button.addEventListener('click', () => updateShiftSelection(button.dataset.shift));
+    });
+    shiftCalendarPrev.addEventListener('click', () => {
+      selectedShiftCalendarDate.setMonth(selectedShiftCalendarDate.getMonth() - 1);
+      if (selectedShiftDate.getMonth() !== selectedShiftCalendarDate.getMonth() || selectedShiftDate.getFullYear() !== selectedShiftCalendarDate.getFullYear()) {
+        selectedShiftDate = new Date(selectedShiftCalendarDate.getFullYear(), selectedShiftCalendarDate.getMonth(), 1);
+      }
+      renderShiftCalendar(selectedShiftCalendarDate);
+      updateShiftCalendarSelection();
+    });
+    shiftCalendarNext.addEventListener('click', () => {
+      selectedShiftCalendarDate.setMonth(selectedShiftCalendarDate.getMonth() + 1);
+      if (selectedShiftDate.getMonth() !== selectedShiftCalendarDate.getMonth() || selectedShiftDate.getFullYear() !== selectedShiftCalendarDate.getFullYear()) {
+        selectedShiftDate = new Date(selectedShiftCalendarDate.getFullYear(), selectedShiftCalendarDate.getMonth(), 1);
+      }
+      renderShiftCalendar(selectedShiftCalendarDate);
+      updateShiftCalendarSelection();
+    });
+    shiftModal.addEventListener('click', (event) => {
+      if (event.target === shiftModal) {
+        closeShiftModalWindow();
+      }
+    });
+
+    function renderInitialRange() {
+      updateActiveRecordStatuses();
+      renderDateRange(activeDate);
+      renderDateColumns();
+      updateSummaryCards();
+      renderClientList();
+    }
+
+    setInterval(() => {
+      updateActiveRecordStatuses();
+      renderDateColumns();
+      updateSummaryCards();
+      if (!recordsOverviewModal.classList.contains('hidden')) {
+        renderRecordsOverview();
+      }
+    }, 60000);
+
+    renderInitialRange();
+  </script>
+</body>
+</html>

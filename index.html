@@ -1,0 +1,1511 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>HUMREY | Чоловічий манікюр та педикюр</title>
+  <meta name="description" content="HUMREY - преміальний чоловічий догляд: манікюр, педикюр, SPA та догляд за шкірою рук і стоп.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class='brand' href='#home'>HUMREY</a>
+    <nav class="nav">
+      <a href="#about">Про салон</a>
+      <a href="#team">Команда</a>
+      <a href="#services">Послуги</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#contact">Контакти</a>
+    </nav>
+    <div class="auth-buttons">
+      <button type="button" class='button button-secondary' id="loginTrigger">Вхід</button>
+      <button type="button" class='button button-secondary' id="registerTrigger">Реєстрація</button>
+      <span class="user-badge hidden" id="userBadge"></span>
+      <a class='button button-outline' href='booking.html'>Записатися</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <video id="heroVideo" class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/hero-poster.jpg">
+        <source src="https://cdn.coverr.co/videos/coverr-handsome-man-getting-manicure-4546/1080p.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div>
+      <div class="hero-scene" aria-hidden="true">
+        <span class="shape shape-1"></span>
+        <span class="shape shape-2"></span>
+        <span class="shape shape-3"></span>
+      </div>
+      <div class="hero-content">
+        <h1>HUMREY</h1>
+        <p class="hero-subtitle">men’s salon</p>
+        <p class="hero-text">Преміальний салон для чоловіків, які цінують якість, чистоту та впевненість у кожній деталі.</p>
+        <div class="hero-actions">
+          <a class='button button-primary' href='booking.html'>Записатися</a>
+          <a class='button button-secondary' href='#services'>Послуги</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="section-header">
+        <span>Про салон</span>
+        <h2>Преміальний догляд для чоловіків</h2>
+      </div>
+      <div class="about-grid">
+        <p>HUMREY - це чоловічий салон краси, де манікюр та педикюр перетворюються на частину стилю та догляду. Ми дбаємо про чистоту, комфорт і точність на кожному етапі.</p>
+        <div class="about-cards">
+          <div class="info-card">
+            <h3>Чистота та професіоналізм</h3>
+            <p>Стерильні інструменти, дбайливий підхід і ретельність у кожній процедурі.</p>
+          </div>
+          <div class="info-card">
+            <h3>Комфорт і конфіденційність</h3>
+            <p>Стриманий інтер'єр, усамітнена атмосфера та обслуговування без зайвого шуму.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section team" id="team">
+      <div class="section-header">
+        <span>Команда</span>
+        <h2>Майстри чоловічого догляду</h2>
+        <p class="section-copy">Ольга та Марина працюють з чоловічими руками, щоб кожен запис був стильним, ретельним та швидким.</p>
+      </div>
+      <div class="team-grid">
+        <article class="team-card">
+          <div class="team-avatar">
+            <img src="images/olgamaster.png" alt="Ольга">
+          </div>
+          <h3>Ольга</h3>
+          <p>Майстер нігтьового сервісу / чоловічий манікюр</p>
+        </article>
+        <article class="team-card">
+          <div class="team-avatar">
+            <img src="images/MarinaMaster.png" alt="Марина">
+          </div>
+          <h3>Марина</h3>
+          <p>Майстер нігтьового сервісу / чоловічий педикюр</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section price-list" id="services">
+      <div class="section-header">
+        <span>Послуги</span>
+        <h2>Усі послуги з прайс-листа</h2>
+      </div>
+      <div class="price-card">
+        <div class="price-category">
+          <h3>Manicure + Pedicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Parallel"><span>Parallel</span><strong>2000 UAH</strong></button>
+        </div>
+
+        <div class="price-category">
+          <h3>Manicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Манікюр Standard"><span>Манікюр Standard</span><strong>900 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Манікюр SPA"><span>Манікюр SPA</span><strong>1400 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="SPA догляд для рук"><span>SPA догляд для рук</span><strong>500 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Частковий манікюр"><span>Частковий манікюр</span><strong>500 UAH</strong></button>
+        </div>
+
+        <div class="price-category">
+          <h3>Pedicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр Standard"><span>Педикюр Standard</span><strong>1100 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр SPA"><span>Педикюр SPA</span><strong>1700 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="SPA догляд для ніг"><span>SPA догляд для ніг</span><strong>600 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Частковий педикюр"><span>Частковий педикюр</span><strong>600 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр подологічний"><span>Педикюр подологічний</span><strong>1550 UAH</strong></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section advantages">
+      <div class="section-header">
+        <span>Переваги</span>
+        <h2>Чому обирають HUMREY</h2>
+      </div>
+      <div class="advantages-grid">
+        <div class="advantage-item">
+          <h3>Тільки для чоловіків</h3>
+          <p>Послуги та атмосфера створені саме для чоловічої естетики і стилю.</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Преміальні матеріали</h3>
+          <p>Професійні засоби, якісні інструменти та увага до деталей.</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Сучасний інтер'єр</h3>
+          <p>Чорні, графітові та металеві акценти для стриманого, мужнього стилю.</p>
+        </div>
+        <div class="advantage-item">
+          <h3>Конфіденційність</h3>
+          <p>Особистий простір, де клієнт почувається зручно і розслаблено.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section gallery" id="gallery">
+      <div class="section-header">
+        <span>Галерея</span>
+        <h2>Стильний манікюр у кожній деталі</h2>
+        <p class="section-copy">Доглянуті руки та акуратні нігті - це перше враження, яке говорить за вас.</p>
+      </div>
+      <div class="gallery-wrapper">
+        <a class="gallery-nav gallery-nav--prev" href="#gallery-item-1" aria-label="Перейти до першої фотографії">‹</a>
+        <div class="gallery-slider" aria-label="Слайдер фотографій">
+          <div class="gallery-item" id="gallery-item-1">
+            <img src="images/gallery-1.jpg" alt="Чоловічий манікюр">
+          </div>
+          <div class="gallery-item" id="gallery-item-2">
+            <img src="images/gallery-2.jpg" alt="Педикюр у салоні">
+          </div>
+          <div class="gallery-item" id="gallery-item-3">
+            <img src="images/gallery-3.webp" alt="Доглянуті руки">
+          </div>
+          <div class="gallery-item" id="gallery-item-4">
+            <img src="images/gallery-4.jpg" alt="Салонний сервіс">
+          </div>
+          <div class="gallery-item" id="gallery-item-5">
+            <img src="images/gallery-5.jpg" alt="Стильний догляд">
+          </div>
+        </div>
+        <a class="gallery-nav gallery-nav--next" href="#gallery-item-5" aria-label="Перейти до останньої фотографії">›</a>
+      </div>
+    </section>
+
+    <section class="section testimonials">
+      <div class="section-header">
+        <span>Відгуки</span>
+        <h2>Лаконічно, чітко, без зайвого</h2>
+      </div>
+      <div class="testimonial-wrapper">
+        <a class="testimonial-nav testimonial-nav--prev" href="#testimonial-1" aria-label="Перейти до першого відгуку">‹</a>
+        <div class="testimonial-slider" aria-label="Слайдер відгуків">
+          <article class="testimonial-card" id="testimonial-1">
+            <p>«Швидко, акуратно і без зайвого шуму. Тут точно знають, як доглядати чоловічі руки.»</p>
+            <span>- Олексій, керівник</span>
+          </article>
+          <article class="testimonial-card" id="testimonial-2">
+            <p>«Професійний сервіс і стриманий інтер'єр. Відчувається справжня увага до деталей.»</p>
+            <span>- Денис, стиліст</span>
+          </article>
+          <article class="testimonial-card" id="testimonial-3">
+            <p>«Все чітко: запис, процедура, результат. Руки виглядають ідеально.»</p>
+            <span>- Андрій, підприємець</span>
+          </article>
+        </div>
+        <a class="testimonial-nav testimonial-nav--next" href="#testimonial-3" aria-label="Перейти до останнього відгуку">›</a>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq">
+      <div class="section-header">
+        <span>Часті запитання</span>
+        <h2>Відповіді на найпоширеніші питання</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Як записатися в «HUMREY»?</summary>
+          <div class="faq-content">
+            <p>Натисніть на кнопку «Записатися», оберіть зручний час і заповніть форму. Ми підтвердимо ваш запис протягом кількох хвилин.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Які послуги ви надаєте?</summary>
+          <div class="faq-content">
+            <p>Чоловічий манікюр, педикюр, SPA-догляд, лікувальні процедури для рук і стоп у стриманому інтер’єрі.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Чи потрібна попередня реєстрація?</summary>
+          <div class="faq-content">
+            <p>Так, ми працюємо за записом, щоб забезпечити комфорт і вчасне обслуговування кожного клієнта.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Які ціни на послуги?</summary>
+          <div class="faq-content">
+            <p>Ціни доступні у блоці «Послуги» на сайті. Якщо потрібна допомога з вибором — напишіть або зателефонуйте.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Чи приймаються кредитні картки?</summary>
+          <div class="faq-content">
+            <p>Так, ми приймаємо всі популярні кредитні та дебетові картки, а також безготівкові платежі.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Чи є подарункові сертифікати?</summary>
+          <div class="faq-content">
+            <p>Так, ми пропонуємо подарункові сертифікати на будь-які послуги — ідеально для подарунка близькій людині.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="section-header">
+        <span>Контакти</span>
+        <h2>Запишіться на сеанс чоловічого догляду</h2>
+      </div>
+      <div class="contact-grid contact-grid--map">
+        <div class="contact-stack">
+          <div class="contact-card">
+            <p class="contact-label">Адреса</p>
+            <p>вулиця Професора Підвисоцького, 3А, Київ, Україна</p>
+          </div>
+          <div class="contact-card">
+            <p class="contact-label">Телефон</p>
+            <p><a href="tel:+380970870000">+380 97 087 0000</a></p>
+          </div>
+          <div class="contact-card">
+            <p class="contact-label">Viber</p>
+            <p><a class="contact-link contact-link--viber" href="viber://contact?number=%2B380970870000">📱 Написати в Viber</a></p>
+          </div>
+          <div class="contact-card">
+            <p class="contact-label">WhatsApp</p>
+            <p><a class="contact-link contact-link--whatsapp" href="https://api.whatsapp.com/send/?phone=%2B380970870000" target="_blank" rel="noopener noreferrer">💬 Написати в WhatsApp</a></p>
+          </div>
+          <div class="contact-card">
+            <p class="contact-label">Графік</p>
+            <p>Пн-Сб: 10:00-21:00</p>
+          </div>
+        </div>
+        <div class="contact-card contact-card--map">
+          <iframe
+            class="contact-map"
+            src="https://maps.google.com/maps?width=100%25&height=600&q=%D0%B2%D1%83%D0%BB%D0%B8%D1%86%D1%8F%20%D0%9F%D1%80%D0%BE%D1%84%D0%B5%D1%81%D0%BE%D1%80%D0%B0%20%D0%9F%D1%96%D0%B4%D0%B2%D0%B8%D1%81%D0%BE%D1%86%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%2C%203%D0%90%2C%20Kyiv%2C%20Ukraine&ie=UTF8&t=&z=17&iwloc=B&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            aria-label="Карта місцезнаходження HUMREY"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="auth-overlay hidden" id="authModal" aria-hidden="true">
+    <div class="auth-modal">
+      <button type="button" class="auth-close" id="closeAuthModal">×</button>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="loginTab">Вхід</button>
+        <button type="button" class="auth-tab" id="registerTab">Реєстрація</button>
+      </div>
+      <div class="auth-content">
+        <form id="loginForm" class="auth-form">
+          <h3>Увійти</h3>
+          <div class="form-group">
+            <label for="loginUsername">Логін</label>
+            <input class="form-control" type="text" id="loginUsername" name="loginUsername" placeholder="Ваш логін" required>
+          </div>
+          <div class="form-group password-group">
+            <label for="loginPassword">Пароль</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="loginPassword" name="loginPassword" placeholder="••••••••" required>
+            </div>
+            <button type="button" class="password-toggle" data-target="loginPassword" aria-label="Показати пароль">
+              <span class="password-toggle-box"></span>
+              <span class="password-toggle-label">Показать пароль</span>
+              <span class="password-toggle-icon">👁</span>
+            </button>
+          </div>
+          <button class="button button-primary" type="submit">Увійти</button>
+        </form>
+        <form id="registerForm" class="auth-form hidden">
+          <h3>Реєстрація</h3>
+          <div class="form-group">
+            <label for="registerLogin">Логін</label>
+            <input class="form-control" type="text" id="registerLogin" name="registerLogin" placeholder="Ваш логін" required>
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input class="form-control" type="email" id="registerEmail" name="registerEmail" placeholder="example@mail.com" required>
+          </div>
+          <div class="form-group password-group">
+            <label for="registerPassword">Пароль</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="registerPassword" name="registerPassword" placeholder="••••••••" required>
+            </div>
+            <button type="button" class="password-toggle" data-target="registerPassword" aria-label="Показати пароль">
+              <span class="password-toggle-box"></span>
+              <span class="password-toggle-label">Показать пароль</span>
+              <span class="password-toggle-icon">👁</span>
+            </button>
+          </div>
+          <div class="form-group password-group">
+            <label for="registerConfirm">Підтвердження пароля</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="registerConfirm" name="registerConfirm" placeholder="••••••••" required>
+            </div>
+            <button type="button" class="password-toggle" data-target="registerConfirm" aria-label="Показати пароль">
+              <span class="password-toggle-box"></span>
+              <span class="password-toggle-label">Показать пароль</span>
+              <span class="password-toggle-icon">👁</span>
+            </button>
+          </div>
+          <button class="button button-primary" type="submit">Зареєструватися</button>
+        </form>
+      </div>
+      <p class="auth-message" id="authMessage"></p>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="profileModal" aria-hidden="true">
+    <div class="auth-modal">
+      <button type="button" class="auth-close" id="closeProfileModal">×</button>
+      <h3>Профіль</h3>
+      <p class="profile-summary" id="profileSummary">Тут відображається ваш акаунт.</p>
+      <div class="profile-actions">
+        <button type="button" class="button button-secondary hidden" id="adminAddButton">Додати адміністратора</button>
+        <button type="button" class="button button-secondary hidden" id="adminActiveRecordsButton">Активні записи</button>
+        <button type="button" class="button button-secondary hidden" id="adminSubscriptionButton">Підтвердження підписки</button>
+        <button type="button" class="button button-secondary hidden" id="adminEditSiteButton">Редагувати сайт</button>
+        <button type="button" class="button button-danger" id="profileLogout">Вийти</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="confirm-overlay hidden" id="subscriptionConfirmOverlay" aria-hidden="true">
+    <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <h2 id="confirmTitle">Підтвердження підписки</h2>
+      <p id="confirmMessage">Тут відображається платіж на підтвердження. Ви можете підтвердити або відхилити оплату.</p>
+      <p class="confirm-status" id="subscriptionConfirmStatus"></p>
+      <div class="confirm-actions">
+        <button class="button button-secondary" type="button" id="cancelSubscriptionConfirm">Відміна</button>
+        <button class="button button-primary" type="button" id="confirmSubscriptionBtn">Підтвердити</button>
+        <button class="button button-secondary" type="button" id="rejectSubscriptionBtn">Відхилити</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="siteEditorModal" aria-hidden="true">
+    <div class="auth-modal site-editor-modal">
+      <button type="button" class="auth-close" id="closeSiteEditorModal">×</button>
+      <h3>Редагувати сайт</h3>
+      <div class="auth-tabs site-editor-tabs">
+        <button type="button" class="auth-tab active" data-panel="servicesPanel">Послуги</button>
+        <button type="button" class="auth-tab" data-panel="galleryPanel">Галерея</button>
+        <button type="button" class="auth-tab" data-panel="reviewsPanel">Відгуки</button>
+      </div>
+      <div class="auth-content site-editor-content">
+        <section id="servicesPanel" class="site-editor-panel">
+          <div class="editor-section">
+            <h4>Послуги</h4>
+            <div class="editor-list" id="servicesEditorList"></div>
+            <form id="serviceForm" class="admin-add-form">
+              <h4>Додати або змінити послугу</h4>
+              <input type="hidden" id="serviceIndex" value="-1">
+              <div class="form-group">
+                <label for="serviceCategory">Категорія</label>
+                <input class="form-control" type="text" id="serviceCategory" placeholder="Manicure / Pedicure / Інше">
+              </div>
+              <div class="form-group">
+                <label for="serviceName">Назва послуги</label>
+                <input class="form-control" type="text" id="serviceName" placeholder="Манікюр Standard">
+              </div>
+              <div class="form-group">
+                <label for="servicePrice">Ціна</label>
+                <input class="form-control" type="text" id="servicePrice" placeholder="900">
+              </div>
+              <div class="editor-actions">
+                <button class="button button-primary" type="submit">Зберегти послугу</button>
+                <button type="button" class="button button-secondary" id="serviceFormReset">Очистити</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section id="galleryPanel" class="site-editor-panel hidden">
+          <div class="editor-section">
+            <h4>Галерея</h4>
+            <div class="editor-list" id="galleryEditorList"></div>
+            <form id="galleryForm" class="admin-add-form">
+              <h4>Додати або змінити фото</h4>
+              <input type="hidden" id="galleryIndex" value="-1">
+              <div class="form-group">
+                <label for="galleryFileInput">Файл зображення</label>
+                <div class="file-picker">
+                  <input type="file" class="file-input" id="galleryFileInput" accept="image/*">
+                  <button type="button" class="button button-secondary file-picker-button" id="galleryFileButton">Вибрати файл</button>
+                  <span class="file-picker-name" id="galleryFileName">Немає обраного файлу</span>
+                </div>
+                <div class="drop-zone" id="galleryDropZone">Перетягніть фото сюди або торкніться, щоб вибрати</div>
+              </div>
+              <div class="form-group">
+                <label for="galleryUrl">URL зображення</label>
+                <input class="form-control" type="text" id="galleryUrl" placeholder="images/gallery-6.jpg або data URL">
+              </div>
+              <div class="form-group">
+                <label for="galleryAlt">Підпис для фото</label>
+                <input class="form-control" type="text" id="galleryAlt" placeholder="Чоловічий манікюр">
+              </div>
+              <div class="editor-actions">
+                <button class="button button-primary" type="submit">Зберегти фото</button>
+                <button type="button" class="button button-secondary" id="galleryFormReset">Очистити</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section id="reviewsPanel" class="site-editor-panel hidden">
+          <div class="editor-section">
+            <h4>Відгуки</h4>
+            <div class="editor-list" id="reviewsEditorList"></div>
+            <form id="reviewForm" class="admin-add-form">
+              <h4>Додати або змінити відгук</h4>
+              <input type="hidden" id="reviewIndex" value="-1">
+              <div class="form-group">
+                <label for="reviewText">Техст відгуку</label>
+                <textarea class="form-control" id="reviewText" rows="3" placeholder="Текст відгуку"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="reviewAuthor">Автор</label>
+                <input class="form-control" type="text" id="reviewAuthor" placeholder="Ім’я, посада">
+              </div>
+              <div class="editor-actions">
+                <button class="button button-primary" type="submit">Зберегти відгук</button>
+                <button type="button" class="button button-secondary" id="reviewFormReset">Очистити</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <p class="auth-message" id="siteEditorMessage"></p>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="priceListModal" aria-hidden="true">
+    <div class="auth-modal price-modal">
+      <button type="button" class="auth-close" id="closePriceModal">×</button>
+      <h3>Прайс-лист</h3>
+      <div class="price-card">
+        <div class="price-category">
+          <h3>Manicure + Pedicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Parallel"><span>Parallel</span><strong>2000 UAH</strong></button>
+        </div>
+        <div class="price-category">
+          <h3>Manicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Манікюр Standard"><span>Манікюр Standard</span><strong>900 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Манікюр SPA"><span>Манікюр SPA</span><strong>1400 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="SPA догляд для рук"><span>SPA догляд для рук</span><strong>500 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Частковий манікюр"><span>Частковий манікюр</span><strong>500 UAH</strong></button>
+        </div>
+        <div class="price-category">
+          <h3>Pedicure</h3>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр Standard"><span>Педикюр Standard</span><strong>1100 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр SPA"><span>Педикюр SPA</span><strong>1700 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="SPA догляд для ніг"><span>SPA догляд для ніг</span><strong>600 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Частковий педикюр"><span>Частковий педикюр</span><strong>600 UAH</strong></button>
+          <button type="button" class="price-row price-row-button" data-service="Педикюр подологічний"><span>Педикюр подологічний</span><strong>1550 UAH</strong></button>
+        </div>
+      </div>
+      <div class="price-detail hidden" id="priceDetailPanel">
+        <h4 id="priceDetailTitle">Оберіть послугу</h4>
+        <p id="priceDetailDescription">Натисніть будь-яку послугу з прайсу, щоб побачити докладний опис.</p>
+        <p class="price-detail-price" id="priceDetailPrice"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>HUMREY - чоловічий манікюр та педикюр</span>
+    <span>© 2026</span>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginTrigger = document.getElementById('loginTrigger');
+      const registerTrigger = document.getElementById('registerTrigger');
+      const userBadge = document.getElementById('userBadge');
+      const authModal = document.getElementById('authModal');
+      const closeAuthModal = document.getElementById('closeAuthModal');
+      const loginTab = document.getElementById('loginTab');
+      const registerTab = document.getElementById('registerTab');
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const authMessage = document.getElementById('authMessage');
+      const loginUsername = document.getElementById('loginUsername');
+      const loginPassword = document.getElementById('loginPassword');
+      const registerLogin = document.getElementById('registerLogin');
+      const registerEmail = document.getElementById('registerEmail');
+      const registerPassword = document.getElementById('registerPassword');
+      const registerConfirm = document.getElementById('registerConfirm');
+      const profileModal = document.getElementById('profileModal');
+      const closeProfileButton = document.getElementById('closeProfileModal');
+      const profileSummary = document.getElementById('profileSummary');
+      const profileLogout = document.getElementById('profileLogout');
+      const adminAddButton = document.getElementById('adminAddButton');
+      const adminActiveRecordsButton = document.getElementById('adminActiveRecordsButton');
+      const adminSubscriptionButton = document.getElementById('adminSubscriptionButton');
+      const adminEditSiteButton = document.getElementById('adminEditSiteButton');
+      const siteEditorModal = document.getElementById('siteEditorModal');
+      const closeSiteEditorModal = document.getElementById('closeSiteEditorModal');
+      const siteEditorTabs = document.querySelectorAll('#siteEditorModal .site-editor-tabs .auth-tab');
+      const siteEditorPanels = document.querySelectorAll('#siteEditorModal .site-editor-panel');
+      const servicesEditorList = document.getElementById('servicesEditorList');
+      const galleryEditorList = document.getElementById('galleryEditorList');
+      const reviewsEditorList = document.getElementById('reviewsEditorList');
+      const touchState = { startX: null, startY: null };
+      const serviceForm = document.getElementById('serviceForm');
+      const galleryForm = document.getElementById('galleryForm');
+      const reviewForm = document.getElementById('reviewForm');
+      const serviceIndexInput = document.getElementById('serviceIndex');
+      const galleryIndexInput = document.getElementById('galleryIndex');
+      const reviewIndexInput = document.getElementById('reviewIndex');
+      const serviceCategoryInput = document.getElementById('serviceCategory');
+      const serviceNameInput = document.getElementById('serviceName');
+      const servicePriceInput = document.getElementById('servicePrice');
+      const galleryFileInput = document.getElementById('galleryFileInput');
+      const galleryDropZone = document.getElementById('galleryDropZone');
+      const galleryUrlInput = document.getElementById('galleryUrl');
+      const galleryAltInput = document.getElementById('galleryAlt');
+      const galleryFileButton = document.getElementById('galleryFileButton');
+      const galleryFileName = document.getElementById('galleryFileName');
+      const reviewTextInput = document.getElementById('reviewText');
+      const reviewAuthorInput = document.getElementById('reviewAuthor');
+      const siteEditorMessage = document.getElementById('siteEditorMessage');
+      const subscriptionConfirmOverlay = document.getElementById('subscriptionConfirmOverlay');
+      const cancelSubscriptionConfirm = document.getElementById('cancelSubscriptionConfirm');
+      const confirmSubscriptionBtn = document.getElementById('confirmSubscriptionBtn');
+      const rejectSubscriptionBtn = document.getElementById('rejectSubscriptionBtn');
+      const subscriptionConfirmStatus = document.getElementById('subscriptionConfirmStatus');
+      const passwordToggles = document.querySelectorAll('.password-toggle');
+
+      const storageUsersKey = 'humreyUsers';
+      const storageCurrentUserKey = 'humreyCurrentUser';
+
+      const getUsers = () => {
+        const saved = localStorage.getItem(storageUsersKey);
+        if (!saved) return [];
+        try {
+          return JSON.parse(saved);
+        } catch {
+          localStorage.removeItem(storageUsersKey);
+          return [];
+        }
+      };
+
+      const saveUsers = users => {
+        localStorage.setItem(storageUsersKey, JSON.stringify(users));
+      };
+
+      const normalizeValue = value => String(value || '').trim().toLowerCase();
+      const getCurrentUserLogin = () => localStorage.getItem(storageCurrentUserKey);
+      const getCurrentUserObj = () => {
+        const currentValue = getCurrentUserLogin();
+        if (!currentValue) return null;
+        const lookup = normalizeValue(currentValue);
+        const users = getUsers();
+        const user = users.find(user => normalizeValue(user.login) === lookup || normalizeValue(user.email) === lookup) || null;
+        if (user && !user.role) {
+          user.role = normalizeValue(user.login) === 'ownersite123' ? 'admin' : 'user';
+        }
+        if (!user && lookup === 'ownersite123') {
+          return { login: 'OwnerSite123', email: 'osnovnoyakk678@gmail.com', role: 'admin' };
+        }
+        return user;
+      };
+      const isAdminUser = () => {
+        const currentUser = getCurrentUserObj();
+        return !!currentUser && (normalizeValue(currentUser.login) === 'ownersite123' || currentUser.role === 'admin');
+      };
+      const setCurrentUser = login => localStorage.setItem(storageCurrentUserKey, login);
+      const clearCurrentUser = () => localStorage.removeItem(storageCurrentUserKey);
+
+      const initPasswordToggles = () => {
+        passwordToggles.forEach(toggle => {
+          const targetInput = document.getElementById(toggle.dataset.target);
+          if (!targetInput) return;
+          const icon = toggle.querySelector('.password-toggle-icon');
+          const label = toggle.querySelector('.password-toggle-label');
+          toggle.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const isHidden = targetInput.type === 'password';
+            targetInput.type = isHidden ? 'text' : 'password';
+            if (icon) icon.textContent = isHidden ? '🙈' : '👁';
+            if (label) label.textContent = isHidden ? 'Сховати пароль' : 'Показати пароль';
+            toggle.setAttribute('aria-label', isHidden ? 'Сховати пароль' : 'Показати пароль');
+          });
+        });
+      };
+
+      const syncStorageState = event => {
+        if (!event.key) return;
+        if (['humreyUsers', 'humreyCurrentUser'].includes(event.key)) {
+          updateAuthState();
+        }
+      };
+      window.addEventListener('storage', syncStorageState);
+
+      const openProfileModal = () => {
+        const currentUser = getCurrentUserObj();
+        const adminVisible = isAdminUser();
+        profileSummary.textContent = currentUser
+          ? `Ви в системі як ${currentUser.login}${adminVisible ? ' (Адмін)' : ''}`
+          : 'Ви не ввійшли в акаунт.';
+        setVisible(adminAddButton, adminVisible);
+        setVisible(adminActiveRecordsButton, adminVisible);
+        setVisible(adminSubscriptionButton, adminVisible);
+        setVisible(adminEditSiteButton, adminVisible);
+        profileModal.classList.remove('hidden');
+        profileModal.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeProfileModal = () => {
+        profileModal.classList.add('hidden');
+        profileModal.setAttribute('aria-hidden', 'true');
+      };
+
+      const handleSwipeStart = event => {
+        if (!event.touches || event.touches.length !== 1) return;
+        touchState.startX = event.touches[0].clientX;
+        touchState.startY = event.touches[0].clientY;
+      };
+
+      const showTopbar = () => document.body.classList.remove('topbar-hidden');
+      const hideTopbar = () => document.body.classList.add('topbar-hidden');
+
+      const handleSwipeEnd = event => {
+        if (touchState.startY === null || !event.changedTouches || event.changedTouches.length !== 1) return;
+        const dx = event.changedTouches[0].clientX - touchState.startX;
+        const dy = event.changedTouches[0].clientY - touchState.startY;
+        const threshold = 45;
+        const topAreaLimit = Math.min(window.innerHeight * 0.15, 100);
+        const startedNearTop = touchState.startY <= topAreaLimit;
+        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > threshold && startedNearTop) {
+          if (dy > 0) {
+            showTopbar();
+          } else {
+            hideTopbar();
+          }
+        }
+        touchState.startX = null;
+        touchState.startY = null;
+      };
+
+      const getPendingOrder = () => {
+        try {
+          return JSON.parse(localStorage.getItem('humrayPendingOrder')) || null;
+        } catch {
+          localStorage.removeItem('humrayPendingOrder');
+          return null;
+        }
+      };
+
+      const savePendingOrder = order => {
+        localStorage.setItem('humrayPendingOrder', JSON.stringify(order));
+      };
+
+      const getSavedCard = () => {
+        try {
+          return JSON.parse(localStorage.getItem('humrayCard')) || null;
+        } catch {
+          localStorage.removeItem('humrayCard');
+          return null;
+        }
+      };
+
+      const saveSubscription = subscription => {
+        localStorage.setItem('humraySubscription', JSON.stringify(subscription));
+      };
+
+      const getSubscriptionDuration = planKey => {
+        if (planKey === 'pro') return { durationMonths: 6 };
+        if (planKey === 'max') return { durationMonths: 12 };
+        return { durationMonths: 1 };
+      };
+
+      const calculateExpiryDate = ({ durationMonths = 0, durationDays = 0 } = {}) => {
+        const expiry = new Date();
+        if (durationDays) expiry.setDate(expiry.getDate() + durationDays);
+        if (durationMonths) expiry.setMonth(expiry.getMonth() + durationMonths);
+        return expiry;
+      };
+
+      const createSubscriptionFromOrder = order => {
+        if (!order || order.status !== 'confirmed') return null;
+        const card = getSavedCard() || {};
+        const duration = getSubscriptionDuration(order.planKey);
+        const expiresAt = calculateExpiryDate(duration).toISOString();
+        const subscription = {
+          email: card.email || '',
+          number: card.number || '',
+          expiry: card.expiry || '',
+          planName: order.planName || '',
+          durationMonths: duration.durationMonths || 0,
+          durationDays: duration.durationDays || 0,
+          expiresAt,
+          purchasedAt: new Date().toISOString(),
+          status: 'confirmed'
+        };
+        saveSubscription(subscription);
+        return subscription;
+      };
+
+      const formatOrderDate = isoDate => {
+        try {
+          return new Date(isoDate).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        } catch {
+          return isoDate || '—';
+        }
+      };
+
+      const updateSubscriptionConfirmUI = () => {
+        const order = getPendingOrder();
+        if (!order) {
+          document.getElementById('confirmTitle').textContent = 'Немає платіжних заявок';
+          document.getElementById('confirmMessage').textContent = 'Поки що немає платіжних заявок на підтвердження.';
+          subscriptionConfirmStatus.textContent = '';
+          confirmSubscriptionBtn.style.display = 'none';
+          rejectSubscriptionBtn.style.display = 'none';
+          return;
+        }
+
+        if (order.status === 'pending') {
+          document.getElementById('confirmTitle').textContent = 'Очікує підтвердження';
+          document.getElementById('confirmMessage').textContent = 'Є платіж, який потребує підтвердження або відхилення.';
+          subscriptionConfirmStatus.textContent = `План: ${order.planName} · Сума: ${order.amount} · Створено: ${formatOrderDate(order.createdAt)}`;
+          confirmSubscriptionBtn.style.display = '';
+          rejectSubscriptionBtn.style.display = '';
+          confirmSubscriptionBtn.disabled = false;
+          rejectSubscriptionBtn.disabled = false;
+          return;
+        }
+
+        if (order.status === 'confirmed') {
+          document.getElementById('confirmTitle').textContent = 'Платіж підтверджено';
+          document.getElementById('confirmMessage').textContent = 'Підписка успішно активована.';
+          subscriptionConfirmStatus.textContent = `План: ${order.planName} · Статус: підтверджено · Дата: ${formatOrderDate(order.createdAt)}`;
+          confirmSubscriptionBtn.style.display = 'none';
+          rejectSubscriptionBtn.style.display = 'none';
+          return;
+        }
+
+        if (order.status === 'rejected') {
+          document.getElementById('confirmTitle').textContent = 'Платіж відхилено';
+          document.getElementById('confirmMessage').textContent = 'Цей платіж було відхилено. Клієнту потрібно спробувати ще раз.';
+          subscriptionConfirmStatus.textContent = `План: ${order.planName} · Статус: відхилено · Дата: ${formatOrderDate(order.createdAt)}`;
+          confirmSubscriptionBtn.style.display = 'none';
+          rejectSubscriptionBtn.style.display = 'none';
+          return;
+        }
+
+        document.getElementById('confirmTitle').textContent = 'Статус платежу невідомий';
+        document.getElementById('confirmMessage').textContent = 'Неможливо визначити стан платежу. Спробуйте пізніше.';
+        subscriptionConfirmStatus.textContent = '';
+        confirmSubscriptionBtn.style.display = 'none';
+        rejectSubscriptionBtn.style.display = 'none';
+      };
+
+      const openSubscriptionConfirm = () => {
+        updateSubscriptionConfirmUI();
+        subscriptionConfirmOverlay.classList.remove('hidden');
+        subscriptionConfirmOverlay.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeSubscriptionConfirm = () => {
+        subscriptionConfirmOverlay.classList.add('hidden');
+        subscriptionConfirmOverlay.setAttribute('aria-hidden', 'true');
+      };
+
+      const showMessage = (message, type = 'error') => {
+        authMessage.textContent = message;
+        authMessage.className = 'auth-message ' + type;
+      };
+
+      const openModal = mode => {
+        authModal.classList.remove('hidden');
+        authModal.setAttribute('aria-hidden', 'false');
+        if (mode === 'register') {
+          loginForm.classList.add('hidden');
+          registerForm.classList.remove('hidden');
+          loginTab.classList.remove('active');
+          registerTab.classList.add('active');
+        } else {
+          loginForm.classList.remove('hidden');
+          registerForm.classList.add('hidden');
+          loginTab.classList.add('active');
+          registerTab.classList.remove('active');
+        }
+        showMessage('');
+      };
+
+      const closeModal = () => {
+        authModal.classList.add('hidden');
+        authModal.setAttribute('aria-hidden', 'true');
+      };
+
+      const setVisible = (element, visible) => {
+        if (!element) return;
+        if (visible) {
+          element.classList.remove('hidden');
+          element.style.display = '';
+        } else {
+          element.classList.add('hidden');
+          element.style.display = 'none';
+        }
+      };
+
+      const updateAuthState = () => {
+        const currentUser = getCurrentUserObj();
+        if (currentUser) {
+          userBadge.textContent = 'Привіт, ' + currentUser.login + (isAdminUser() ? ' (Адмін)' : '');
+        } else {
+          userBadge.textContent = '';
+        }
+        setVisible(userBadge, !!currentUser);
+        setVisible(loginTrigger, !currentUser);
+        setVisible(registerTrigger, !currentUser);
+      };
+
+      loginTrigger.addEventListener('click', () => openModal('login'));
+      registerTrigger.addEventListener('click', () => openModal('register'));
+      closeAuthModal.addEventListener('click', closeModal);
+      authModal.addEventListener('click', event => {
+        if (event.target === authModal) {
+          closeModal();
+        }
+      });
+      loginTab.addEventListener('click', () => openModal('login'));
+      registerTab.addEventListener('click', () => openModal('register'));
+      userBadge.addEventListener('click', openProfileModal);
+      closeProfileButton.addEventListener('click', closeProfileModal);
+      profileModal.addEventListener('click', event => {
+        if (event.target === profileModal) {
+          closeProfileModal();
+        }
+      });
+
+      document.body.addEventListener('touchstart', handleSwipeStart, { passive: true });
+      document.body.addEventListener('touchend', handleSwipeEnd, { passive: true });
+
+      profileLogout.addEventListener('click', () => {
+        clearCurrentUser();
+        updateAuthState();
+        closeProfileModal();
+        showMessage('Ви вийшли з акаунту.', 'success');
+      });
+
+      adminAddButton.addEventListener('click', () => {
+        const login = prompt('Логін нового адміністратора', 'OwnerSite123');
+        if (!login) return;
+        const email = prompt('Email адміністратора', 'osnovnoyakk678@gmail.com');
+        if (!email) return;
+        const users = getUsers();
+        const normalizedLogin = normalizeValue(login);
+        const normalizedEmail = normalizeValue(email);
+        if (users.some(item => normalizeValue(item.login) === normalizedLogin || normalizeValue(item.email) === normalizedEmail)) {
+          alert('Користувач з таким логіном або email вже існує.');
+          return;
+        }
+        users.push({ login: login, email: normalizedEmail, password: 'admin123', role: 'admin' });
+        saveUsers(users);
+        alert('Новий адміністратор додано.\nЛогін: ' + login + '\nПароль: admin123');
+      });
+      adminActiveRecordsButton.addEventListener('click', () => {
+        window.location.href = 'active-records.html';
+      });
+      adminSubscriptionButton.addEventListener('click', () => {
+        closeProfileModal();
+        openSubscriptionConfirm();
+      });
+      adminEditSiteButton.addEventListener('click', () => {
+        closeProfileModal();
+        openSiteEditor();
+      });
+
+      const storageSiteDataKey = 'humreySiteEditorData';
+      const initialEditorData = {
+        services: [
+          { category: 'Manicure + Pedicure', name: 'Parallel', price: '2000' },
+          { category: 'Manicure', name: 'Манікюр Standard', price: '900' },
+          { category: 'Manicure', name: 'Манікюр SPA', price: '1400' },
+          { category: 'Manicure', name: 'SPA догляд для рук', price: '500' },
+          { category: 'Manicure', name: 'Частковий манікюр', price: '500' },
+          { category: 'Pedicure', name: 'Педикюр Standard', price: '1100' },
+          { category: 'Pedicure', name: 'Педикюр SPA', price: '1700' },
+          { category: 'Pedicure', name: 'SPA догляд для ніг', price: '600' },
+          { category: 'Pedicure', name: 'Частковий педикюр', price: '600' },
+          { category: 'Pedicure', name: 'Педикюр подологічний', price: '1550' }
+        ],
+        gallery: [
+          { url: 'images/gallery-1.jpg', alt: 'Чоловічий манікюр' },
+          { url: 'images/gallery-2.jpg', alt: 'Педикюр у салоні' },
+          { url: 'images/gallery-3.webp', alt: 'Доглянуті руки' },
+          { url: 'images/gallery-4.jpg', alt: 'Салонний сервіс' },
+          { url: 'images/gallery-5.jpg', alt: 'Стильний догляд' }
+        ],
+        reviews: [
+          { text: '«Швидко, акуратно і без зайвого шуму. Тут точно знають, як доглядати чоловічі руки.»', author: '- Олексій, керівник' },
+          { text: '«Професійний сервіс і стриманий інтер’єр. Відчувається справжня увага до деталей.»', author: '- Денис, стиліст' },
+          { text: '«Все чітко: запис, процедура, результат. Руки виглядають ідеально.»', author: '- Андрій, підприємець' }
+        ]
+      };
+
+      const escapeHtml = value => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      const getSiteEditorData = () => {
+        const raw = localStorage.getItem(storageSiteDataKey);
+        if (!raw) return JSON.parse(JSON.stringify(initialEditorData));
+        try {
+          const parsed = JSON.parse(raw);
+          return {
+            services: Array.isArray(parsed.services) ? parsed.services : [],
+            gallery: Array.isArray(parsed.gallery) ? parsed.gallery : [],
+            reviews: Array.isArray(parsed.reviews) ? parsed.reviews : []
+          };
+        } catch {
+          return JSON.parse(JSON.stringify(initialEditorData));
+        }
+      };
+
+      const saveSiteEditorData = data => {
+        localStorage.setItem(storageSiteDataKey, JSON.stringify(data));
+      };
+
+      const normalizePrice = value => String(value || '').replace(/[^\d]/g, '').trim();
+      const formatServicePrice = value => {
+        const numeric = normalizePrice(value);
+        return numeric ? `${numeric} UAH` : '';
+      };
+
+      const renderFrontPage = () => {
+        const data = getSiteEditorData();
+        const priceCard = document.querySelector('#services .price-card');
+        if (priceCard) {
+          const detailPanel = priceCard.querySelector('#priceDetailPanel');
+          const detailHtml = detailPanel ? detailPanel.outerHTML : '';
+          const grouped = data.services.reduce((result, item) => {
+            const key = item.category?.trim() || 'Інші послуги';
+            if (!result[key]) result[key] = [];
+            result[key].push(item);
+            return result;
+          }, {});
+          priceCard.innerHTML = Object.entries(grouped).map(([category, items]) => {
+            return `<div class="price-category"><h3>${escapeHtml(category)}</h3>${items.map(service => `<button type="button" class="price-row price-row-button" data-service="${escapeHtml(service.name)}"><span>${escapeHtml(service.name)}</span><strong>${escapeHtml(formatServicePrice(service.price))}</strong></button>`).join('')}</div>`;
+          }).join('') + detailHtml;
+        }
+
+        const gallerySlider = document.querySelector('.gallery-slider');
+        if (gallerySlider) {
+          gallerySlider.innerHTML = data.gallery.map((item, index) => `<div class="gallery-item" id="gallery-item-${index + 1}"><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.alt)}"></div>`).join('');
+          const galleryPrev = document.querySelector('.gallery-nav--prev');
+          const galleryNext = document.querySelector('.gallery-nav--next');
+          if (galleryPrev) galleryPrev.href = `#gallery-item-${Math.max(data.gallery.length, 1)}`;
+          if (galleryNext) galleryNext.href = `#gallery-item-1`;
+        }
+
+        const testimonialSlider = document.querySelector('.testimonial-slider');
+        if (testimonialSlider) {
+          testimonialSlider.innerHTML = data.reviews.map((item, index) => `<article class="testimonial-card" id="testimonial-${index + 1}"><p>${escapeHtml(item.text)}</p><span>${escapeHtml(item.author)}</span></article>`).join('');
+          const testimonialPrev = document.querySelector('.testimonial-nav--prev');
+          const testimonialNext = document.querySelector('.testimonial-nav--next');
+          if (testimonialPrev) testimonialPrev.href = `#testimonial-${Math.max(data.reviews.length, 1)}`;
+          if (testimonialNext) testimonialNext.href = `#testimonial-1`;
+        }
+      };
+
+      const resetSliderControls = () => {
+        ['.gallery-nav--prev', '.gallery-nav--next', '.testimonial-nav--prev', '.testimonial-nav--next'].forEach(selector => {
+          const element = document.querySelector(selector);
+          if (element && element.parentNode) {
+            element.parentNode.replaceChild(element.cloneNode(true), element);
+          }
+        });
+      };
+
+      const showSiteEditorMessage = (message, type = 'success') => {
+        if (!siteEditorMessage) return;
+        siteEditorMessage.textContent = message;
+        siteEditorMessage.className = `auth-message ${type}`;
+      };
+
+      const setEditorPanel = panelId => {
+        siteEditorTabs.forEach(tab => {
+          tab.classList.toggle('active', tab.dataset.panel === panelId);
+        });
+        siteEditorPanels.forEach(panel => {
+          panel.classList.toggle('hidden', panel.id !== panelId);
+        });
+      };
+
+      const resetServiceForm = () => {
+        serviceIndexInput.value = '-1';
+        serviceCategoryInput.value = '';
+        serviceNameInput.value = '';
+        servicePriceInput.value = '';
+      };
+
+      const resetGalleryForm = () => {
+        galleryIndexInput.value = '-1';
+        galleryUrlInput.value = '';
+        galleryAltInput.value = '';
+        if (galleryFileInput) galleryFileInput.value = '';
+        if (galleryFileName) galleryFileName.textContent = 'Немає обраного файлу';
+        if (galleryDropZone) galleryDropZone.classList.remove('drag-over');
+      };
+
+      const resetReviewForm = () => {
+        reviewIndexInput.value = '-1';
+        reviewTextInput.value = '';
+        reviewAuthorInput.value = '';
+      };
+
+      const readImageFile = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+
+      const setGalleryImageFromFile = async file => {
+        if (!file || !galleryUrlInput) return;
+        try {
+          const dataUrl = await readImageFile(file);
+          galleryUrlInput.value = dataUrl;
+          if (siteEditorMessage) {
+            siteEditorMessage.textContent = 'Фото вибране. Тепер натисніть Зберегти.';
+            siteEditorMessage.className = 'auth-message success';
+          }
+        } catch {
+          if (siteEditorMessage) {
+            siteEditorMessage.textContent = 'Не вдалося прочитати файл зображення.';
+            siteEditorMessage.className = 'auth-message error';
+          }
+        }
+      };
+
+      const renderSiteEditor = () => {
+        const data = getSiteEditorData();
+        servicesEditorList.innerHTML = data.services.map((item, index) => `
+          <div class="editor-item">
+            <div class="editor-item-header">
+              <strong>${escapeHtml(item.category)} / ${escapeHtml(item.name)}</strong>
+              <span>${escapeHtml(formatServicePrice(item.price))}</span>
+            </div>
+            <p class="editor-item-meta">Категорія: ${escapeHtml(item.category)}</p>
+            <div class="editor-actions">
+              <button type="button" class="button button-secondary edit-service" data-index="${index}">Редагувати</button>
+              <button type="button" class="button button-danger delete-service" data-index="${index}">Видалити</button>
+            </div>
+          </div>
+        `).join('');
+        galleryEditorList.innerHTML = data.gallery.map((item, index) => `
+          <div class="editor-item">
+            <div class="editor-item-header">
+              <strong>${escapeHtml(item.alt || item.url)}</strong>
+              <span>${escapeHtml(item.url)}</span>
+            </div>
+            <div class="editor-actions">
+              <button type="button" class="button button-secondary edit-gallery" data-index="${index}">Редагувати</button>
+              <button type="button" class="button button-danger delete-gallery" data-index="${index}">Видалити</button>
+            </div>
+          </div>
+        `).join('');
+        reviewsEditorList.innerHTML = data.reviews.map((item, index) => `
+          <div class="editor-item">
+            <div class="editor-item-header">
+              <strong>${escapeHtml(item.author)}</strong>
+              <span>${escapeHtml(item.text.substring(0, 40))}${item.text.length > 40 ? '…' : ''}</span>
+            </div>
+            <div class="editor-actions">
+              <button type="button" class="button button-secondary edit-review" data-index="${index}">Редагувати</button>
+              <button type="button" class="button button-danger delete-review" data-index="${index}">Видалити</button>
+            </div>
+          </div>
+        `).join('');
+        resetServiceForm();
+        resetGalleryForm();
+        resetReviewForm();
+      };
+
+      const openSiteEditor = () => {
+        renderSiteEditor();
+        setEditorPanel('servicesPanel');
+        siteEditorModal.classList.remove('hidden');
+        siteEditorModal.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeSiteEditor = () => {
+        siteEditorModal.classList.add('hidden');
+        siteEditorModal.setAttribute('aria-hidden', 'true');
+      };
+
+      if (closeSiteEditorModal) {
+        closeSiteEditorModal.addEventListener('click', closeSiteEditor);
+      }
+      if (siteEditorModal) {
+        siteEditorModal.addEventListener('click', event => {
+          if (event.target === siteEditorModal) {
+            closeSiteEditor();
+          }
+        });
+      }
+
+      siteEditorTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          setEditorPanel(tab.dataset.panel);
+        });
+      });
+
+      servicesEditorList.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const index = Number(button.dataset.index);
+        const data = getSiteEditorData();
+        if (button.classList.contains('edit-service')) {
+          const item = data.services[index];
+          if (!item) return;
+          serviceIndexInput.value = index;
+          serviceCategoryInput.value = item.category || '';
+          serviceNameInput.value = item.name || '';
+          servicePriceInput.value = item.price || '';
+          setEditorPanel('servicesPanel');
+        }
+        if (button.classList.contains('delete-service')) {
+          if (!confirm('Видалити цю послугу?')) return;
+          data.services.splice(index, 1);
+          saveSiteEditorData(data);
+          renderSiteEditor();
+          renderFrontPage();
+        }
+      });
+
+      galleryEditorList.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const index = Number(button.dataset.index);
+        const data = getSiteEditorData();
+        if (button.classList.contains('edit-gallery')) {
+          const item = data.gallery[index];
+          if (!item) return;
+          galleryIndexInput.value = index;
+          galleryUrlInput.value = item.url || '';
+          galleryAltInput.value = item.alt || '';
+          setEditorPanel('galleryPanel');
+        }
+        if (button.classList.contains('delete-gallery')) {
+          if (!confirm('Видалити це фото?')) return;
+          data.gallery.splice(index, 1);
+          saveSiteEditorData(data);
+          renderSiteEditor();
+          renderFrontPage();
+        }
+      });
+
+      reviewsEditorList.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        const index = Number(button.dataset.index);
+        const data = getSiteEditorData();
+        if (button.classList.contains('edit-review')) {
+          const item = data.reviews[index];
+          if (!item) return;
+          reviewIndexInput.value = index;
+          reviewTextInput.value = item.text || '';
+          reviewAuthorInput.value = item.author || '';
+          setEditorPanel('reviewsPanel');
+        }
+        if (button.classList.contains('delete-review')) {
+          if (!confirm('Видалити цей відгук?')) return;
+          data.reviews.splice(index, 1);
+          saveSiteEditorData(data);
+          renderSiteEditor();
+          renderFrontPage();
+        }
+      });
+
+      serviceForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const data = getSiteEditorData();
+        const index = Number(serviceIndexInput.value);
+        const newItem = {
+          category: serviceCategoryInput.value.trim() || 'Інші послуги',
+          name: serviceNameInput.value.trim(),
+          price: normalizePrice(servicePriceInput.value)
+        };
+        if (!newItem.name || !newItem.price) {
+          showSiteEditorMessage('Вкажіть назву та ціну послуги.', 'error');
+          return;
+        }
+        if (index >= 0 && data.services[index]) {
+          data.services[index] = newItem;
+        } else {
+          data.services.push(newItem);
+        }
+        saveSiteEditorData(data);
+        renderSiteEditor();
+        renderFrontPage();
+        showSiteEditorMessage('Послугу збережено.', 'success');
+      });
+
+      const updateGalleryFileName = file => {
+        if (!galleryFileName) return;
+        galleryFileName.textContent = file ? file.name : 'Немає обраного файлу';
+      };
+
+      if (galleryFileInput) {
+        galleryFileInput.addEventListener('change', event => {
+          const file = event.target.files && event.target.files[0];
+          updateGalleryFileName(file);
+          if (file) {
+            setGalleryImageFromFile(file);
+          }
+        });
+      }
+
+      if (galleryFileButton) {
+        galleryFileButton.addEventListener('click', () => {
+          if (galleryFileInput) galleryFileInput.click();
+        });
+      }
+
+      if (galleryDropZone) {
+        const preventDefaults = event => {
+          event.preventDefault();
+          event.stopPropagation();
+        };
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(name => {
+          galleryDropZone.addEventListener(name, preventDefaults);
+        });
+
+        ['dragenter', 'dragover'].forEach(name => {
+          galleryDropZone.addEventListener(name, () => galleryDropZone.classList.add('drag-over'));
+        });
+
+        ['dragleave', 'drop'].forEach(name => {
+          galleryDropZone.addEventListener(name, () => galleryDropZone.classList.remove('drag-over'));
+        });
+
+        galleryDropZone.addEventListener('drop', event => {
+          const file = event.dataTransfer?.files && event.dataTransfer.files[0];
+          if (file) {
+            setGalleryImageFromFile(file);
+          }
+        });
+
+        galleryDropZone.addEventListener('click', () => {
+          if (galleryFileInput) galleryFileInput.click();
+        });
+      }
+
+      galleryForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const data = getSiteEditorData();
+        const index = Number(galleryIndexInput.value);
+        const newItem = {
+          url: galleryUrlInput.value.trim(),
+          alt: galleryAltInput.value.trim() || ''
+        };
+        if (!newItem.url) {
+          showSiteEditorMessage('Вкажіть фото або URL.', 'error');
+          return;
+        }
+        if (index >= 0 && data.gallery[index]) {
+          data.gallery[index] = newItem;
+        } else {
+          data.gallery.push(newItem);
+        }
+        saveSiteEditorData(data);
+        renderSiteEditor();
+        renderFrontPage();
+        showSiteEditorMessage('Фото збережено.', 'success');
+      });
+
+      reviewForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const data = getSiteEditorData();
+        const index = Number(reviewIndexInput.value);
+        const newItem = {
+          text: reviewTextInput.value.trim(),
+          author: reviewAuthorInput.value.trim()
+        };
+        if (!newItem.text || !newItem.author) {
+          showSiteEditorMessage('Вкажіть текст та автора відгуку.', 'error');
+          return;
+        }
+        if (index >= 0 && data.reviews[index]) {
+          data.reviews[index] = newItem;
+        } else {
+          data.reviews.push(newItem);
+        }
+        saveSiteEditorData(data);
+        renderSiteEditor();
+        renderFrontPage();
+        showSiteEditorMessage('Відгук збережено.', 'success');
+      });
+
+      document.getElementById('serviceFormReset').addEventListener('click', resetServiceForm);
+      document.getElementById('galleryFormReset').addEventListener('click', resetGalleryForm);
+      document.getElementById('reviewFormReset').addEventListener('click', resetReviewForm);
+
+      renderFrontPage();
+      resetSliderControls();
+      initHorizontalSlider({
+        sliderSelector: '.testimonial-slider',
+        itemSelector: '.testimonial-card',
+        prevSelector: '.testimonial-nav--prev',
+        nextSelector: '.testimonial-nav--next'
+      });
+      initHorizontalSlider({
+        sliderSelector: '.gallery-slider',
+        itemSelector: '.gallery-item',
+        prevSelector: '.gallery-nav--prev',
+        nextSelector: '.gallery-nav--next'
+      });
+
+      confirmSubscriptionBtn.addEventListener('click', () => {
+        const order = getPendingOrder();
+        if (!order || order.status !== 'pending') return;
+        order.status = 'confirmed';
+        savePendingOrder(order);
+        createSubscriptionFromOrder(order);
+        updateSubscriptionConfirmUI();
+      });
+      rejectSubscriptionBtn.addEventListener('click', () => {
+        const order = getPendingOrder();
+        if (!order || order.status !== 'pending') return;
+        order.status = 'rejected';
+        savePendingOrder(order);
+        updateSubscriptionConfirmUI();
+      });
+      subscriptionConfirmOverlay.addEventListener('click', event => {
+        if (event.target === subscriptionConfirmOverlay) {
+          closeSubscriptionConfirm();
+        }
+      });
+
+      loginForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const loginValue = normalizeValue(loginUsername.value);
+        const password = loginPassword.value;
+        if (!loginValue || !password) {
+          showMessage('Введіть логін або email та пароль.');
+          return;
+        }
+        const users = getUsers();
+        const user = users.find(item => normalizeValue(item.login) === loginValue || normalizeValue(item.email) === loginValue);
+        if (!user || user.password !== password) {
+          showMessage('Невірний логін або пароль. Перевірте, чи правильно ввели дані.');
+          return;
+        }
+        setCurrentUser(user.login);
+        updateAuthState();
+        loginForm.reset();
+        registerForm.reset();
+        closeModal();
+        showMessage('Ви успішно увійшли в акаунт.', 'success');
+      });
+
+      registerForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const loginValue = registerLogin.value.trim();
+        const emailValue = normalizeValue(registerEmail.value);
+        const password = registerPassword.value;
+        const confirmPassword = registerConfirm.value;
+
+        if (!loginValue || !emailValue || !password || !confirmPassword) {
+          showMessage('Заповніть усі поля реєстрації.');
+          return;
+        }
+        if (password !== confirmPassword) {
+          showMessage('Паролі не співпадають.');
+          return;
+        }
+
+        const users = getUsers();
+        if (users.some(item => normalizeValue(item.login) === normalizeValue(loginValue))) {
+          showMessage('Такий логін вже існує. Виберіть інший.');
+          return;
+        }
+        if (users.some(item => normalizeValue(item.email) === emailValue)) {
+          showMessage('Така пошта вже зареєстрована.');
+          return;
+        }
+        const role = normalizeValue(loginValue) === 'ownersite123' ? 'admin' : 'user';
+        users.push({ login: loginValue, email: emailValue, password, role });
+        saveUsers(users);
+        setCurrentUser(loginValue);
+        updateAuthState();
+        loginForm.reset();
+        registerForm.reset();
+        closeModal();
+        showMessage('Реєстрація пройшла успішно.', 'success');
+      });
+
+      initPasswordToggles();
+      updateAuthState();
+    });
+
+      const initHorizontalSlider = ({ sliderSelector, itemSelector, prevSelector, nextSelector }) => {
+        const slider = document.querySelector(sliderSelector);
+        const items = Array.from(document.querySelectorAll(itemSelector));
+        const prevArrow = document.querySelector(prevSelector);
+        const nextArrow = document.querySelector(nextSelector);
+        if (!slider || items.length === 0 || !prevArrow || !nextArrow) return;
+
+        let currentIndex = 0;
+
+        const updateArrowTargets = index => {
+          currentIndex = (index + items.length) % items.length;
+          prevArrow.href = `#${items[(currentIndex + items.length - 1) % items.length].id}`;
+          nextArrow.href = `#${items[(currentIndex + 1) % items.length].id}`;
+        };
+
+        const scrollToIndex = index => {
+          const nextIndex = (index + items.length) % items.length;
+          const target = items[nextIndex];
+          if (!target) return;
+          const offset = target.offsetLeft - ((slider.clientWidth - target.clientWidth) / 2);
+          slider.scrollTo({ left: offset, behavior: 'smooth' });
+          updateArrowTargets(nextIndex);
+        };
+
+        prevArrow.addEventListener('click', event => {
+          event.preventDefault();
+          scrollToIndex(currentIndex - 1);
+        });
+
+        nextArrow.addEventListener('click', event => {
+          event.preventDefault();
+          scrollToIndex(currentIndex + 1);
+        });
+
+        slider.addEventListener('wheel', event => {
+          if (event.deltaY === 0 && event.deltaX === 0) return;
+          event.preventDefault();
+          slider.scrollBy({ left: event.deltaY || event.deltaX, behavior: 'smooth' });
+        }, { passive: false });
+
+        slider.addEventListener('scroll', () => {
+          const center = slider.scrollLeft + slider.clientWidth / 2;
+          const nearestIndex = items.reduce((closest, item, index) => {
+            const distance = Math.abs(item.offsetLeft + item.clientWidth / 2 - center);
+            return distance < closest.distance ? { index, distance } : closest;
+          }, { index: currentIndex, distance: Infinity }).index;
+          if (nearestIndex !== currentIndex) updateArrowTargets(nearestIndex);
+        });
+
+        scrollToIndex(0);
+      };
+
+      initHorizontalSlider({
+        sliderSelector: '.testimonial-slider',
+        itemSelector: '.testimonial-card',
+        prevSelector: '.testimonial-nav--prev',
+        nextSelector: '.testimonial-nav--next'
+      });
+
+      updateAuthState();
+  </script>
+</body>
+</html>
+
+
+

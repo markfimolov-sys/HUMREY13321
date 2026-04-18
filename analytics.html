@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Аналитика записей</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; background: linear-gradient(180deg, #08111d 0%, #0b121b 55%, #101a27 100%); color: #f1efe9; }
+    a { color: inherit; text-decoration: none; }
+    .page { padding: 28px 32px; display: grid; gap: 22px; }
+    .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 26px; background: rgba(12, 16, 24, 0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; backdrop-filter: blur(12px); }
+    .topbar h1 { margin: 0; font-size: clamp(1.5rem, 2.2vw, 2.2rem); letter-spacing: 0.03em; }
+    .topbar .back-link { display: inline-flex; align-items: center; gap: 0.55rem; padding: 12px 18px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-weight: 700; }
+    .overview-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 20px; }
+    .overview-card { padding: 24px; border-radius: 28px; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 34px 90px rgba(0,0,0,0.25); min-height: 180px; display: flex; flex-direction: column; justify-content: space-between; }
+    .overview-card .label { color: #c8bfae; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.78rem; margin-bottom: 14px; }
+    .overview-card .value { color: #fff; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; margin: 0; }
+    .overview-card .note { color: rgba(241,239,233,0.75); line-height: 1.6; margin: 16px 0 0; }
+    .chart-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+    .panel { padding: 24px; border-radius: 28px; background: rgba(11, 16, 26, 0.94); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 34px 90px rgba(0,0,0,0.22); }
+    .panel h2 { margin: 0 0 18px; font-size: 1.2rem; color: #fff; }
+    .stat-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 18px; margin-bottom: 16px; }
+    .stat-row:last-child { margin-bottom: 0; }
+    .bar-list { display: grid; gap: 12px; }
+    .bar-item { display: grid; gap: 8px; }
+    .bar-title { display: flex; justify-content: space-between; color: #cfc7bd; font-size: 0.96rem; }
+    .bar-track { height: 14px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, rgba(184,155,109,0.9), rgba(255,255,255,0.22)); }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .table th { color: #c8bfae; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.12em; }
+    .table td { color: #f1efe9; font-size: 0.95rem; }
+    .table tr:last-child td { border-bottom: none; }
+    .pill { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.09); color: #f1efe9; font-size: 0.85rem; }
+    .panel.small { min-height: 320px; }
+    .page { position: relative; }
+    .page.blurred { filter: blur(10px); pointer-events: none; user-select: none; }
+    .subscription-blocker { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(2, 6, 12, 0.84); z-index: 50; padding: 24px; }
+    .subscription-blocker.hidden { display: none; }
+    .subscription-blocker__content { max-width: 520px; width: 100%; padding: 32px; border-radius: 28px; background: rgba(8, 12, 24, 0.98); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 32px 80px rgba(0,0,0,0.35); text-align: center; }
+    .subscription-blocker__content h2 { margin: 0 0 14px; font-size: clamp(1.5rem, 2.4vw, 2rem); color: #ffffff; }
+    .subscription-blocker__content p { margin: 0 0 24px; color: rgba(241,239,233,0.85); line-height: 1.6; }
+    .subscription-blocker__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+    .subscription-blocker__actions .pill { min-width: 180px; }
+    body.light-theme { background: #f8fafc; color: #1f2937; }
+    body.light-theme a { color: inherit; }
+    body.light-theme .topbar { background: #ffffff; border-color: rgba(148,163,184,0.3); }
+    body.light-theme .topbar .back-link { background: rgba(15,23,42,0.18); border-color: rgba(15,23,42,0.18); color: #ffffff; }
+    body.light-theme .overview-card,
+    body.light-theme .panel { background: #ffffff; border-color: rgba(148,163,184,0.3); box-shadow: 0 24px 60px rgba(15,23,42,0.08); }
+    body.light-theme .overview-card .label,
+    body.light-theme .bar-title,
+    body.light-theme .table th { color: #475569; }
+    body.light-theme .overview-card .value { color: #111827; }
+    body.light-theme .overview-card .note,
+    body.light-theme .table td { color: #6b7280; }
+    body.light-theme .panel h2 { color: #111827; }
+    body.light-theme .stat-row .bar-title span { color: #475569; }
+    body.light-theme .bar-track { background: rgba(15,23,42,0.08); }
+    body.light-theme .bar-fill { background: linear-gradient(90deg, rgba(184,155,109,0.9), rgba(249,115,22,0.55)); }
+    body.light-theme .pill { background: rgba(15,23,42,0.06); border-color: rgba(15,23,42,0.12); color: #111827; }
+    @media (max-width: 980px) { .overview-grid, .chart-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 620px) { .page { padding: 18px 16px; } }
+    @media (max-width: 480px) { 
+      .page { padding: 12px 12px; }
+      .topbar { padding: 16px 12px; flex-direction: column; gap: 12px; }
+      .topbar h1 { font-size: 1.2rem; }
+      .topbar p { font-size: 0.8rem; margin: 6px 0 0 !important; }
+      .overview-grid, .chart-grid { gap: 12px; }
+      .panel { padding: 14px; }
+      .panel h2 { font-size: 1rem; }
+      .stat-row { gap: 8px; }
+      .stat-row .bar-title span { font-size: 0.75rem; }
+      .bar-track { height: 6px; border-radius: 3px; }
+    }
+    @media (max-width: 375px) {
+      .page { padding: 10px 10px; }
+      .topbar { padding: 12px 10px; }
+      .topbar h1 { font-size: 1.1rem; }
+      .panel { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div>
+        <h1>Аналитика записей</h1>
+        <p style="margin:8px 0 0;color:#cfc7bd;">Здесь собраны доходы, статистика и история прошлых записей.</p>
+      </div>
+      <a class="back-link" href="active-records.html">← Назад к записям</a>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <span class="label">Доход за месяц</span>
+        <p class="value" id="monthlyIncomeValue">0 грн</p>
+        <p class="note">Общий доход по всем записям, включая оплату картой и наличными.</p>
+      </div>
+      <div class="overview-card">
+        <span class="label">Записей всего</span>
+        <p class="value" id="totalRecordsValue">0</p>
+        <p class="note">Количество всех записанных услуг за текущий период.</p>
+      </div>
+      <div class="overview-card">
+        <span class="label">Средний чек</span>
+        <p class="value" id="averageCheckValue">0 грн</p>
+        <p class="note">Средняя стоимость одного сеанса клиента.</p>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="panel">
+        <h2>Доход по мастерам</h2>
+        <div class="bar-list">
+          <div class="bar-item">
+            <div class="bar-title"><span>Ольга</span><span id="olgaValue">0 грн</span></div>
+            <div class="bar-track"><div class="bar-fill" id="olgaFill" style="width:0%;"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-title"><span>Марина</span><span id="marinaValue">0 грн</span></div>
+            <div class="bar-track"><div class="bar-fill" id="marinaFill" style="width:0%;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel small">
+        <h2>История записей</h2>
+        <table class="table">
+          <thead>
+            <tr><th>Дата</th><th>Мастер</th><th>Сумма</th></tr>
+          </thead>
+          <tbody id="historyBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="subscription-blocker hidden" id="subscriptionBlocker" aria-hidden="true">
+    <div class="subscription-blocker__content">
+      <h2>Аналитика доступна только по подписке</h2>
+      <p>Оформите подписку, чтобы открыть статистику доходов и историю записей.</p>
+      <div class="subscription-blocker__actions">
+        <a class="pill subscription-pill" href="subscription.html">Оформить подписку</a>
+        <a class="pill" href="active-records.html">Вернуться к записям</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    function loadAnalyticsRecords() {
+      const saved = localStorage.getItem('salonRecords');
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function formatCurrency(value) {
+      return `${value} грн`;
+    }
+
+    function getAnalyticsPrice(rec) {
+      return rec.service === 'Parallel (Manicure + Pedicure)' ? 1000 : (rec.price || 0);
+    }
+
+    function renderAnalytics() {
+      const records = loadAnalyticsRecords();
+      const totalRevenue = records.reduce((sum, rec) => sum + getAnalyticsPrice(rec), 0);
+      const totalRecords = records.length;
+      const averageCheck = totalRecords ? Math.round(totalRevenue / totalRecords) : 0;
+      const olgaRevenue = records.filter(rec => rec.master === 'Ольга').reduce((sum, rec) => sum + getAnalyticsPrice(rec), 0);
+      const marinaRevenue = records.filter(rec => rec.master === 'Марина').reduce((sum, rec) => sum + getAnalyticsPrice(rec), 0);
+      const maxRevenue = Math.max(olgaRevenue, marinaRevenue, 1);
+
+      document.getElementById('monthlyIncomeValue').textContent = formatCurrency(totalRevenue);
+      document.getElementById('totalRecordsValue').textContent = totalRecords;
+      document.getElementById('averageCheckValue').textContent = formatCurrency(averageCheck);
+      document.getElementById('olgaValue').textContent = formatCurrency(olgaRevenue);
+      document.getElementById('marinaValue').textContent = formatCurrency(marinaRevenue);
+      document.getElementById('olgaFill').style.width = `${Math.round((olgaRevenue / maxRevenue) * 100)}%`;
+      document.getElementById('marinaFill').style.width = `${Math.round((marinaRevenue / maxRevenue) * 100)}%`;
+
+      const historyBody = document.getElementById('historyBody');
+      if (!records.length) {
+        historyBody.innerHTML = '<tr><td colspan="3" style="color:#cfc7bd; text-align:center; padding: 20px 0;">Нет записей</td></tr>';
+        return;
+      }
+
+      const sortedRecords = records.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+      historyBody.innerHTML = sortedRecords.map(rec => `
+        <tr>
+          <td>${rec.date}</td>
+          <td>${rec.master}</td>
+          <td>${formatCurrency(getAnalyticsPrice(rec))}</td>
+        </tr>
+      `).join('');
+    }
+
+    function getSavedSubscription() {
+      try {
+        return JSON.parse(localStorage.getItem('humraySubscription')) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    function isSubscribed() {
+      const subscription = getSavedSubscription();
+      if (!subscription || !subscription.expiresAt) return false;
+      const expiresAt = new Date(subscription.expiresAt);
+      if (isNaN(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+        localStorage.removeItem('humraySubscription');
+        return false;
+      }
+      return subscription.status === 'active' || subscription.status === 'confirmed' || !subscription.status;
+    }
+
+    function updateAnalyticsAccess() {
+      const page = document.querySelector('.page');
+      const blocker = document.getElementById('subscriptionBlocker');
+      if (isSubscribed()) {
+        page.classList.remove('blurred');
+        blocker.classList.add('hidden');
+        blocker.setAttribute('aria-hidden', 'true');
+      } else {
+        page.classList.add('blurred');
+        blocker.classList.remove('hidden');
+        blocker.setAttribute('aria-hidden', 'false');
+      }
+    }
+
+    const savedTheme = localStorage.getItem('activeRecordsTheme') || 'dark';
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+    }
+
+    renderAnalytics();
+    updateAnalyticsAccess();
+  </script>
+</body>
+</html>

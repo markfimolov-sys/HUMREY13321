@@ -1,0 +1,1187 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Онлайн запис | HUMREY</title>
+  <meta name="description" content="Онлайн запис на преміальний чоловічий манікюр та педикюр у HUMREY.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class='brand' href='index.html#home'>HUMREY</a>
+    <nav class="nav">
+      <a href='index.html#about'>Про салон</a>
+      <a href='index.html#services'>Послуги</a>
+      <a href='index.html#gallery'>Галерея</a>
+      <a href='index.html#contact'>Контакти</a>
+    </nav>
+    <div class="auth-buttons">
+      <button type="button" class='button button-secondary' id="loginTrigger">Вхід</button>
+      <button type="button" class='button button-secondary' id="registerTrigger">Реєстрація</button>
+      <span class="user-badge hidden" id="userBadge"></span>
+      <a class='button button-outline' href='booking.html'>Записатися</a>
+    </div>
+  </header>
+
+  <main class="booking-page">
+    <section class="section booking-intro">
+      <div class="section-header">
+        <span>Онлайн запис</span>
+        <h2>Замовити догляд у стилі HUMREY</h2>
+      </div>
+      <p>Оберіть зручну дату та час, і ми підтвердимо бронювання протягом 15 хвилин. Простий сервіс для вашого стилю і графіка.</p>
+    </section>
+
+    <!-- Замените `your_form_id` на уникальный endpoint из вашей формы FormBold.
+         Затем в панели FormBold подключите интеграцию Telegram (и/или Email) к этой форме. -->
+    <form class="booking-form" id="bookingForm" action="https://formbold.com/s/your_form_id" method="POST" target="formboldTarget">
+      <input type="hidden" name="_next" value="thank-you.html">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Ім'я</label>
+          <input class="form-control" type="text" id="name" name="name" placeholder="Ваше ім'я" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input class="form-control" type="tel" id="phone" name="phone" placeholder="+380 99 123 45 67" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="service">Послуга</label>
+          <select class="form-control" id="service" name="service" required>
+            <option value="">Оберіть послугу</option>
+            <option>Parallel (Manicure + Pedicure)</option>
+            <option>Манікюр Standard</option>
+            <option>Манікюр SPA</option>
+            <option>SPA догляд для рук</option>
+            <option>Частковий манікюр</option>
+            <option>Педикюр Standard</option>
+            <option>Педикюр SPA</option>
+            <option>SPA догляд для ніг</option>
+            <option>Частковий педикюр</option>
+            <option>Педикюр подологічний</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="payment">Оплата</label>
+          <select class="form-control" id="payment" name="payment" required>
+            <option value="">Оберіть спосіб</option>
+            <option value="cash">Готівка</option>
+            <option value="card">Картка</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Майстер</label>
+          <div class="master-select">
+            <button type="button" class="button button-outline" id="selectMasterButton">Оберіть майстра</button>
+            <div class="selected-master selected-master-placeholder" id="selectedMasterLabel" aria-live="polite">
+              <span class="selected-master-icon" aria-hidden="true"></span>
+              <span class="selected-master-text">Не обрано</span>
+            </div>
+          </div>
+          <input type="hidden" id="masterInput" name="master" value="">
+        </div>
+        <div class="date-time-group">
+          <div class="form-group date-time-picker-group">
+            <label for="dateDisplay">Дата та час</label>
+            <button type="button" class="date-picker-button" id="dateDisplay" aria-haspopup="dialog" aria-expanded="false">
+              <span class="date-picker-content">
+                <span class="date-picker-label">Оберіть дату і час</span>
+                <span class="date-picker-value" id="dateDisplayValue">Натисніть для вибору</span>
+              </span>
+              <span class="date-picker-icon">📅</span>
+            </button>
+            <input type="hidden" id="date" name="date" required>
+            <select class="time-select-hidden" id="time" name="time" required>
+              <option value="">Оберіть час</option>
+              <option>10:00</option>
+              <option>11:00</option>
+              <option>12:00</option>
+              <option>13:00</option>
+              <option>14:00</option>
+              <option>15:00</option>
+              <option>16:00</option>
+              <option>17:00</option>
+              <option>18:00</option>
+              <option>19:00</option>
+              <option>20:00</option>
+              <option>21:00</option>
+            </select>
+            <span class="date-picker-helper">Натисніть, щоб відкрити зручний вибір дати та часу.</span>
+            <p class="slot-note">Оберіть дату та час для бронювання.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Коментар</label>
+        <textarea class="form-control" id="notes" name="notes" placeholder="Додаткові побажання або питання"></textarea>
+      </div>
+      <div class="form-actions">
+        <button id="bookingSubmit" class="button button-primary" type="submit">Надіслати запит</button>
+        <span class="form-notice" id="formNotice"></span>
+      </div>
+      <div class="form-success-message hidden" id="formSuccessMessage">Дякуємо! Ваша заявка отримана. Наші майстри готуються зустріти вас та підтвердять час найближчим часом.</div>
+    </form>
+    <iframe name="formboldTarget" style="display:none;" aria-hidden="true"></iframe>
+  </main>
+
+  <div class="date-time-picker-overlay hidden" id="dateTimePickerOverlay" aria-hidden="true">
+    <div class="date-time-picker-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+      <div class="picker-header">
+        <div>
+          <span class="picker-pretitle">Оберіть дату та час</span>
+          <h3 id="pickerTitle">Календар</h3>
+        </div>
+        <button type="button" class="button button-outline picker-close" id="closeDateTimePicker">×</button>
+      </div>
+      <div class="calendar-panel">
+        <div class="calendar-topbar">
+          <button type="button" class="button button-secondary calendar-nav" id="prevMonth">‹</button>
+          <div class="calendar-title">
+            <span id="calendarMonth"></span>
+            <input type="number" id="calendarYear" class="calendar-year-input" min="1900" step="1" aria-label="Рік">
+          </div>
+          <button type="button" class="button button-secondary calendar-nav" id="nextMonth">›</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+      <div class="time-panel">
+        <div class="picker-section-title">Час</div>
+        <div class="time-slots" id="timeSlots"></div>
+        <div class="picker-info-box hidden" id="pickerInfoBox"></div>
+        <div class="availability-alert hidden" id="availabilityAlert"></div>
+      </div>
+      <div class="picker-actions">
+        <button type="button" class="button button-secondary" id="clearDateTime">Очистити</button>
+        <button type="button" class="button button-primary" id="confirmDateTime" disabled>Підтвердити</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="masterModal">
+    <div class="auth-modal">
+      <button type="button" class="auth-close" id="closeMasterModal">×</button>
+      <h3>Оберіть майстра</h3>
+      <div class="master-options">
+        <button type="button" class="button button-secondary master-option" data-master="Марина" aria-pressed="false">
+          <span class="master-avatar"><img src="images/MarinaMaster.png" alt="Марина"></span>
+          <span>Марина</span>
+        </button>
+        <button type="button" class="button button-secondary master-option" data-master="Ольга" aria-pressed="false">
+          <span class="master-avatar"><img src="images/olgamaster.png" alt="Ольга"></span>
+          <span>Ольга</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="authModal" aria-hidden="true">
+    <div class="auth-modal">
+      <button type="button" class="auth-close" id="closeAuthModal">×</button>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="loginTab">Вхід</button>
+        <button type="button" class="auth-tab" id="registerTab">Реєстрація</button>
+      </div>
+      <div class="auth-content">
+        <form id="loginForm" class="auth-form">
+          <h3>Увійти</h3>
+          <div class="form-group">
+            <label for="loginUsername">Логін</label>
+            <input class="form-control" type="text" id="loginUsername" name="loginUsername" placeholder="Ваш логін" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Пароль</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="loginPassword" name="loginPassword" placeholder="••••••••" required>
+              <button type="button" class="password-toggle" data-target="loginPassword" aria-label="Показати пароль">
+                <span class="password-toggle-box"></span>
+                <span class="password-toggle-label">Показати пароль</span>
+                <span class="password-toggle-icon">👁</span>
+              </button>
+            </div>
+          </div>
+          <button class="button button-primary" type="submit">Увійти</button>
+        </form>
+        <form id="registerForm" class="auth-form hidden">
+          <h3>Реєстрація</h3>
+          <div class="form-group">
+            <label for="registerLogin">Логін</label>
+            <input class="form-control" type="text" id="registerLogin" name="registerLogin" placeholder="Ваш логін" required>
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input class="form-control" type="email" id="registerEmail" name="registerEmail" placeholder="example@mail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Пароль</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="registerPassword" name="registerPassword" placeholder="••••••••" required>
+              <button type="button" class="password-toggle" data-target="registerPassword" aria-label="Показати пароль">
+                <span class="password-toggle-box"></span>
+                <span class="password-toggle-label">Показати пароль</span>
+                <span class="password-toggle-icon">👁</span>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="registerConfirm">Підтвердження пароля</label>
+            <div class="password-field">
+              <input class="form-control" type="password" id="registerConfirm" name="registerConfirm" placeholder="••••••••" required>
+              <button type="button" class="password-toggle" data-target="registerConfirm" aria-label="Показати пароль">
+                <span class="password-toggle-box"></span>
+                <span class="password-toggle-label">Показати пароль</span>
+                <span class="password-toggle-icon">👁</span>
+              </button>
+            </div>
+          </div>
+          <button class="button button-primary" type="submit">Зареєструватися</button>
+        </form>
+      </div>
+      <p class="auth-message" id="authMessage"></p>
+    </div>
+  </div>
+
+  <div class="auth-overlay hidden" id="profileModal" aria-hidden="true">
+    <div class="auth-modal">
+      <button type="button" class="auth-close" id="closeProfileModal">×</button>
+      <h3>Профіль</h3>
+      <p class="profile-summary" id="profileSummary">Тут відображається ваш акаунт.</p>
+      <div class="profile-actions">
+        <button type="button" class="button button-secondary hidden" id="adminAddButton">Додати адміністратора</button>
+        <button type="button" class="button button-secondary hidden" id="adminActiveRecordsButton">Активні записи</button>
+        <button type="button" class="button button-secondary hidden" id="adminSubscriptionButton">Підтвердження підписки</button>
+        <button type="button" class="button button-danger" id="profileLogout">Вийти</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="confirm-overlay hidden" id="subscriptionConfirmOverlay" aria-hidden="true">
+    <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <h2 id="confirmTitle">Підтвердження підписки</h2>
+      <p id="confirmMessage">Ви дійсно хочете перейти до підтвердження підписки? Тут можна переглянути статус оплати та очікування підтвердження.</p>
+      <div class="confirm-actions">
+        <button class="button button-secondary" type="button" id="cancelSubscriptionConfirm">Відміна</button>
+        <button class="button button-primary" type="button" id="proceedSubscriptionConfirm">Перейти</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>HUMREY - чоловічий манікюр та педикюр</span>
+    <span>© 2026</span>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginTrigger = document.getElementById('loginTrigger');
+      const registerTrigger = document.getElementById('registerTrigger');
+      const userBadge = document.getElementById('userBadge');
+      const authModal = document.getElementById('authModal');
+      const closeAuthModal = document.getElementById('closeAuthModal');
+      const loginTab = document.getElementById('loginTab');
+      const registerTab = document.getElementById('registerTab');
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const authMessage = document.getElementById('authMessage');
+      const loginUsername = document.getElementById('loginUsername');
+      const loginPassword = document.getElementById('loginPassword');
+      const registerLogin = document.getElementById('registerLogin');
+      const registerEmail = document.getElementById('registerEmail');
+      const registerPassword = document.getElementById('registerPassword');
+      const registerConfirm = document.getElementById('registerConfirm');
+      const profileModal = document.getElementById('profileModal');
+      const closeProfileButton = document.getElementById('closeProfileModal');
+      const profileSummary = document.getElementById('profileSummary');
+      const profileLogout = document.getElementById('profileLogout');
+      const adminAddButton = document.getElementById('adminAddButton');
+      const adminActiveRecordsButton = document.getElementById('adminActiveRecordsButton');
+      const adminSubscriptionButton = document.getElementById('adminSubscriptionButton');
+      const subscriptionConfirmOverlay = document.getElementById('subscriptionConfirmOverlay');
+      const cancelSubscriptionConfirm = document.getElementById('cancelSubscriptionConfirm');
+      const proceedSubscriptionConfirm = document.getElementById('proceedSubscriptionConfirm');
+      const passwordToggles = document.querySelectorAll('.password-toggle');
+
+      const storageUsersKey = 'humreyUsers';
+      const storageCurrentUserKey = 'humreyCurrentUser';
+
+      const getUsers = () => {
+        const saved = localStorage.getItem(storageUsersKey);
+        if (!saved) return [];
+        try {
+          return JSON.parse(saved);
+        } catch {
+          localStorage.removeItem(storageUsersKey);
+          return [];
+        }
+      };
+
+      const saveUsers = users => {
+        localStorage.setItem(storageUsersKey, JSON.stringify(users));
+      };
+
+      const normalizeValue = value => String(value || '').trim().toLowerCase();
+      const getCurrentUserLogin = () => localStorage.getItem(storageCurrentUserKey);
+      const getCurrentUserObj = () => {
+        const currentValue = getCurrentUserLogin();
+        if (!currentValue) return null;
+        const lookup = normalizeValue(currentValue);
+        const users = getUsers();
+        const user = users.find(user => normalizeValue(user.login) === lookup || normalizeValue(user.email) === lookup) || null;
+        if (user && !user.role) {
+          user.role = normalizeValue(user.login) === 'ownersite123' ? 'admin' : 'user';
+        }
+        if (!user && lookup === 'ownersite123') {
+          return { login: 'OwnerSite123', email: 'osnovnoyakk678@gmail.com', role: 'admin' };
+        }
+        return user;
+      };
+      const isAdminUser = () => {
+        const currentUser = getCurrentUserObj();
+        return !!currentUser && (normalizeValue(currentUser.login) === 'ownersite123' || currentUser.role === 'admin');
+      };
+      const setCurrentUser = login => localStorage.setItem(storageCurrentUserKey, login);
+      const clearCurrentUser = () => localStorage.removeItem(storageCurrentUserKey);
+
+      const initPasswordToggles = () => {
+        passwordToggles.forEach(toggle => {
+          const targetInput = document.getElementById(toggle.dataset.target);
+          if (!targetInput) return;
+          const icon = toggle.querySelector('.password-toggle-icon');
+          const label = toggle.querySelector('.password-toggle-label');
+          toggle.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const isHidden = targetInput.type === 'password';
+            targetInput.type = isHidden ? 'text' : 'password';
+            if (icon) icon.textContent = isHidden ? '🙈' : '👁';
+            if (label) label.textContent = isHidden ? 'Сховати пароль' : 'Показати пароль';
+            toggle.setAttribute('aria-label', isHidden ? 'Сховати пароль' : 'Показати пароль');
+          });
+        });
+      };
+
+      const syncStorageState = event => {
+        if (!event.key) return;
+        if (['humreyUsers', 'humreyCurrentUser'].includes(event.key)) {
+          updateAuthState();
+        }
+      };
+
+      window.addEventListener('storage', syncStorageState);
+
+      const openProfileModal = () => {
+        const currentUser = getCurrentUserObj();
+        const adminVisible = isAdminUser();
+        profileSummary.textContent = currentUser
+          ? `Ви в системі як ${currentUser.login}${adminVisible ? ' (Адмін)' : ''}`
+          : 'Ви не ввійшли в акаунт.';
+        setVisible(adminAddButton, adminVisible);
+        setVisible(adminActiveRecordsButton, adminVisible);
+        setVisible(adminSubscriptionButton, adminVisible);
+        profileModal.classList.remove('hidden');
+        profileModal.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeProfileModal = () => {
+        profileModal.classList.add('hidden');
+        profileModal.setAttribute('aria-hidden', 'true');
+      };
+
+      const openSubscriptionConfirm = () => {
+        subscriptionConfirmOverlay.classList.remove('hidden');
+        subscriptionConfirmOverlay.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeSubscriptionConfirm = () => {
+        subscriptionConfirmOverlay.classList.add('hidden');
+        subscriptionConfirmOverlay.setAttribute('aria-hidden', 'true');
+      };
+
+      const showMessage = (message, type = 'error') => {
+        authMessage.textContent = message;
+        authMessage.className = 'auth-message ' + type;
+      };
+
+      const openModal = mode => {
+        authModal.classList.remove('hidden');
+        authModal.setAttribute('aria-hidden', 'false');
+        if (mode === 'register') {
+          loginForm.classList.add('hidden');
+          registerForm.classList.remove('hidden');
+          loginTab.classList.remove('active');
+          registerTab.classList.add('active');
+        } else {
+          loginForm.classList.remove('hidden');
+          registerForm.classList.add('hidden');
+          loginTab.classList.add('active');
+          registerTab.classList.remove('active');
+        }
+        showMessage('');
+      };
+
+      const closeModal = () => {
+        authModal.classList.add('hidden');
+        authModal.setAttribute('aria-hidden', 'true');
+      };
+
+      const setVisible = (element, visible) => {
+        if (!element) return;
+        if (visible) {
+          element.classList.remove('hidden');
+          element.style.display = '';
+        } else {
+          element.classList.add('hidden');
+          element.style.display = 'none';
+        }
+      };
+
+      const updateAuthState = () => {
+        const currentUser = getCurrentUserObj();
+        console.log('Auth state update current user:', currentUser ? currentUser.login : null);
+        if (currentUser) {
+          userBadge.textContent = 'Привіт, ' + currentUser.login + (isAdminUser() ? ' (Адмін)' : '');
+        } else {
+          userBadge.textContent = '';
+        }
+        setVisible(userBadge, !!currentUser);
+        setVisible(loginTrigger, !currentUser);
+        setVisible(registerTrigger, !currentUser);
+      };
+
+      loginTrigger.addEventListener('click', () => openModal('login'));
+      registerTrigger.addEventListener('click', () => openModal('register'));
+      closeAuthModal.addEventListener('click', closeModal);
+      closeProfileButton.addEventListener('click', closeProfileModal);
+      authModal.addEventListener('click', event => {
+        if (event.target === authModal) {
+          closeModal();
+        }
+      });
+      profileModal.addEventListener('click', event => {
+        if (event.target === profileModal) {
+          closeProfileModal();
+        }
+      });
+      loginTab.addEventListener('click', () => openModal('login'));
+      registerTab.addEventListener('click', () => openModal('register'));
+      userBadge.addEventListener('click', openProfileModal);
+      closeProfileButton.addEventListener('click', closeProfileModal);
+      profileModal.addEventListener('click', event => {
+        if (event.target === profileModal) {
+          closeProfileModal();
+        }
+      });
+      adminAddButton.addEventListener('click', () => {
+        const login = prompt('Логін нового адміністратора', 'OwnerSite123');
+        if (!login) return;
+        const email = prompt('Email адміністратора', 'osnovnoyakk678@gmail.com');
+        if (!email) return;
+        const users = getUsers();
+        const normalizedLogin = normalizeValue(login);
+        const normalizedEmail = normalizeValue(email);
+        if (users.some(item => normalizeValue(item.login) === normalizedLogin || normalizeValue(item.email) === normalizedEmail)) {
+          alert('Користувач з таким логіном або email вже існує.');
+          return;
+        }
+        users.push({ login: login, email: normalizedEmail, password: 'admin123', role: 'admin' });
+        saveUsers(users);
+        alert('Новий адміністратор додано.\nЛогін: ' + login + '\nПароль: admin123');
+      });
+      adminActiveRecordsButton.addEventListener('click', () => {
+        window.location.href = 'active-records.html';
+      });
+      adminSubscriptionButton.addEventListener('click', () => {
+        closeProfileModal();
+        openSubscriptionConfirm();
+      });
+      cancelSubscriptionConfirm.addEventListener('click', closeSubscriptionConfirm);
+      proceedSubscriptionConfirm.addEventListener('click', () => {
+        closeSubscriptionConfirm();
+        window.location.href = 'subscription.html';
+      });
+      subscriptionConfirmOverlay.addEventListener('click', event => {
+        if (event.target === subscriptionConfirmOverlay) {
+          closeSubscriptionConfirm();
+        }
+      });
+      profileLogout.addEventListener('click', () => {
+        clearCurrentUser();
+        updateAuthState();
+        closeProfileModal();
+        showMessage('Ви вийшли з акаунту.', 'success');
+      });
+
+      initPasswordToggles();
+
+      loginForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const loginValue = normalizeValue(loginUsername.value);
+        const password = loginPassword.value;
+        if (!loginValue || !password) {
+          showMessage('Введіть логін або email та пароль.');
+          return;
+        }
+
+        const users = getUsers();
+        const user = users.find(item => normalizeValue(item.login) === loginValue || normalizeValue(item.email) === loginValue);
+        if (!user || user.password !== password) {
+          showMessage('Невірний логін або пароль. Перевірте, чи правильно ввели дані.');
+          return;
+        }
+
+        setCurrentUser(user.login);
+        updateAuthState();
+        loginForm.reset();
+        registerForm.reset();
+        closeModal();
+        showMessage('Ви успішно увійшли в акаунт.', 'success');
+      });
+
+      registerForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const loginValue = registerLogin.value.trim();
+        const emailValue = normalizeValue(registerEmail.value);
+        const password = registerPassword.value;
+        const confirmPassword = registerConfirm.value;
+
+        if (!loginValue || !emailValue || !password || !confirmPassword) {
+          showMessage('Заповніть усі поля реєстрації.');
+          return;
+        }
+        if (password !== confirmPassword) {
+          showMessage('Паролі не співпадають.');
+          return;
+        }
+
+        const users = getUsers();
+        if (users.some(item => normalizeValue(item.login) === normalizeValue(loginValue))) {
+          showMessage('Такий логін вже існує. Виберіть інший.');
+          return;
+        }
+        if (users.some(item => normalizeValue(item.email) === emailValue)) {
+          showMessage('Така пошта вже зареєстрована.');
+          return;
+        }
+        const role = normalizeValue(loginValue) === 'ownersite123' ? 'admin' : 'user';
+        users.push({ login: loginValue, email: emailValue, password, role });
+        saveUsers(users);
+        setCurrentUser(loginValue);
+        updateAuthState();
+        loginForm.reset();
+        registerForm.reset();
+        closeModal();
+        showMessage('Реєстрація пройшла успішно.', 'success');
+      });
+
+      updateAuthState();
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('bookingForm');
+      const successMessage = document.getElementById('formSuccessMessage');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const notice = document.getElementById('formNotice');
+      const dateInput = document.getElementById('date');
+      const dateDisplay = document.getElementById('dateDisplay');
+      const dateDisplayValue = document.getElementById('dateDisplayValue');
+      const datePreview = document.getElementById('datePreview');
+      const timePreview = document.getElementById('timePreview');
+      const timeSelect = document.getElementById('time');
+      const pickerOverlay = document.getElementById('dateTimePickerOverlay');
+      const closeDateTimePicker = document.getElementById('closeDateTimePicker');
+      const prevMonth = document.getElementById('prevMonth');
+      const nextMonth = document.getElementById('nextMonth');
+      const calendarMonth = document.getElementById('calendarMonth');
+      const calendarYear = document.getElementById('calendarYear');
+      const calendarGrid = document.getElementById('calendarGrid');
+      const timeSlots = document.getElementById('timeSlots');
+      const confirmDateTime = document.getElementById('confirmDateTime');
+      const clearDateTime = document.getElementById('clearDateTime');
+      const slotNote = document.querySelector('.slot-note');
+      const availabilityAlert = document.getElementById('availabilityAlert');
+      const pickerInfoBox = document.getElementById('pickerInfoBox');
+      const setAvailabilityAlert = message => {
+        if (!availabilityAlert) return;
+        if (message) {
+          availabilityAlert.textContent = message;
+          availabilityAlert.classList.remove('hidden');
+        } else {
+          availabilityAlert.textContent = '';
+          availabilityAlert.classList.add('hidden');
+        }
+      };
+      const setPickerInfo = message => {
+        if (!pickerInfoBox) return;
+        if (message) {
+          pickerInfoBox.textContent = message;
+          pickerInfoBox.classList.remove('hidden');
+        } else {
+          pickerInfoBox.textContent = '';
+          pickerInfoBox.classList.add('hidden');
+        }
+      };
+      const availableTimes = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+      const storageKey = 'humreyBookings';
+
+      let pickerMonth = new Date().getMonth();
+      let pickerYear = new Date().getFullYear();
+      let selectedDate = null;
+      let selectedTime = '';
+
+      const weekdayLabels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
+
+      const formatDisplayDate = value => {
+        if (!value) return '';
+        const [year, month, day] = value.split('-');
+        return `${day}.${month}.${year}`;
+      };
+
+      const updatePreviewText = () => {
+        if (datePreview) {
+          datePreview.textContent = selectedDate ? `Обрана дата: ${formatDisplayDate(selectedDate)}` : 'Оберіть дату та час в зручному вікні.';
+        }
+        if (timePreview) {
+          timePreview.textContent = selectedTime ? `Обраний час: ${selectedTime}` : 'Оберіть час';
+        }
+        dateDisplayValue.textContent = selectedDate && selectedTime ? `${formatDisplayDate(selectedDate)} · ${selectedTime}` : 'Натисніть для вибору';
+      };
+
+      const openPicker = () => {
+        pickerOverlay.classList.remove('hidden');
+        pickerOverlay.setAttribute('aria-hidden', 'false');
+        dateDisplay.setAttribute('aria-expanded', 'true');
+        renderCalendar();
+        renderTimeSlots();
+        confirmDateTime.disabled = !selectedDate || !selectedTime;
+      };
+
+      const closePicker = () => {
+        pickerOverlay.classList.add('hidden');
+        pickerOverlay.setAttribute('aria-hidden', 'true');
+        dateDisplay.setAttribute('aria-expanded', 'false');
+      };
+
+      const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+
+      const getFirstWeekday = (year, month) => {
+        const raw = new Date(year, month, 1).getDay();
+        return raw === 0 ? 6 : raw - 1;
+      };
+
+      const renderCalendar = () => {
+        calendarMonth.textContent = new Date(pickerYear, pickerMonth).toLocaleString('uk-UA', { month: 'long' });
+        calendarYear.value = pickerYear;
+        calendarGrid.innerHTML = '';
+
+        weekdayLabels.forEach(day => {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-weekday';
+          cell.textContent = day;
+          calendarGrid.appendChild(cell);
+        });
+
+        const today = new Date();
+        const firstDayIndex = getFirstWeekday(pickerYear, pickerMonth);
+        const daysInMonth = getDaysInMonth(pickerYear, pickerMonth);
+
+        for (let i = 0; i < firstDayIndex; i++) {
+          const emptyCell = document.createElement('div');
+          emptyCell.className = 'calendar-day disabled';
+          calendarGrid.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateValue = `${pickerYear}-${String(pickerMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const dateButton = document.createElement('button');
+          dateButton.type = 'button';
+          dateButton.className = 'calendar-day';
+          dateButton.textContent = day;
+          const itemDate = new Date(pickerYear, pickerMonth, day);
+
+          if (itemDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+            dateButton.classList.add('disabled');
+            dateButton.disabled = true;
+          }
+
+          if (selectedDate === dateValue) {
+            dateButton.classList.add('selected');
+          }
+
+          if (itemDate.getDate() === today.getDate() && itemDate.getMonth() === today.getMonth() && itemDate.getFullYear() === today.getFullYear()) {
+            dateButton.classList.add('today');
+          }
+
+          dateButton.addEventListener('click', () => {
+            selectedDate = dateValue;
+            selectedTime = '';
+            dateInput.value = dateValue;
+            updateTimeOptions();
+            renderCalendar();
+            renderTimeSlots();
+            updatePreviewText();
+            confirmDateTime.disabled = !selectedDate || !selectedTime;
+          });
+
+          calendarGrid.appendChild(dateButton);
+        }
+      };
+
+      const renderTimeSlots = () => {
+        timeSlots.innerHTML = '';
+        const today = new Date();
+        const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const isToday = selectedDate === todayString;
+        const minBookTime = new Date(today.getTime() + 60 * 60 * 1000);
+        let hasTooSoonSlot = false;
+
+        availableTimes.forEach(time => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'time-slot';
+          button.textContent = time;
+          const [hour, minute] = time.split(':').map(Number);
+
+          const slotDate = new Date(`${selectedDate}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`);
+          const isTooSoon = isToday && slotDate < minBookTime;
+          if (isTooSoon) {
+            hasTooSoonSlot = true;
+          }
+
+          if (!selectedDate || isTooSoon || isMasterUnavailableOnDate(masterInput.value, selectedDate)) {
+            button.disabled = true;
+            button.classList.add('disabled');
+          }
+
+          if (selectedTime === time) {
+            button.classList.add('selected');
+          }
+
+          button.addEventListener('click', () => {
+            selectedTime = time;
+            timeSelect.disabled = false;
+            timeSelect.value = time;
+            renderTimeSlots();
+            updatePreviewText();
+            confirmDateTime.disabled = false;
+            confirmDateTime.removeAttribute('disabled');
+          });
+
+          timeSlots.appendChild(button);
+        });
+
+        const isBlockedByMaster = selectedDate && isMasterUnavailableOnDate(masterInput.value, selectedDate);
+        if (isToday && hasTooSoonSlot && !isBlockedByMaster) {
+          setPickerInfo('Запис доступний мінімум за 1 годину до початку обраного часу.');
+        } else {
+          setPickerInfo('');
+        }
+
+        confirmDateTime.disabled = !selectedDate || !selectedTime;
+      };
+
+      const updateDisplayFromSelection = () => {
+        updatePreviewText();
+        if (!selectedDate) {
+          dateDisplayValue.textContent = 'Натисніть для вибору';
+        }
+      };
+
+      const clearSelection = () => {
+        selectedDate = null;
+        selectedTime = '';
+        dateInput.value = '';
+        timeSelect.value = '';
+        renderCalendar();
+        renderTimeSlots();
+        updatePreviewText();
+        confirmDateTime.disabled = true;
+        setPickerInfo('');
+      };
+
+      dateDisplay.addEventListener('click', openPicker);
+      dateDisplay.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openPicker();
+        }
+      });
+
+      closeDateTimePicker.addEventListener('click', closePicker);
+      pickerOverlay.addEventListener('click', event => {
+        if (event.target === pickerOverlay) {
+          closePicker();
+        }
+      });
+
+      prevMonth.addEventListener('click', () => {
+        pickerMonth = pickerMonth === 0 ? 11 : pickerMonth - 1;
+        if (pickerMonth === 11) pickerYear -= 1;
+        renderCalendar();
+      });
+
+      nextMonth.addEventListener('click', () => {
+        pickerMonth = pickerMonth === 11 ? 0 : pickerMonth + 1;
+        if (pickerMonth === 0) pickerYear += 1;
+        renderCalendar();
+      });
+
+      calendarYear.addEventListener('change', () => {
+        const value = Number(calendarYear.value);
+        if (!Number.isNaN(value) && value >= 1900) {
+          pickerYear = value;
+          renderCalendar();
+        }
+      });
+
+      clearDateTime.addEventListener('click', clearSelection);
+
+      confirmDateTime.addEventListener('click', () => {
+        if (!selectedDate || !selectedTime) return;
+        updateDisplayFromSelection();
+        if (slotNote) {
+          slotNote.textContent = `Вільні часи для ${formatDisplayDate(selectedDate)} показані в списку.`;
+        }
+        closePicker();
+      });
+
+      updateDisplayFromSelection();
+
+      const getStoredBookings = () => {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey) || '[]');
+        } catch {
+          return [];
+        }
+      };
+
+      const saveBooking = booking => {
+        const bookings = getStoredBookings();
+        bookings.push(booking);
+        localStorage.setItem(storageKey, JSON.stringify(bookings));
+      };
+
+      const saveBookedSlot = (date, time) => {
+        const bookings = getStoredBookings();
+        bookings.push({ date, time });
+        localStorage.setItem(storageKey, JSON.stringify(bookings));
+      };
+
+      const PARALLEL_SERVICE = 'Parallel (Manicure + Pedicure)';
+
+      const servicePrices = {
+        'Parallel (Manicure + Pedicure)': 2200,
+        'Манікюр Standard': 850,
+        'Манікюр SPA': 1200,
+        'SPA догляд для рук': 900,
+        'Частковий манікюр': 650,
+        'Педикюр Standard': 1100,
+        'Педикюр SPA': 1400,
+        'SPA догляд для ніг': 1150,
+        'Частковий педикюр': 700,
+        'Педикюр подологічний': 1300
+      };
+
+      const getServicePrice = service => servicePrices[service] || 0;
+
+      const saveSalonRecord = booking => {
+        const salonRecordsKey = 'salonRecords';
+        const savedRecords = JSON.parse(localStorage.getItem(salonRecordsKey) || '[]');
+        const createRecord = (master) => ({
+          id: Date.now() + Math.floor(Math.random() * 1000),
+          client: booking.name,
+          phone: booking.phone,
+          master,
+          service: booking.service,
+          price: getServicePrice(booking.service),
+          payment: booking.payment,
+          date: booking.date,
+          time: booking.time,
+          duration: booking.duration || '',
+          status: 'Записано'
+        });
+
+        if (booking.service === PARALLEL_SERVICE) {
+          savedRecords.push(createRecord('Ольга'));
+          savedRecords.push(createRecord('Марина'));
+        } else {
+          savedRecords.push(createRecord(booking.master));
+        }
+
+        localStorage.setItem(salonRecordsKey, JSON.stringify(savedRecords));
+      };
+
+      const getBookedSlots = () => {
+        const bookingSlots = getStoredBookings().map(booking => ({ date: booking.date, time: booking.time }));
+        const salonRecords = JSON.parse(localStorage.getItem('salonRecords') || '[]');
+        const recordSlots = salonRecords.map(record => ({ date: record.date, time: record.time }));
+        return [...bookingSlots, ...recordSlots];
+      };
+
+      const masterDayOffSchedule = {
+        'Ольга': ['2026-04-10'],
+        'Марина': ['2026-04-19']
+      };
+
+      const isMasterUnavailableOnDate = (master, date) => {
+        if (!master || !date) return false;
+        return Array.isArray(masterDayOffSchedule[master]) && masterDayOffSchedule[master].includes(date);
+      };
+
+      const getAvailableTimes = date => {
+        if (!date) return availableTimes;
+        const booked = getBookedSlots().filter(slot => slot.date === date).map(slot => slot.time);
+        return availableTimes.filter(time => !booked.includes(time));
+      };
+
+      const formatLocalDate = dateInput => {
+        const target = new Date(dateInput);
+        const year = target.getFullYear();
+        const month = String(target.getMonth() + 1).padStart(2, '0');
+        const day = String(target.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+
+      const updateTimeOptions = () => {
+        const date = dateInput.value;
+        const dateNow = formatLocalDate(new Date());
+        const currentMaster = masterInput.value;
+
+        if (!date) {
+          timeSelect.innerHTML = '<option value="">Оберіть час</option>';
+          if (slotNote) slotNote.textContent = 'Оберіть дату та час для бронювання.';
+          setAvailabilityAlert('');
+          timeSelect.disabled = true;
+          return;
+        }
+
+        if (date < dateNow) {
+          if (slotNote) slotNote.textContent = 'Оберіть дату не раніше сьогоднішнього дня.';
+          setAvailabilityAlert('');
+          timeSelect.innerHTML = '<option value="">Немає вільних слотів</option>';
+          timeSelect.disabled = true;
+          return;
+        }
+
+        if (isMasterUnavailableOnDate(currentMaster, date)) {
+          if (slotNote) slotNote.textContent = 'Сьогодні запис у цього майстра неможливий. Оберіть інший майстер або інший день.';
+          setAvailabilityAlert('Запис до цього майстра сьогодні неможливий. Ви можете вибрати іншого майстра або інший день.');
+          timeSelect.innerHTML = '<option value="">Майстер вихідний</option>';
+          timeSelect.disabled = true;
+          return;
+        }
+
+        const available = getAvailableTimes(date);
+        if (available.length === 0) {
+          if (slotNote) slotNote.textContent = 'На цю дату всі часи зайняті. Будь ласка, оберіть інший день.';
+          setAvailabilityAlert('');
+          timeSelect.innerHTML = '<option value="">Усі слоти зайняті</option>';
+          timeSelect.disabled = true;
+          return;
+        }
+
+        timeSelect.disabled = false;
+        timeSelect.innerHTML = '<option value="">Оберіть час</option>';
+        available.forEach(time => {
+          const option = document.createElement('option');
+          option.value = time;
+          option.textContent = time;
+          timeSelect.appendChild(option);
+        });
+        if (slotNote) slotNote.textContent = 'Доступні часи: ' + available.join(', ') + '.';
+        setAvailabilityAlert('');
+      };
+
+      const showSuccess = () => {
+        successMessage.classList.remove('hidden');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Надіслано';
+        notice.style.opacity = '0';
+        form.classList.add('submitted');
+      };
+
+      const formatDatePreview = value => {
+        if (!value) {
+          return 'Оберіть дату';
+        }
+        const [year, month, day] = value.split('-');
+        return day && month && year ? `Обрана дата: ${day}.${month}.${year}` : 'Оберіть дату';
+      };
+
+      const updateDatePreview = () => {
+        if (!datePreview) return;
+        datePreview.textContent = formatDatePreview(dateInput.value);
+      };
+
+      const showError = message => {
+        notice.textContent = message;
+        notice.style.opacity = '1';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Надіслати запит';
+      };
+
+      const finalizeBooking = bookingData => {
+        saveBookedSlot(bookingData.date, bookingData.time);
+        saveBooking(bookingData);
+        saveSalonRecord(bookingData);
+        updateTimeOptions();
+        showSuccess();
+      };
+
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+      }
+
+      const selectMasterButton = document.getElementById('selectMasterButton');
+      const masterModal = document.getElementById('masterModal');
+      const closeMasterModal = document.getElementById('closeMasterModal');
+      const masterInput = document.getElementById('masterInput');
+      const selectedMasterLabel = document.getElementById('selectedMasterLabel');
+      const selectedMasterIcon = selectedMasterLabel.querySelector('.selected-master-icon');
+      const selectedMasterText = selectedMasterLabel.querySelector('.selected-master-text');
+      const masterOptions = document.querySelectorAll('.master-option');
+
+      const openMasterModal = () => {
+        masterModal.classList.remove('hidden');
+      };
+
+      const closeModal = () => {
+        masterModal.classList.add('hidden');
+      };
+
+      const setMaster = (name, imageSrc) => {
+        masterInput.value = name;
+        selectedMasterText.textContent = name || 'Не обрано';
+        selectedMasterLabel.classList.toggle('selected-master-placeholder', !name);
+
+        if (name && imageSrc) {
+          selectedMasterIcon.style.backgroundImage = `url('${imageSrc}')`;
+          selectedMasterIcon.classList.add('has-image');
+        } else {
+          selectedMasterIcon.style.backgroundImage = 'none';
+          selectedMasterIcon.classList.remove('has-image');
+        }
+
+        masterOptions.forEach(button => {
+          const isSelected = button.dataset.master === name;
+          button.classList.toggle('selected', isSelected);
+          button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+        });
+
+        if (selectedDate) {
+          selectedTime = '';
+          timeSelect.value = '';
+          confirmDateTime.disabled = true;
+          updateTimeOptions();
+          renderTimeSlots();
+        }
+
+        closeModal();
+      };
+
+      selectMasterButton.addEventListener('click', openMasterModal);
+      closeMasterModal.addEventListener('click', closeModal);
+      masterModal.addEventListener('click', function(event) {
+        if (event.target === masterModal) {
+          closeModal();
+        }
+      });
+
+      masterOptions.forEach(button => {
+        button.addEventListener('click', function() {
+          const image = button.querySelector('img');
+          setMaster(button.dataset.master, image ? image.src : '');
+        });
+      });
+
+      dateInput.addEventListener('input', function() {
+        updateDatePreview();
+        updateTimeOptions();
+      });
+      dateInput.addEventListener('change', function() {
+        updateDatePreview();
+        updateTimeOptions();
+      });
+      updateDatePreview();
+      updateTimeOptions();
+
+      form.addEventListener('submit', function(event) {
+        if (!masterInput.value) {
+          showError('Будь ласка, оберіть майстра перед відправкою.');
+          event.preventDefault();
+          return;
+        }
+        if (!form.reportValidity()) {
+          event.preventDefault();
+          return;
+        }
+
+        const date = dateInput.value;
+        const time = timeSelect.value;
+        if (!date || !time) {
+          showError('Будь ласка, оберіть дату та вільний час.');
+          event.preventDefault();
+          return;
+        }
+
+        if (isMasterUnavailableOnDate(bookingData.master, date)) {
+          showError('Сьогодні запис у цього майстра неможливий. Оберіть інший майстер або інший день.');
+          event.preventDefault();
+          return;
+        }
+
+        if (!getAvailableTimes(date).includes(time)) {
+          showError('Цей час вже зайнятий. Будь ласка, оберіть інший слот.');
+          updateTimeOptions();
+          event.preventDefault();
+          return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'Підготовлено лист...';
+        notice.style.opacity = '0';
+
+        const formData = new FormData(form);
+        const bookingData = {
+          name: formData.get('name').trim(),
+          phone: formData.get('phone').trim(),
+          service: formData.get('service'),
+          payment: formData.get('payment'),
+          master: formData.get('master'),
+          date: formData.get('date'),
+          time: formData.get('time'),
+          notes: formData.get('notes').trim(),
+          duration: ''
+        };
+
+        const subject = 'Нова заявка HUMREY';
+        const body = [
+          `Ім'я: ${bookingData.name}`,
+          `Телефон: ${bookingData.phone}`,
+          `Послуга: ${bookingData.service}`,
+          `Оплата: ${bookingData.payment}`,
+          `Майстер: ${bookingData.master}`,
+          `Дата: ${bookingData.date}`,
+          `Час: ${bookingData.time}`,
+          `Коментар: ${bookingData.notes}`
+        ].join('\n');
+
+        finalizeBooking(bookingData);
+        // Позволяем форме стандартно отправиться на FormBold endpoint
+      });
+    });
+  </script>
+</body>
+</html>
+
